@@ -1,0 +1,74 @@
+<div class="scanner-container">
+  <h2 class="section-title">🎫 Scanner de Ticket</h2>
+
+  <div class="scanner-card">
+    <!-- Input -->
+    <div class="input-group">
+      <input 
+        type="text" 
+        [(ngModel)]="ticketCode" 
+        placeholder="Entrez le code du ticket (ex: TKT-ABC12345)"
+        class="ticket-input"
+        (keyup.enter)="validateTicket()"
+        [disabled]="loading"
+      >
+      <button 
+        (click)="validateTicket()" 
+        class="validate-button"
+        [disabled]="loading || !ticketCode.trim()"
+      >
+        <span *ngIf="!loading">Valider</span>
+        <span *ngIf="loading">Validation...</span>
+      </button>
+    </div>
+
+    <!-- Result -->
+    <div *ngIf="validationResult" class="result-container" [ngClass]="getStatusClass()">
+      <div class="result-header">
+        <i [class]="validationResult.valid ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+        <h3>{{ validationResult.message }}</h3>
+      </div>
+
+      <!-- Valid Ticket Details -->
+      <div *ngIf="validationResult.valid" class="ticket-details">
+        <div class="detail-row">
+          <span class="label">Code:</span>
+          <span class="value">{{ validationResult.ticketCode }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Événement:</span>
+          <span class="value">{{ validationResult.eventName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Date:</span>
+          <span class="value">{{ validationResult.eventDate }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Lieu:</span>
+          <span class="value">{{ validationResult.eventLocation }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Participant:</span>
+          <span class="value">{{ validationResult.participantName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Email:</span>
+          <span class="value">{{ validationResult.participantEmail }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Status:</span>
+          <span class="value" [class.used]="validationResult.alreadyUsed">
+            {{ validationResult.alreadyUsed ? '⚠️ Déjà utilisé' : '✅ Non utilisé' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button (click)="reset()" class="reset-button">
+          Scanner un autre ticket
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+          <a routerLink="/payment" class="btn btn-sm btn-outline-primary">Pay</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-6">
+      <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">My Certificates</h1>
+        <p class="lead text-muted">Generate and download your course certificates</p>
+      </div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      @for (cert of certificates; track cert.id) {
+        <div class="col-lg-4 col-md-6">
+          <div class="card shadow-sm h-100 rounded-4 card-hover">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center mb-3">
+                <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 56px; height: 56px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                    <path d="M12 15l-4-4h8l-4 4z"/>
+                    <path d="M4 6h16v12H4z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h5 class="card-title mb-1 fw-bold">{{ cert.course }}</h5>
+                  <span class="badge" [class.bg-success]="cert.completed" [class.bg-secondary]="!cert.completed">
+                    {{ cert.completed ? 'Completed' : 'In Progress' }}
+                  </span>
+                </div>
+              </div>
+              @if (cert.date) {
+                <p class="small text-muted mb-3">Completed on {{ cert.date }}</p>
+              }
+              <div class="d-flex gap-2">
+                @if (cert.completed) {
+                  <button class="btn btn-sm btn-outline-primary flex-grow-1" (click)="downloadCertificate(cert)">Download</button>
+                  <button class="btn btn-sm btn-primary" (click)="generateCertificate(cert)">Generate Certificate</button>
+                } @else {
+                  <button class="btn btn-sm btn-outline-secondary w-100" disabled>Complete course & payment first</button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,190 @@
+.signin-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background);
+  padding: 2rem 1rem;
+  font-family: var(--font-family);
+}
+
+.signin-container {
+  max-width: 420px;
+  width: 100%;
+  background: var(--color-white);
+  border-radius: 1.35rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(26, 46, 53, 0.08);
+  padding: 1.75rem 1.5rem;
+}
+
+.role-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.25rem;
+  background: rgba(26, 46, 53, 0.06);
+  border-radius: var(--radius-full);
+  padding: 4px;
+}
+
+.role-tab {
+  flex: 1;
+  padding: 0.6rem 0.35rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--color-gray-600);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.role-tab.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.role-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-primary);
+}
+
+.btn-google {
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  border: none;
+  border-radius: var(--radius-full) !important;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 14px rgba(26, 46, 53, 0.2);
+}
+
+.btn-google:hover {
+  background: var(--color-primary-light) !important;
+  color: var(--color-white) !important;
+}
+
+.btn-qr {
+  background: var(--color-white) !important;
+  color: var(--color-primary) !important;
+  border: 1px solid rgba(26, 46, 53, 0.15) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.btn-qr:hover {
+  background: var(--color-background) !important;
+  border-color: rgba(26, 46, 53, 0.25) !important;
+}
+
+.signin-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.25rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.signin-page .form-control {
+  border-radius: 0.75rem;
+  border-color: rgba(26, 46, 53, 0.12);
+}
+
+.signin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.btn-login {
+  background: var(--color-cta) !important;
+  color: var(--color-white) !important;
+  border: none;
+  border-radius: var(--radius-full) !important;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(200, 76, 50, 0.25);
+}
+
+.btn-login:hover:not(:disabled) {
+  background: var(--color-cta-light) !important;
+  color: var(--color-white) !important;
+}
+
+.btn-passkey {
+  background: var(--color-white) !important;
+  color: var(--color-primary) !important;
+  border: 1px solid rgba(26, 46, 53, 0.15) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-passkey:hover:not(:disabled) {
+  background: var(--color-background) !important;
+  border-color: rgba(26, 46, 53, 0.25) !important;
+}
+
+.forgot-wrap {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.forgot-wrap a {
+  color: var(--color-cta);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.forgot-wrap a:hover {
+  text-decoration: underline;
+}
+
+.signup-link-wrap {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--color-gray-600);
+}
+
+.signup-link-wrap a {
+  color: var(--color-cta);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
+.signup-link-wrap a:hover {
+  text-decoration: underline;
+}
+
+.signin-page .btn.btn-primary {
+  background-color: var(--color-cta) !important;
+  border-color: var(--color-cta) !important;
+  color: var(--color-white) !important;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
+}
+
+.signin-page .btn.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-cta-light) !important;
+  border-color: var(--color-cta-light) !important;
+}

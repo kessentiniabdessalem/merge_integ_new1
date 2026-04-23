@@ -1,0 +1,280 @@
+<div class="events-management">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Events Management</h1>
+      <p class="page-subtitle">Schedule and manage all events</p>
+    </div>
+    <button class="btn-admin primary" (click)="openCreateModal()">
+      <i class="ti ti-calendar-plus"></i> Create Event
+    </button>
+  </div>
+
+  <!-- Statistics Dashboard -->
+  <div class="stats-dashboard" *ngIf="stats">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <i class="ti ti-calendar"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalEvents }}</h3>
+        <p>Total Events</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <i class="ti ti-ticket"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalReservations }}</h3>
+        <p>Total Reservations</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <i class="ti ti-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalParticipants }}</h3>
+        <p>Total Participants</p>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <i class="ti ti-chart-bar"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.topReservedEvents.length }}</h3>
+        <p>Top Events</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-filter">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Search events by name or location..." [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()" />
+    </div>
+    <select class="select-filter" [(ngModel)]="filterCategory" (ngModelChange)="applyFilters()">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    <select class="select-filter" [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+      <option value="">All Statuses</option>
+      <option *ngFor="let stat of statuses" [value]="stat">{{ stat }}</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Organizer</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Places Limit</th>
+            <th>Reserved</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of paginatedEvents">
+            <td class="title-cell">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <img *ngIf="event.photoUrl" [src]="getFullPhotoUrl(event.photoUrl)" alt=""
+                  style="width: 32px; height: 32px; border-radius: 4px; object-fit: cover;">
+                {{ event.name }}
+              </div>
+            </td>
+            <td>{{ event.organizerFirstName }} {{ event.organizerLastName }}</td>
+            <td>{{ event.category }}</td>
+            <td class="text-muted-admin">{{ event.date | date:'mediumDate' }}</td>
+            <td>
+              <span class="location-cell">
+                <i class="ti ti-map-pin"></i> {{ event.location }}
+              </span>
+            </td>
+            <td>{{ event.placesLimit | number }}</td>
+            <td>
+              <div class="capacity-bar-wrapper">
+                <span>{{ event.reservedPlaces | number }}</span>
+                <div class="capacity-bar">
+                  <div class="capacity-fill"
+                    [style.width.%]="event.placesLimit ? (event.reservedPlaces / event.placesLimit * 100) : 0"
+                    [class.full]="event.reservedPlaces >= event.placesLimit"
+                    [class.high]="event.reservedPlaces >= event.placesLimit * 0.8 && event.reservedPlaces < event.placesLimit">
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge" [attr.data-status]="event.status.toLowerCase()">
+                {{ event.status }}
+              </span>
+            </td>
+            <td>
+              <div class="action-btns">
+                <button class="icon-btn" title="Edit" (click)="openEditModal(event)"><i class="ti ti-edit"></i></button>
+                <button class="icon-btn danger" title="Delete" (click)="openDeleteModal(event.id)"><i
+                    class="ti ti-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="paginatedEvents.length === 0">
+            <td colspan="9" style="text-align: center; padding: 24px; color: #666;">No events found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="table-info">Showing page {{ currentPage }} of {{ totalPages }} ({{ filteredEvents.length }} total
+        events)</span>
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="prevPage()">Previous</button>
+        <button [disabled]="currentPage >= totalPages" (click)="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Modal -->
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Edit Event' : 'Create Event' }}</h2>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
+          <div class="form-grid">
+
+            <!-- Event Name -->
+            <div class="form-group full-width">
+              <label>Event Name *</label>
+              <input type="text" formControlName="name" placeholder="Enter event name">
+              <span class="error-text" *ngIf="hasError('name', 'required')">Name is required</span>
+              <span class="error-text" *ngIf="hasError('name', 'minlength')">Minimum 3 characters</span>
+            </div>
+
+            <!-- ✅ CATEGORY (champ manquant — cause du bug) -->
+            <div class="form-group full-width">
+              <label>Category *</label>
+              <select formControlName="category">
+                <option value="">Select category</option>
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+              </select>
+              <span class="error-text" *ngIf="hasError('category', 'required')">Category is required</span>
+            </div>
+
+            <!-- Organizer First Name -->
+            <div class="form-group">
+              <label>Organizer First Name *</label>
+              <input type="text" formControlName="organizerFirstName" placeholder="First name">
+              <span class="error-text" *ngIf="hasError('organizerFirstName', 'required')">First name is required</span>
+            </div>
+
+            <!-- Organizer Last Name -->
+            <div class="form-group">
+              <label>Organizer Last Name *</label>
+              <input type="text" formControlName="organizerLastName" placeholder="Last name">
+              <span class="error-text" *ngIf="hasError('organizerLastName', 'required')">Last name is required</span>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+              <label>Status *</label>
+              <select formControlName="status">
+                <option value="">Select status</option>
+                <option *ngFor="let stat of statuses" [value]="stat">{{ stat }}</option>
+              </select>
+              <span class="error-text" *ngIf="hasError('status', 'required')">Status is required</span>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+              <label>Date *</label>
+              <input type="date" formControlName="date">
+              <span class="error-text" *ngIf="hasError('date', 'required')">Date is required</span>
+              <span class="error-text" *ngIf="hasError('date', 'futureDate')">Date must be in the future</span>
+            </div>
+
+            <!-- Places Limit -->
+            <div class="form-group">
+              <label>Places Limit *</label>
+              <input type="number" formControlName="placesLimit" min="50">
+              <span class="error-text" *ngIf="hasError('placesLimit', 'required')">Places limit is required</span>
+              <span class="error-text" *ngIf="hasError('placesLimit', 'min')">Minimum limit is 50</span>
+            </div>
+
+            <!-- Location -->
+            <div class="form-group full-width">
+              <label>Location *</label>
+              <input type="text" formControlName="location" placeholder="Enter location">
+              <span class="error-text" *ngIf="hasError('location', 'required')">Location is required</span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group full-width">
+              <label>Description *</label>
+              <textarea formControlName="description" placeholder="Enter event description"></textarea>
+              <span class="error-text" *ngIf="hasError('description', 'required')">Description is required</span>
+              <span class="error-text" *ngIf="hasError('description', 'maxlength')">Max 1000 characters</span>
+            </div>
+
+            <!-- Photo -->
+            <div class="form-group full-width">
+              <label>Event Photo {{ isEditing ? '(Optional)' : '*' }}</label>
+              <div class="photo-upload" (click)="fileInput.click()">
+                <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
+                <p *ngIf="!photoPreviewUrl">Click to browse or drag and drop image here</p>
+                <img *ngIf="photoPreviewUrl" [src]="photoPreviewUrl" alt="Preview">
+              </div>
+              <span class="error-text" *ngIf="!isEditing && !selectedPhoto && eventForm.touched">Photo is
+                required</span>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-admin secondary" type="button" (click)="closeModal()">Cancel</button>
+        <button class="btn-admin primary" type="button" (click)="saveEvent()">
+          {{ isEditing ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" *ngIf="isDeleteModalOpen">
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h2>Confirm Delete</h2>
+        <button class="close-btn" (click)="closeDeleteModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this event? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-admin secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button class="btn-admin danger" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" *ngIf="showToast">
+    <div class="toast" [ngClass]="toastType">
+      <i class="ti" [ngClass]="toastType === 'success' ? 'ti-check' : 'ti-alert-circle'"></i>
+      <span>{{ toastMessage }}</span>
+    </div>
+  </div>
+</div>

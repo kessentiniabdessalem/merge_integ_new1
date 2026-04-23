@@ -1,0 +1,179 @@
+<nav class="navbar navbar-expand-lg navbar-modern">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand d-inline-flex gap-2 align-items-center lh-1" 
+       href="#" 
+       (click)="onBrandClick($event)">
+      <span class="brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+          <circle cx="12" cy="10" r="2"/>
+          <path d="M12 14v4"/>
+        </svg>
+      </span>
+      <span class="brand-text">Learnify<span class="brand-accent">English</span></span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="toggler-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <!-- Menu modules : uniquement une fois connecté (microservices course / payment / job / …) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0" *ngIf="currentUser">
+        <li class="nav-item">
+          <a href="/" class="nav-link" [class.active]="isActiveRoute('/')"
+             (click)="navigateToPage('/'); $event.preventDefault()">
+            <i class="ti ti-home"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/courses" class="nav-link" [class.active]="isActiveRoute('/courses')"
+             (click)="navigateToPage('/courses'); $event.preventDefault()">
+            <i class="ti ti-book"></i> Courses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/cart" class="nav-link" [class.active]="isActiveRoute('/cart')"
+             (click)="navigateToPage('/cart'); $event.preventDefault()">
+            <i class="ti ti-shopping-cart"></i> Cart
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/clubs" class="nav-link" [class.active]="isActiveRoute('/clubs')"
+             (click)="navigateToPage('/clubs'); $event.preventDefault()">
+            <i class="ti ti-users"></i> Clubs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/events" class="nav-link" [class.active]="isActiveRoute('/events')"
+             (click)="navigateToPage('/events'); $event.preventDefault()">
+            <i class="ti ti-calendar"></i> Events
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/events-advanced" class="nav-link" [class.active]="isActiveRoute('/events-advanced')"
+             (click)="navigateToPage('/events-advanced'); $event.preventDefault()">
+            <i class="ti ti-star"></i> Events Pro
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/oral-interview" class="nav-link" [class.active]="isActiveRoute('/oral-interview')"
+             (click)="navigateToPage('/oral-interview'); $event.preventDefault()"
+             title="Test oral FR/EN — caméra &amp; micro">
+            <i class="ti ti-microphone"></i> Oral test
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="moreDropdownAuth" role="button" data-bs-toggle="dropdown">
+            <i class="ti ti-dots"></i> More
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="moreDropdownAuth">
+            <li><a class="dropdown-item" href="/payment" (click)="navigateToPage('/payment'); $event.preventDefault()"><i class="ti ti-credit-card"></i> Payment</a></li>
+            <li><a class="dropdown-item" href="/schedule" (click)="navigateToPage('/schedule'); $event.preventDefault()"><i class="ti ti-calendar-time"></i> Schedule</a></li>
+            <li><a class="dropdown-item" href="/certificate" (click)="navigateToPage('/certificate'); $event.preventDefault()"><i class="ti ti-award"></i> Certificate</a></li>
+            <li><a class="dropdown-item" href="/quizzes" (click)="navigateToPage('/quizzes'); $event.preventDefault()"><i class="ti ti-brain"></i> Quizzes</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/messenger" (click)="navigateToPage('/messenger'); $event.preventDefault()"><i class="ti ti-messages"></i> Messenger</a></li>
+            <li><a class="dropdown-item" href="/feedbacks" (click)="navigateToPage('/feedbacks'); $event.preventDefault()"><i class="ti ti-message-dots"></i> Feedback</a></li>
+            <li><a class="dropdown-item" href="/cv" (click)="navigateToPage('/cv'); $event.preventDefault()"><i class="ti ti-file-description"></i> CV Builder</a></li>
+            <li><a class="dropdown-item" href="/job-offers" (click)="navigateToPage('/job-offers'); $event.preventDefault()"><i class="ti ti-briefcase"></i> Job Board</a></li>
+            <li><a class="dropdown-item" href="/my-applications" (click)="navigateToPage('/my-applications'); $event.preventDefault()"><i class="ti ti-file-text"></i> My Applications</a></li>
+            <li><a class="dropdown-item" href="/rate-tutor" (click)="navigateToPage('/rate-tutor'); $event.preventDefault()"><i class="ti ti-star"></i> Rate a Tutor</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- CTA / profil : toujours à droite (comme avant) -->
+      <div class="navbar-actions ms-lg-auto">
+        <ng-container *ngIf="!currentUser; else loggedIn">
+          <a href="/auth/login?role=student" class="btn-link">Sign In</a>
+          <a href="/auth/signup-choice" class="btn-cta">
+            Get Started
+            <i class="ti ti-arrow-right"></i>
+          </a>
+        </ng-container>
+        <ng-template #loggedIn>
+          <!-- Notification Bell -->
+          <div class="notif-bell">
+            <button class="btn-bell" (click)="toggleNotifDropdown()" title="Notifications">
+              <i class="ti ti-bell"></i>
+              <span *ngIf="unreadCount > 0" class="notif-badge">{{ unreadCount > 9 ? '9+' : unreadCount }}</span>
+            </button>
+            <div class="notif-dropdown" *ngIf="notifOpen">
+              <div class="notif-header">
+                <span>Notifications</span>
+                <button *ngIf="unreadCount > 0" class="notif-mark-all" (click)="markAllRead()">Mark all read</button>
+              </div>
+              <div class="notif-list">
+                <div *ngIf="notifications.length === 0" class="notif-empty">
+                  <i class="ti ti-bell-off"></i>
+                  <span>No notifications</span>
+                </div>
+                <div *ngFor="let n of notifications"
+                     class="notif-item"
+                     [class.unread]="!n.read"
+                     (click)="markOneRead(n)">
+                  <i class="ti ti-briefcase notif-icon"></i>
+                  <div class="notif-body">
+                    <p class="notif-msg">{{ n.message }}</p>
+                    <span class="notif-time">{{ n.createdAt | date:'MMM d, h:mm a' }}</span>
+                  </div>
+                  <span *ngIf="!n.read" class="notif-dot"></span>
+                </div>
+              </div>
+              <div class="notif-footer">
+                <a href="/job-offers" (click)="navigateToPage('/job-offers'); closeNotifDropdown(); $event.preventDefault()">
+                  View Job Board <i class="ti ti-arrow-right"></i>
+                </a>
+                <a href="/my-applications" (click)="navigateToPage('/my-applications'); closeNotifDropdown(); $event.preventDefault()">
+                  My Applications <i class="ti ti-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-menu dropdown">
+            <button class="btn-user dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="user-avatar">
+                <img *ngIf="avatarSrc(); else avatarInitials"
+                     [src]="avatarSrc()!" alt="avatar" />
+                <ng-template #avatarInitials>
+                  <span class="avatar-initials">{{ (currentUser!.firstName || '?')[0] | uppercase }}</span>
+                </ng-template>
+              </span>
+              <span class="user-name d-none d-md-inline">{{ currentUser!.firstName }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li class="dropdown-header">
+                <strong>{{ currentUser!.firstName }} {{ currentUser!.lastName }}</strong>
+                <div class="text-muted small">{{ currentUser!.role | titlecase }}</div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li *ngIf="currentUser!.role === 'ADMIN'">
+                <a class="dropdown-item" href="/admin">
+                  <i class="ti ti-layout-dashboard me-2"></i>Admin Panel
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" [routerLink]="currentUser!.role === 'ADMIN' ? '/admin/profile' : '/profile'">
+                  <i class="ti ti-user me-2"></i>My profile
+                </a>
+              </li>
+              <li>
+                <button class="dropdown-item text-danger" (click)="logout()">
+                  <i class="ti ti-logout me-2"></i>Sign Out
+                </button>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

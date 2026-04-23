@@ -1,0 +1,213 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-10 mx-auto">
+      
+      <!-- Header -->
+      <div class="card mb-4" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+        <div class="card-body text-center py-4">
+          <h2 class="mb-2"><i class="bi bi-stars"></i> Générateur de Quiz IA</h2>
+          <p class="mb-0">Créez des quiz personnalisés avec Google Gemini</p>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}
+        <button type="button" class="btn-close" (click)="error = ''" aria-label="Close"></button>
+      </div>
+
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+      </div>
+
+      <!-- Generator Form -->
+      <div class="card mb-4" *ngIf="!generatedQuiz">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Configuration du Quiz</h5>
+
+          <!-- Topic Input -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Sujet du Quiz</label>
+            <input 
+              type="text" 
+              [(ngModel)]="request.topic" 
+              placeholder="Ex: Java OOP, Python Basics, SQL Fundamentals" 
+              class="form-control form-control-lg"
+              [disabled]="loading">
+          </div>
+
+          <!-- Suggested Topics -->
+          <div class="mb-4" *ngIf="suggestedTopics.length > 0">
+            <label class="form-label text-muted small">Sujets suggérés:</label>
+            <div class="d-flex flex-wrap gap-2">
+              <button 
+                *ngFor="let topic of suggestedTopics" 
+                (click)="selectTopic(topic)"
+                class="btn btn-sm btn-outline-success"
+                [disabled]="loading">
+                {{ topic }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Difficulty -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Difficulté</label>
+              <select [(ngModel)]="request.difficulty" class="form-select" [disabled]="loading">
+                <option value="EASY">Facile</option>
+                <option value="MEDIUM">Moyen</option>
+                <option value="HARD">Difficile</option>
+              </select>
+            </div>
+
+            <!-- Question Count -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Nombre de questions</label>
+              <input 
+                type="range" 
+                [(ngModel)]="request.questionCount" 
+                min="1" 
+                max="20" 
+                class="form-range"
+                [disabled]="loading">
+              <div class="text-center mt-1">
+                <span class="badge bg-success">{{ request.questionCount }}</span>
+              </div>
+            </div>
+
+            <!-- Question Type -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Type de question</label>
+              <select [(ngModel)]="request.questionType" class="form-select" [disabled]="loading">
+                <option value="MULTIPLE_CHOICE">Choix multiple</option>
+                <option value="TRUE_FALSE">Vrai/Faux</option>
+                <option value="SHORT_ANSWER">Réponse courte</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Course ID -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">ID du Cours</label>
+            <input 
+              type="number" 
+              [(ngModel)]="courseId" 
+              class="form-control"
+              [disabled]="loading">
+          </div>
+
+          <!-- Generate Button -->
+          <div class="d-grid">
+            <button 
+              (click)="generateQuiz()" 
+              [disabled]="loading || !request.topic.trim()" 
+              class="btn btn-success btn-lg">
+              <span *ngIf="loading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Génération en cours...
+              </span>
+              <span *ngIf="!loading">
+                <i class="bi bi-magic me-2"></i>Générer le Quiz avec IA
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generated Quiz Display -->
+      <div *ngIf="generatedQuiz && !loading" class="card">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0"><i class="bi bi-check-circle me-2"></i>{{ generatedQuiz.title }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="lead">{{ generatedQuiz.description }}</p>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <span class="badge bg-info me-2">
+                <i class="bi bi-trophy me-1"></i>Score de passage: {{ generatedQuiz.suggestedPassingScore || 70 }}%
+              </span>
+            </div>
+            <div class="col-md-6">
+              <span class="badge bg-warning text-dark">
+                <i class="bi bi-clock me-1"></i>Temps suggéré: {{ generatedQuiz.suggestedTimeLimit || 15 }} min
+              </span>
+            </div>
+          </div>
+
+          <!-- Questions Accordion -->
+          <div class="accordion" id="questionsAccordion">
+            <div 
+              *ngFor="let question of generatedQuiz.questions; let i = index" 
+              class="accordion-item">
+              <h2 class="accordion-header">
+                <button 
+                  class="accordion-button collapsed" 
+                  type="button" 
+                  [attr.data-bs-toggle]="'collapse'" 
+                  [attr.data-bs-target]="'#question' + i">
+                  <strong>Question {{ i + 1 }}:</strong>&nbsp;{{ question.text }}
+                </button>
+              </h2>
+              <div 
+                [id]="'question' + i" 
+                class="accordion-collapse collapse" 
+                [attr.data-bs-parent]="'#questionsAccordion'">
+                <div class="accordion-body">
+                  <div class="mb-3">
+                    <strong>Type:</strong> 
+                    <span class="badge bg-secondary ms-2">{{ question.type }}</span>
+                  </div>
+                  
+                  <div class="mb-3" *ngIf="question.options && question.options.length > 0">
+                    <strong>Options:</strong>
+                    <ul class="list-group mt-2">
+                      <li 
+                        *ngFor="let option of question.options" 
+                        class="list-group-item"
+                        [class.list-group-item-success]="option === question.correctAnswer">
+                        {{ option }}
+                        <i *ngIf="option === question.correctAnswer" class="bi bi-check-circle-fill text-success float-end"></i>
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <strong>Réponse correcte:</strong> 
+                    <span class="badge bg-success ms-2">{{ question.correctAnswer }}</span>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <strong>Points:</strong> 
+                    <span class="badge bg-primary ms-2">{{ question.points }}</span>
+                  </div>
+                  
+                  <div class="alert alert-info mb-0">
+                    <strong><i class="bi bi-lightbulb me-2"></i>Explication:</strong>
+                    <p class="mb-0 mt-2">{{ question.explanation }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex gap-2 mt-4">
+            <button (click)="saveQuiz()" class="btn btn-success flex-fill" [disabled]="loading">
+              <i class="bi bi-save me-2"></i>Sauvegarder sur la Plateforme
+            </button>
+            <button (click)="regenerate()" class="btn btn-warning flex-fill" [disabled]="loading">
+              <i class="bi bi-arrow-clockwise me-2"></i>Régénérer
+            </button>
+            <button (click)="reset()" class="btn btn-secondary" [disabled]="loading">
+              <i class="bi bi-x-circle me-2"></i>Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

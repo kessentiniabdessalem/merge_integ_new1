@@ -1,0 +1,59 @@
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.preeval-mistake-card {
+  border-left: 4px solid var(--bs-primary);
+}
+
+.preeval-ai-explanation {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  padding: 1rem;
+  background: rgba(13, 110, 253, 0.08);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(13, 110, 253, 0.2);
+}
+
+.preeval-summary-card {
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.preeval-followup-chat {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+}
+
+.preeval-chat-row-user {
+  text-align: right;
+}
+
+.preeval-chat-bubble {
+  display: inline-block;
+  max-width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(13, 110, 253, 0.08);
+  border: 1px solid rgba(13, 110, 253, 0.15);
+}
+
+.preeval-chat-bubble-user {
+  background: rgba(33, 37, 41, 0.06);
+  border-color: rgba(33, 37, 41, 0.12);
+}
+
+.preeval-chat-text {
+  white-space: pre-wrap;
+}
+
+.preeval-recs-card {
+  border: 1px solid rgba(13, 110, 253, 0.12) !important;
+  background: linear-gradient(180deg, rgba(13, 110, 253, 0.04) 0%, #fff 48px);
+}
+
+.preeval-rec-tile {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}

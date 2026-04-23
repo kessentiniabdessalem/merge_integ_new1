@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+.mentor-section {
+  background: #F7EDE2;
+}
+
+.mentor-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid rgba(#2D5757, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(#3D3D60, 0.1);
+    border-color: rgba(#F6BD60, 0.25);
+  }
+}
+
+.mentor-avatar-wrapper {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F6BD60, #C84630);
+  margin-bottom: 12px;
+}
+
+.mentor-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+}
+
+h5 {
+  color: #3D3D60;
+  font-family: 'Playfair Display', serif;
+}

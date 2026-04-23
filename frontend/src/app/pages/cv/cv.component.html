@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/job-offers" class="btn btn-sm btn-outline-primary">Apply for Job</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="display-4 fw-bold">My CV</h1>
+        <p class="lead text-muted">Upload your resume (PDF) to improve job match recommendations</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+
+        <!-- Upload card -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-body p-5">
+            <h5 class="fw-bold mb-1">Upload CV (PDF)</h5>
+            <p class="text-muted small mb-4">
+              Uploading a new PDF will replace your existing CV. The text is extracted automatically
+              to compute your job match score.
+            </p>
+
+            <div *ngIf="uploadError" class="alert alert-danger py-2 mb-3">{{ uploadError }}</div>
+            <div *ngIf="uploadSuccess" class="alert alert-success py-2 mb-3">CV uploaded successfully!</div>
+
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+              <label class="btn btn-primary rounded-pill mb-0" [class.disabled]="uploading">
+                <i class="ti ti-upload me-1"></i>
+                {{ uploading ? 'Uploading...' : 'Choose PDF' }}
+                <input type="file" accept="application/pdf" class="d-none" (change)="onFileSelected($event)" [disabled]="uploading">
+              </label>
+              <a routerLink="/job-offers" class="btn btn-outline-secondary rounded-pill">View Ranked Jobs</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div *ngIf="loading" class="text-center py-5 text-muted">
+          <div class="spinner-border spinner-border-sm me-2"></div>
+          Loading your CV profile...
+        </div>
+
+        <!-- No CV yet -->
+        <div *ngIf="!loading && !profile" class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-5 text-center text-muted">
+            <i class="ti ti-file-off fs-1 mb-3 d-block"></i>
+            <p class="mb-0">No CV uploaded yet. Upload a PDF above to enable job match scoring.</p>
+          </div>
+        </div>
+
+        <!-- CV profile info -->
+        <div *ngIf="!loading && profile" class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-5">
+            <h6 class="fw-bold mb-3">Current CV</h6>
+            <div class="mb-2">
+              <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                <i class="ti ti-check me-1"></i> CV on file
+              </span>
+            </div>
+            <p class="small text-muted mb-1">
+              <strong>Uploaded:</strong> {{ profile.uploadedAt | date:'medium' }}
+            </p>
+            <div *ngIf="profile.extractedText" class="mt-3">
+              <p class="small text-muted fw-semibold mb-1">Extracted text preview:</p>
+              <div class="bg-light rounded p-3 small" style="max-height: 160px; overflow-y: auto; white-space: pre-wrap;">{{ profile.extractedText | slice:0:600 }}{{ (profile.extractedText.length || 0) > 600 ? '...' : '' }}</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,104 @@
+<div class="dashboard-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Welcome back! Here's what's happening today.</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn-admin outline">
+                <i class="ti ti-download"></i> Export
+            </button>
+            <button class="btn-admin primary">
+                <i class="ti ti-plus"></i> New Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card" *ngFor="let stat of stats">
+            <div class="stat-icon"
+                [style.background]="'linear-gradient(135deg, ' + stat.color + '22, ' + stat.color + '11)'">
+                <i [class]="stat.icon" [style.color]="stat.color"></i>
+            </div>
+            <div class="stat-body">
+                <span class="stat-label">{{ stat.label }}</span>
+                <span class="stat-value">{{ stat.value }}</span>
+            </div>
+            <div class="stat-trend" [class.up]="stat.trendUp" [class.down]="!stat.trendUp">
+                <i [class]="stat.trendUp ? 'ti ti-trending-up' : 'ti ti-trending-down'"></i>
+                {{ stat.trend }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="dashboard-grid">
+        <!-- Recent Activity -->
+        <div class="card-admin activity-card">
+            <div class="card-header-admin">
+                <h3>Recent Activity</h3>
+                <button class="btn-link-admin">View All</button>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item" *ngFor="let item of recentActivity">
+                    <div class="activity-icon" [style.background]="item.color + '18'" [style.color]="item.color">
+                        <i [class]="item.icon"></i>
+                    </div>
+                    <div class="activity-info">
+                        <span class="activity-action">{{ item.action }}</span>
+                        <span class="activity-user">by {{ item.user }}</span>
+                    </div>
+                    <span class="activity-time">{{ item.time }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card-admin quick-actions-card">
+            <div class="card-header-admin">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="quick-actions-list">
+                <a *ngFor="let action of quickActions" [routerLink]="action.link" class="quick-action-item">
+                    <div class="qa-icon">
+                        <i [class]="action.icon"></i>
+                    </div>
+                    <span>{{ action.label }}</span>
+                    <i class="ti ti-chevron-right qa-arrow"></i>
+                </a>
+            </div>
+
+            <!-- System Status -->
+            <div class="system-status">
+                <div class="card-header-admin" style="margin-top: 20px;">
+                    <h3>System Status</h3>
+                </div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <span class="status-label">Server Uptime</span>
+                        <div class="status-bar">
+                            <div class="status-fill" style="width: 99.9%; background: #10b981;"></div>
+                        </div>
+                        <span class="status-value">99.9%</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">CPU Usage</span>
+                        <div class="status-bar">
+                            <div class="status-fill" style="width: 42%; background: #6366f1;"></div>
+                        </div>
+                        <span class="status-value">42%</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Memory</span>
+                        <div class="status-bar">
+                            <div class="status-fill" style="width: 68%; background: #f59e0b;"></div>
+                        </div>
+                        <span class="status-value">68%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

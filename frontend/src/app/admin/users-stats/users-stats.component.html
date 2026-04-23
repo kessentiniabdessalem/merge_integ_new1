@@ -1,0 +1,43 @@
+<div class="mb-3">
+  <h3 class="mb-1">Role Statistics</h3>
+  <p class="text-muted mb-0">Users count grouped by role</p>
+</div>
+
+<div class="card shadow-sm" style="border-radius: 14px;">
+  <div class="card-body">
+
+    <div *ngIf="loading" class="text-center p-4">Loading...</div>
+
+    <div *ngIf="!loading && total === 0" class="text-center p-4 text-muted">No data.</div>
+
+    <div *ngIf="!loading && total > 0">
+      <div class="mb-3 text-muted">Total users: <b>{{ total }}</b></div>
+
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Role</th>
+              <th style="width: 120px;">Count</th>
+              <th style="width: 120px;">Percent</th>
+              <th>Chart</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of stats">
+              <td class="fw-semibold">{{ s.role }}</td>
+              <td>{{ s.count }}</td>
+              <td>{{ s.percent }}%</td>
+              <td>
+                <div class="bar-bg">
+                  <div class="bar-fill" [style.width]="width(s.percent)"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

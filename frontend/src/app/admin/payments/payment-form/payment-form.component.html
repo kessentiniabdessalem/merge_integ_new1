@@ -1,0 +1,212 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ isEditing ? 'Edit Payment' : 'Create Payment' }}</h2>
+    <button class="btn btn-outline-secondary" (click)="onCancel()">
+      <i class="bi bi-arrow-left me-1"></i>
+      Back to Payments
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">{{ isEditing ? 'Loading payment...' : 'Processing...' }}</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+  }
+
+  <!-- Payment Form -->
+  @if (!isLoading) {
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                 <!-- User ID -->
+                 <div class="col-md-6 mb-3">
+                   <label for="userId" class="form-label">User ID *</label>
+                   <input 
+                     type="number" 
+                     class="form-control" 
+                     id="userId" 
+                     formControlName="userId"
+                     [class.is-invalid]="isFieldInvalid('userId')"
+                     placeholder="Enter user ID">
+                   @if (isFieldInvalid('userId')) {
+                     <div class="invalid-feedback">{{ getErrorMessage('userId') }}</div>
+                   }
+                 </div>
+
+                 <!-- Course ID -->
+                 <div class="col-md-6 mb-3">
+                   <label for="courseId" class="form-label">Course ID *</label>
+                   <input 
+                     type="number" 
+                     class="form-control" 
+                     id="courseId" 
+                     formControlName="courseId"
+                     [class.is-invalid]="isFieldInvalid('courseId')"
+                     placeholder="Enter course ID">
+                   @if (isFieldInvalid('courseId')) {
+                     <div class="invalid-feedback">{{ getErrorMessage('courseId') }}</div>
+                   }
+                 </div>
+              </div>
+
+              <div class="row">
+                <!-- Amount -->
+                <div class="col-md-4 mb-3">
+                  <label for="amount" class="form-label">Amount *</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input 
+                      type="number" 
+                      step="0.01"
+                      class="form-control" 
+                      id="amount" 
+                      formControlName="amount"
+                      [class.is-invalid]="isFieldInvalid('amount')"
+                      placeholder="0.00">
+                  </div>
+                  @if (isFieldInvalid('amount')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('amount') }}</div>
+                  }
+                </div>
+
+                <!-- Currency -->
+                <div class="col-md-4 mb-3">
+                  <label for="currency" class="form-label">Currency *</label>
+                  <select 
+                    class="form-select" 
+                    id="currency" 
+                    formControlName="currency"
+                    [class.is-invalid]="isFieldInvalid('currency')">
+                    @for (currency of currencies; track currency.value) {
+                      <option [value]="currency.value">{{ currency.label }}</option>
+                    }
+                  </select>
+                  @if (isFieldInvalid('currency')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('currency') }}</div>
+                  }
+                </div>
+
+                 <!-- Payment Date -->
+                 <div class="col-md-4 mb-3">
+                   <label for="paymentDate" class="form-label">Payment Date *</label>
+                   <input 
+                     type="date" 
+                     class="form-control" 
+                     id="paymentDate" 
+                     formControlName="paymentDate"
+                     [class.is-invalid]="isFieldInvalid('paymentDate')">
+                   @if (isFieldInvalid('paymentDate')) {
+                     <div class="invalid-feedback">{{ getErrorMessage('paymentDate') }}</div>
+                   }
+                 </div>
+              </div>
+
+              <div class="row">
+                 <!-- Payment Method -->
+                 <div class="col-md-6 mb-3">
+                   <label for="paymentMethod" class="form-label">Payment Method *</label>
+                   <select 
+                     class="form-select" 
+                     id="paymentMethod" 
+                     formControlName="paymentMethod"
+                     [class.is-invalid]="isFieldInvalid('paymentMethod')">
+                     @for (method of paymentMethods; track method.value) {
+                       <option [value]="method.value">{{ method.label }}</option>
+                     }
+                   </select>
+                   @if (isFieldInvalid('paymentMethod')) {
+                     <div class="invalid-feedback">{{ getErrorMessage('paymentMethod') }}</div>
+                   }
+                 </div>
+
+                 <!-- Payment Status -->
+                 <div class="col-md-6 mb-3">
+                   <label for="paymentStatus" class="form-label">Payment Status *</label>
+                   <select 
+                     class="form-select" 
+                     id="paymentStatus" 
+                     formControlName="paymentStatus"
+                     [class.is-invalid]="isFieldInvalid('paymentStatus')">
+                     @for (status of paymentStatuses; track status.value) {
+                       <option [value]="status.value">{{ status.label }}</option>
+                     }
+                   </select>
+                   @if (isFieldInvalid('paymentStatus')) {
+                     <div class="invalid-feedback">{{ getErrorMessage('paymentStatus') }}</div>
+                   }
+                 </div>
+              </div>
+
+              <!-- Transaction ID -->
+              <div class="mb-4">
+                <label for="transactionId" class="form-label">Transaction ID *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="transactionId" 
+                  formControlName="transactionId"
+                  [class.is-invalid]="isFieldInvalid('transactionId')"
+                  placeholder="Enter transaction ID">
+                @if (isFieldInvalid('transactionId')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('transactionId') }}</div>
+                }
+              </div>
+
+              <!-- Form Actions -->
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="paymentForm.invalid">
+                  <i class="bi bi-check-circle me-1"></i>
+                  {{ isEditing ? 'Update Payment' : 'Create Payment' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle me-2"></i>
+              Payment Information
+            </h5>
+            <div class="text-muted">
+              <p class="mb-2">
+                <strong>User ID:</strong> The ID of the user who made the payment
+              </p>
+              <p class="mb-2">
+                <strong>Course ID:</strong> The ID of the course purchased
+              </p>
+              <p class="mb-2">
+                <strong>Transaction ID:</strong> Unique identifier for the payment transaction
+              </p>
+              <p class="mb-0">
+                <strong>Status:</strong> Current status of the payment (pending, completed, failed, refunded)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

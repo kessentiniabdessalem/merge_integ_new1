@@ -1,0 +1,83 @@
+<section class="py-lg-13 py-8" id="courses">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-6 mx-auto">
+        <div class="mb-10">
+          <span class="text-primary text-uppercase small fw-semibold" style="letter-spacing: .125rem;">English Courses</span>
+          <h2 class="fw-bold mt-4 mb-4">Explore Our <span class="text-primary">English Courses</span></h2>
+          <p class="mb-0">
+            Discover our diverse range of English courses designed for all levels. From beginner to advanced, learn with certified instructors and fellow learners worldwide.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4">
+      @for (course of courses; track course.title) {
+        <div class="col-lg-3 col-md-6">
+          <div class="card shadow-sm h-100 rounded-5 card-lift">
+            <div class="position-relative overflow-hidden">
+              <img [src]="course.image" class="rounded-top-5 card-img-top" [alt]="course.title">
+              <div class="position-absolute top-0 start-0 p-3">
+                <span class="badge rounded-pill fw-normal text-xs" [ngClass]="course.badgeClass">{{ course.badge }}</span>
+              </div>
+            </div>
+            <div class="card-body p-6">
+              <h3 class="mb-1 fs-6">{{ course.title }}</h3>
+              <div class="text-xs d-flex gap-2 align-items-center mt-4 mb-8">
+                <img [src]="course.instructorAvatar" alt="" class="avatar avatar-xs rounded-circle">
+                <span>{{ course.instructor }}</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+                <div class="text-xs align-items-center d-flex gap-1 lh-1">
+                  <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon icon-tabler icons-tabler-clock"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></span>
+                  <span>{{ course.duration }}</span>
+                </div>
+                <div class="text-xs align-items-center d-flex gap-1 lh-1">
+                  <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon icon-tabler icons-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></svg></span>
+                  <span>{{ course.students }}</span>
+                </div>
+                <div class="text-xs align-items-center d-flex gap-1 lh-1">
+                  <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-star text-warning"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.093 -6.26l3.093 6.26l6.9 1l-5 4.867l1.179 6.873z"/></svg></span>
+                  <span>{{ course.rating }}</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <span class="fs-5 text-dark fw-bold">{{ course.price }}</span>
+                <a href="#" class="small link-primary">Enroll now
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon icon-tabler icons-tabler-arrow-right ms-1"><line x1="5" y1="12" x2="19" y2="12"></line><line x1="13" y1="18" x2="19" y2="12"></line><line x1="13" y1="6" x2="19" y2="12"></line></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="row">
+      <div class="col-12 text-center mt-10">
+        <a routerLink="/courses" class="btn btn-outline-dark">
+          View All Courses
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon icon-tabler icons-tabler-arrow-right ms-1">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <line x1="13" y1="18" x2="19" y2="12"></line>
+            <line x1="13" y1="6" x2="19" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <a routerLink="/clubs" class="btn btn-sm btn-outline-primary">Clubs</a>
+          <a routerLink="/events" class="btn btn-sm btn-outline-primary">Events</a>
+          <a routerLink="/messenger" class="btn btn-sm btn-outline-primary">Messenger</a>
+          <a routerLink="/preevaluation/start" class="btn btn-sm btn-outline-primary">Pre-evaluation</a>
+          <a routerLink="/job-offers" class="btn btn-sm btn-outline-primary">Job Offers</a>
+          <a routerLink="/quiz" class="btn btn-sm btn-outline-primary">Quiz</a>
+          <a routerLink="/payment" class="btn btn-sm btn-outline-primary">Payment</a>
+          <a routerLink="/feedback" class="btn btn-sm btn-outline-primary">Feedback</a>
+          <a routerLink="/certificate" class="btn btn-sm btn-outline-primary">Certificates</a>
+          <a routerLink="/schedule" class="btn btn-sm btn-outline-primary">Schedule</a>
+        </div>
+      </div>
+    </div>
+

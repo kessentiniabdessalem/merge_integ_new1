@@ -1,0 +1,95 @@
+<div class="profile-page">
+
+  <h2 class="page-title">My Profile</h2>
+
+  <div class="oral-test-banner">
+    <div class="oral-test-banner-text">
+      <strong>Entretien oral (FR / EN)</strong>
+      <span>Simulation caméra + micro — test du niveau type B2 / C1</span>
+    </div>
+    <a routerLink="/oral-interview" class="oral-test-btn">
+      <i class="ti ti-microphone"></i>
+      Lancer le test oral
+    </a>
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+
+    <div class="profile-header">
+      <div class="avatar-wrapper">
+        <img *ngIf="displayAvatar"
+             [src]="displayAvatar"
+             class="avatar-img"
+             alt="Avatar" />
+        <div *ngIf="!displayAvatar" class="avatar-placeholder">
+          <i class="ti ti-user"></i>
+        </div>
+      </div>
+      <div class="profile-meta">
+        <div class="profile-name">{{ user.firstName }} {{ user.lastName }}</div>
+        <div class="profile-email">{{ user.email }}</div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="save()" class="profile-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input class="form-input" [(ngModel)]="user.firstName" name="firstName" />
+        </div>
+
+        <div class="form-group">
+          <label>Last name</label>
+          <input class="form-input" [(ngModel)]="user.lastName" name="lastName" />
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Email</label>
+        <input class="form-input" [(ngModel)]="user.email" name="email" />
+      </div>
+
+      <div class="form-group full-width">
+        <label>About</label>
+        <textarea class="form-input" [(ngModel)]="user.about" name="about" rows="3"></textarea>
+      </div>
+
+      <button class="btn-save" type="submit" [disabled]="loading">
+        <i class="ti ti-device-floppy"></i>
+        {{ loading ? 'Saving...' : 'Save changes' }}
+      </button>
+    </form>
+
+  </div>
+
+  <!-- SESSIONS CARD -->
+  <div class="sessions-card">
+
+    <div class="sessions-header">
+      <h4>Active Sessions</h4>
+      <button class="btn-refresh" (click)="loadSessions()" type="button">
+        <i class="ti ti-refresh"></i> Refresh
+      </button>
+    </div>
+
+    <div *ngIf="sessionsLoading" class="sessions-loading">
+      <i class="ti ti-loader"></i> Loading sessions...
+    </div>
+
+    <div *ngIf="!sessionsLoading && sessions.length === 0" class="sessions-empty">
+      No sessions found.
+    </div>
+
+    <div *ngFor="let s of sessions" class="session-row">
+      <div class="session-info">
+        <span class="session-device">{{ s.browser }} &bull; {{ s.os }}</span>
+        <span class="session-ip">IP: {{ s.ip }}</span>
+      </div>
+      <span class="badge badge-active" *ngIf="!s.revoked">Active</span>
+      <span class="badge badge-revoked" *ngIf="s.revoked">Revoked</span>
+    </div>
+
+  </div>
+
+</div>

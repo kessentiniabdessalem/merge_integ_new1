@@ -1,0 +1,97 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+          <a routerLink="/messenger" class="btn btn-sm btn-outline-primary">Open Messenger</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-6">
+      <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">Emploi du temps & Absences</h1>
+        <p class="lead text-muted">View schedules and absences (Students & Tutors)</p>
+      </div>
+    </div>
+
+    <!-- Schedule (Emploi du temps) -->
+    <div class="row mb-6">
+      <div class="col-12">
+        <h4 class="fw-bold mb-4">Emploi du temps</h4>
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Tutor</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (sched of schedules; track sched.id) {
+                    <tr>
+                      <td>{{ sched.course }}</td>
+                      <td>{{ sched.tutor }}</td>
+                      <td>{{ sched.day }}</td>
+                      <td>{{ sched.time }}</td>
+                      <td>{{ sched.room }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Absences -->
+    <div class="row">
+      <div class="col-12">
+        <h4 class="fw-bold mb-4">Absences</h4>
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (abs of absences; track abs.id) {
+                    <tr>
+                      <td>{{ abs.student }}</td>
+                      <td>{{ abs.course }}</td>
+                      <td>{{ abs.date }}</td>
+                      <td>{{ abs.reason }}</td>
+                      <td>
+                        <span class="badge" [class.bg-warning]="abs.status === 'Pending'" [class.bg-success]="abs.status === 'Approved'">
+                          {{ abs.status }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,268 @@
+<app-navbar></app-navbar>
+
+<div class="learnify-surface profile-page-wrap">
+  <div class="container py-5" style="max-width: 1100px; padding-top: 80px;">
+    <div class="row g-4">
+
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+
+            <img
+              *ngIf="displayAvatar"
+              [src]="displayAvatar"
+              alt="avatar"
+              style="width:120px;height:120px;border-radius:50%;object-fit:cover;"
+            />
+            <div
+              *ngIf="!displayAvatar"
+              class="d-inline-flex align-items-center justify-content-center text-white fw-semibold fs-2 bg-secondary"
+              style="width:120px;height:120px;border-radius:50%;"
+            >
+              {{ (user.firstName || user.email || '?')[0] | uppercase }}
+            </div>
+
+            <div class="mt-3">
+              <input
+                type="file"
+                #fileInput
+                hidden
+                accept="image/png,image/jpeg"
+                (change)="onFileSelected($event)"
+              />
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary w-100"
+                (click)="fileInput.click()"
+              >
+                Choose file
+              </button>
+
+              <div class="text-muted mt-1 small" *ngIf="selectedFile">
+                {{ selectedFile.name }}
+              </div>
+            </div>
+
+            <div class="mt-2">
+              <button
+                type="button"
+                class="btn btn-outline-primary w-100"
+                (click)="uploadAvatar()"
+                [disabled]="!selectedFile || loading"
+              >
+                Upload Photo
+              </button>
+            </div>
+
+            <h4 class="mt-3 mb-1">
+              {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
+            </h4>
+
+            <div class="text-muted">{{ user.email }}</div>
+
+            <div
+              *ngIf="user.preevaluationFinalLevel && isStudent()"
+              class="alert alert-info text-start py-2 px-3 mt-3 mb-0 small"
+            >
+              <span class="fw-semibold">Pre-evaluation level:</span>
+              {{ user.preevaluationFinalLevel }}
+            </div>
+            <div *ngIf="!user.preevaluationFinalLevel && isStudent()" class="mt-3">
+              <a routerLink="/preevaluation/start" class="btn btn-primary w-100">
+                Start Preevaluation
+              </a>
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="text-primary mb-2">About</h5>
+            <textarea
+              class="form-control mb-2"
+              [(ngModel)]="user.about"
+              name="about"
+              rows="4"
+              placeholder="Tell us about yourself..."
+              maxlength="2000"
+            ></textarea>
+            <p class="text-muted small mb-0">Saved with your profile when you click Update.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h4 class="text-primary mb-0">Personal Details</h4>
+              <div *ngIf="loading" class="text-muted">Loading...</div>
+            </div>
+
+            <form (ngSubmit)="save()" #f="ngForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">First Name</label>
+                  <input class="form-control" [(ngModel)]="user.firstName" name="firstName" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Last Name</label>
+                  <input class="form-control" [(ngModel)]="user.lastName" name="lastName" required />
+                </div>
+
+                <div class="col-12 mb-3">
+                  <label class="form-label">Email</label>
+                  <input class="form-control" [(ngModel)]="user.email" name="email" required type="email" />
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" class="btn btn-secondary" (click)="load()" [disabled]="loading">
+                  Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary" [disabled]="loading || f.invalid">
+                  Update
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-body p-4">
+
+            <h4 class="text-primary mb-3">Change Password</h4>
+
+            <form (ngSubmit)="changePassword()" #pf="ngForm">
+              <div class="row">
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Current Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="currentPassword" name="currentPassword" required />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">New Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="newPassword" name="newPassword" required minlength="6" />
+                  <small class="text-muted">Minimum 6 characters</small>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Confirm Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" required minlength="6" />
+                </div>
+
+              </div>
+
+              <div *ngIf="passwordSuccess" class="alert alert-success mt-2 mb-0">
+                {{ passwordSuccess }}
+              </div>
+              <div *ngIf="passwordError" class="alert alert-danger mt-2 mb-0">
+                {{ passwordError }}
+              </div>
+
+              <div class="d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-outline-primary" [disabled]="passwordLoading || pf.invalid">
+                  {{ passwordLoading ? 'Updating...' : 'Update Password' }}
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-body p-4">
+
+            <h4 class="text-primary mb-3">Face ID / Passkey</h4>
+
+            <p class="text-muted mb-3">
+              Enable biometric sign-in (Face ID / fingerprint) on this device.
+            </p>
+
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              (click)="enablePasskey()"
+              [disabled]="passkeyLoading"
+            >
+              {{ passkeyLoading ? 'Enabling...' : 'Enable Face ID / Passkey' }}
+            </button>
+
+            <div *ngIf="passkeyMessage" class="alert alert-success mt-3 mb-0">
+              {{ passkeyMessage }}
+            </div>
+
+            <div *ngIf="passkeyError" class="alert alert-danger mt-3 mb-0">
+              {{ passkeyError }}
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-body p-4">
+
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h4 class="text-primary mb-0">Active Sessions</h4>
+
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary"
+                (click)="loadSessions()"
+                [disabled]="sessionsLoading"
+              >
+                {{ sessionsLoading ? 'Refreshing...' : 'Refresh' }}
+              </button>
+            </div>
+
+            <div *ngIf="sessionsLoading" class="text-muted">
+              Loading sessions...
+            </div>
+
+            <div *ngIf="!sessionsLoading && sessionsError" class="alert alert-danger mb-0">
+              {{ sessionsError }}
+            </div>
+
+            <div *ngIf="!sessionsLoading && !sessionsError && sessions.length === 0" class="text-muted">
+              No sessions found.
+            </div>
+
+            <div *ngIf="!sessionsLoading && !sessionsError && sessions.length > 0" class="list-group">
+              <div
+                class="list-group-item d-flex justify-content-between align-items-start"
+                *ngFor="let s of sessions"
+              >
+                <div class="me-3">
+                  <div class="fw-semibold">
+                    {{ s.browser || 'Unknown' }} • {{ s.os || 'Unknown' }}
+                  </div>
+                  <div class="text-muted small">
+                    IP: {{ s.ip || '-' }}
+                  </div>
+                  <div class="text-muted small">
+                    Connected: {{ s.createdAt | date:'short' }}
+                    <span *ngIf="s.lastSeenAt"> • Last activity: {{ s.lastSeenAt | date:'short' }}</span>
+                  </div>
+                </div>
+
+                <span class="badge" [ngClass]="s.revoked ? 'bg-secondary' : 'bg-success'">
+                  {{ s.revoked ? 'Revoked' : 'Active' }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

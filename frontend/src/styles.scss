@@ -1,0 +1,483 @@
+// ============================================
+// Learnify English - Modern EdTech SaaS Platform
+// ============================================
+
+// Font will be loaded via index.html
+@import "@tabler/icons-webfont/dist/tabler-icons.min.css";
+
+@import "bootstrap/scss/functions";
+@import "assets/scss/variables";
+@import "bootstrap/scss/bootstrap";
+@import "assets/scss/theme";
+@import "assets/scss/custom";
+
+// ============================================
+// Modern CSS Variables - EdTech SaaS Design
+// ============================================
+:root {
+  // Brand Colors (alignés projet LearnifyEnglish / UandPManagement)
+  --color-primary: #1a2e35;
+  --color-secondary: #2d5757;
+  --color-accent: #f6bd60;
+  --color-cta: #c84c32;
+  --color-background: #f9f3eb;
+  
+  // Extended Palette
+  --color-primary-light: #2f4a54;
+  --color-primary-dark: #121f24;
+  --color-secondary-light: #3d7a7a;
+  --color-accent-light: #f8cf87;
+  --color-cta-light: #d9654a;
+  
+  // Neutral Colors
+  --color-white: #ffffff;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  
+  // Semantic Colors
+  --color-success: #10b981;
+  --color-info: #0ea5e9;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  
+  // Typography
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  
+  // Spacing
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
+  
+  // Border Radius - Modern SaaS style
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  // Shadows - Soft and modern
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 8px 30px rgba(26, 46, 53, 0.08);
+  --shadow-card-hover: 0 16px 48px rgba(26, 46, 53, 0.12);
+  
+  // Transitions
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  --transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  // Z-index
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+// ============================================
+// Base Styles - Modern EdTech SaaS
+// ============================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-gray-700);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Typography Improvements
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-primary);
+}
+
+h1, .h1 { font-size: var(--font-size-4xl); font-weight: 700; }
+h2, .h2 { font-size: var(--font-size-3xl); font-weight: 700; }
+h3, .h3 { font-size: var(--font-size-2xl); }
+h4, .h4 { font-size: var(--font-size-xl); }
+h5, .h5 { font-size: var(--font-size-lg); }
+h6, .h6 { font-size: var(--font-size-base); }
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--color-secondary);
+  }
+}
+
+// ============================================
+// Modern Card Component
+// ============================================
+.modern-card {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(61, 61, 96, 0.06);
+  padding: var(--spacing-xl);
+  transition: all var(--transition-base);
+  
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+}
+
+// ============================================
+// Modern Button Styles
+// ============================================
+.btn-modern {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-primary-modern {
+  @extend .btn-modern;
+  background: var(--color-primary);
+  color: var(--color-white);
+  
+  &:hover {
+    background: var(--color-primary-light);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-white);
+  }
+}
+
+.btn-secondary-modern {
+  @extend .btn-modern;
+  background: var(--color-secondary);
+  color: var(--color-white);
+  
+  &:hover {
+    background: var(--color-secondary-light);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-white);
+  }
+}
+
+.btn-accent-modern {
+  @extend .btn-modern;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  
+  &:hover {
+    background: var(--color-accent-light);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.btn-cta-modern {
+  @extend .btn-modern;
+  background: var(--color-cta);
+  color: var(--color-white);
+  
+  &:hover {
+    background: var(--color-cta-light);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-white);
+  }
+}
+
+.btn-outline-modern {
+  @extend .btn-modern;
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  
+  &:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// ============================================
+// Badge Styles
+// ============================================
+.badge-modern {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  
+  &.badge-primary {
+    background: rgba(61, 61, 96, 0.1);
+    color: var(--color-primary);
+  }
+  
+  &.badge-accent {
+    background: rgba(246, 189, 96, 0.2);
+    color: #b8860b;
+  }
+  
+  &.badge-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+  }
+}
+
+// ============================================
+// Section Styles
+// ============================================
+.section-padding {
+  padding: var(--spacing-4xl) 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+  
+  h2 {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  p {
+    color: var(--color-gray-500);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: var(--font-size-lg);
+  }
+}
+
+// ============================================
+// Container Override
+// ============================================
+.container {
+  max-width: 1280px;
+}
+
+// ============================================
+// Form Controls Modern
+// ============================================
+.form-control-modern {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-700);
+  background: var(--color-white);
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(61, 61, 96, 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--color-gray-400);
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+// ============================================
+// Responsive Utilities
+// ============================================
+@media (max-width: 991.98px) {
+  h1, .h1 { font-size: var(--font-size-3xl); }
+  h2, .h2 { font-size: var(--font-size-2xl); }
+  h3, .h3 { font-size: var(--font-size-xl); }
+  
+  .section-padding {
+    padding: var(--spacing-3xl) 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  h1, .h1 { font-size: var(--font-size-2xl); }
+  h2, .h2 { font-size: var(--font-size-xl); }
+  
+  .section-padding {
+    padding: var(--spacing-2xl) 0;
+  }
+}
+
+// ============================================
+// Surface Learnify (profil utilisateur — même logique que UandPManagement)
+// ============================================
+.learnify-surface {
+  background-color: var(--color-background) !important;
+  font-family: var(--font-family);
+}
+
+.learnify-surface .text-primary,
+.learnify-surface .text-primary:focus {
+  color: var(--color-cta) !important;
+}
+
+.learnify-surface .btn-primary {
+  background-color: var(--color-cta) !important;
+  border-color: var(--color-cta) !important;
+  color: var(--color-white) !important;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  box-shadow: 0 4px 14px rgba(200, 76, 50, 0.25);
+}
+
+.learnify-surface .btn-primary:hover:not(:disabled) {
+  background-color: var(--color-cta-light) !important;
+  border-color: var(--color-cta-light) !important;
+  color: var(--color-white) !important;
+}
+
+.learnify-surface .btn-outline-primary {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
+}
+
+.learnify-surface .btn-outline-primary:hover:not(:disabled) {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+}
+
+.learnify-surface .btn-outline-secondary {
+  border-radius: var(--radius-full) !important;
+}
+
+.learnify-surface .card {
+  border-radius: 1.35rem !important;
+  border: 1px solid rgba(26, 46, 53, 0.08) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+.learnify-surface .badge.bg-primary {
+  background-color: var(--color-cta) !important;
+}
+
+.learnify-surface h1,
+.learnify-surface h2,
+.learnify-surface .h3,
+.learnify-surface .h4,
+.learnify-surface .h5,
+.learnify-surface .h6 {
+  color: var(--color-primary);
+}
+
+.learnify-surface .alert-info {
+  background-color: rgba(45, 87, 87, 0.1);
+  border-color: rgba(45, 87, 87, 0.2);
+  color: var(--color-primary);
+}

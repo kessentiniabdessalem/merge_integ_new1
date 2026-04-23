@@ -1,0 +1,310 @@
+{
+  "A2": {
+    "grammar": [
+      {
+        "text": "She ___ to the gym every day.",
+        "type": "QCU",
+        "options": [
+          { "text": "go", "isCorrect": false },
+          { "text": "goes", "isCorrect": true },
+          { "text": "going", "isCorrect": false },
+          { "text": "gone", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "They ___ dinner when I arrived.",
+        "type": "QCU",
+        "options": [
+          { "text": "have", "isCorrect": false },
+          { "text": "had", "isCorrect": true },
+          { "text": "having", "isCorrect": false },
+          { "text": "has", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ never been to Paris.",
+        "type": "QCU",
+        "options": [
+          { "text": "have", "isCorrect": true },
+          { "text": "has", "isCorrect": false },
+          { "text": "had", "isCorrect": false },
+          { "text": "am", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "We ___ watching a movie now.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "am", "isCorrect": false },
+          { "text": "are", "isCorrect": true },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He ___ his homework yesterday.",
+        "type": "QCU",
+        "options": [
+          { "text": "do", "isCorrect": false },
+          { "text": "did", "isCorrect": true },
+          { "text": "done", "isCorrect": false },
+          { "text": "doing", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She is ___ than her sister.",
+        "type": "QCU",
+        "options": [
+          { "text": "tall", "isCorrect": false },
+          { "text": "taller", "isCorrect": true },
+          { "text": "tallest", "isCorrect": false },
+          { "text": "more tall", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ a book right now.",
+        "type": "QCU",
+        "options": [
+          { "text": "read", "isCorrect": false },
+          { "text": "reads", "isCorrect": false },
+          { "text": "am reading", "isCorrect": true },
+          { "text": "reading", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "They ___ finished their work.",
+        "type": "QCU",
+        "options": [
+          { "text": "have", "isCorrect": true },
+          { "text": "has", "isCorrect": false },
+          { "text": "had", "isCorrect": false },
+          { "text": "are", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He ___ play football very well.",
+        "type": "QCU",
+        "options": [
+          { "text": "can", "isCorrect": true },
+          { "text": "must", "isCorrect": false },
+          { "text": "should", "isCorrect": false },
+          { "text": "has", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "We ___ to the beach last weekend.",
+        "type": "QCU",
+        "options": [
+          { "text": "go", "isCorrect": false },
+          { "text": "went", "isCorrect": true },
+          { "text": "going", "isCorrect": false },
+          { "text": "gone", "isCorrect": false }
+        ]
+      }
+    ],
+    "vocabulary": [
+      {
+        "text": "What is the opposite of \"easy\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "hard", "isCorrect": true },
+          { "text": "simple", "isCorrect": false },
+          { "text": "light", "isCorrect": false },
+          { "text": "clear", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"expensive\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "cheap", "isCorrect": false },
+          { "text": "costly", "isCorrect": true },
+          { "text": "small", "isCorrect": false },
+          { "text": "fast", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a means of transport?",
+        "type": "QCU",
+        "options": [
+          { "text": "train", "isCorrect": true },
+          { "text": "table", "isCorrect": false },
+          { "text": "bed", "isCorrect": false },
+          { "text": "lamp", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"very big\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "tiny", "isCorrect": false },
+          { "text": "huge", "isCorrect": true },
+          { "text": "small", "isCorrect": false },
+          { "text": "short", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which one is a season?",
+        "type": "QCU",
+        "options": [
+          { "text": "Monday", "isCorrect": false },
+          { "text": "Winter", "isCorrect": true },
+          { "text": "Morning", "isCorrect": false },
+          { "text": "Night", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"borrow\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "give", "isCorrect": false },
+          { "text": "take and return", "isCorrect": true },
+          { "text": "buy", "isCorrect": false },
+          { "text": "sell", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a type of food?",
+        "type": "QCU",
+        "options": [
+          { "text": "pizza", "isCorrect": true },
+          { "text": "chair", "isCorrect": false },
+          { "text": "pen", "isCorrect": false },
+          { "text": "phone", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"quiet\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "loud", "isCorrect": false },
+          { "text": "silent", "isCorrect": true },
+          { "text": "fast", "isCorrect": false },
+          { "text": "big", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a profession?",
+        "type": "QCU",
+        "options": [
+          { "text": "engineer", "isCorrect": true },
+          { "text": "apple", "isCorrect": false },
+          { "text": "river", "isCorrect": false },
+          { "text": "car", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"early\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "late", "isCorrect": false },
+          { "text": "before time", "isCorrect": true },
+          { "text": "fast", "isCorrect": false },
+          { "text": "slow", "isCorrect": false }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "text": "Sara goes to work by bus every day. It takes her 30 minutes. How does Sara go to work?",
+        "type": "QCU",
+        "options": [
+          { "text": "by car", "isCorrect": false },
+          { "text": "by bus", "isCorrect": true },
+          { "text": "by bike", "isCorrect": false },
+          { "text": "on foot", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Sara goes to work by bus every day. It takes her 30 minutes. How long does it take?",
+        "type": "QCU",
+        "options": [
+          { "text": "20 minutes", "isCorrect": false },
+          { "text": "30 minutes", "isCorrect": true },
+          { "text": "40 minutes", "isCorrect": false },
+          { "text": "50 minutes", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Sara goes to work by bus every day. It takes her 30 minutes. Does she go every day?",
+        "type": "QCU",
+        "options": [
+          { "text": "yes", "isCorrect": true },
+          { "text": "no", "isCorrect": false },
+          { "text": "sometimes", "isCorrect": false },
+          { "text": "never", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Mark is reading a book in the park. He likes quiet places. Where is Mark?",
+        "type": "QCU",
+        "options": [
+          { "text": "at home", "isCorrect": false },
+          { "text": "in the park", "isCorrect": true },
+          { "text": "at school", "isCorrect": false },
+          { "text": "in the office", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Mark is reading a book in the park. He likes quiet places. What is he doing?",
+        "type": "QCU",
+        "options": [
+          { "text": "sleeping", "isCorrect": false },
+          { "text": "reading", "isCorrect": true },
+          { "text": "running", "isCorrect": false },
+          { "text": "eating", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Mark is reading a book in the park. He likes quiet places. Why does he like the park?",
+        "type": "QCU",
+        "options": [
+          { "text": "it is noisy", "isCorrect": false },
+          { "text": "it is quiet", "isCorrect": true },
+          { "text": "it is big", "isCorrect": false },
+          { "text": "it is far", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Lisa has a meeting at 10 AM. She prepares her notes before. When is her meeting?",
+        "type": "QCU",
+        "options": [
+          { "text": "9 AM", "isCorrect": false },
+          { "text": "10 AM", "isCorrect": true },
+          { "text": "11 AM", "isCorrect": false },
+          { "text": "12 PM", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Lisa has a meeting at 10 AM. She prepares her notes before. What does she prepare?",
+        "type": "QCU",
+        "options": [
+          { "text": "food", "isCorrect": false },
+          { "text": "notes", "isCorrect": true },
+          { "text": "clothes", "isCorrect": false },
+          { "text": "coffee", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Lisa has a meeting at 10 AM. She prepares her notes before. Does she prepare after or before?",
+        "type": "QCU",
+        "options": [
+          { "text": "after", "isCorrect": false },
+          { "text": "before", "isCorrect": true },
+          { "text": "during", "isCorrect": false },
+          { "text": "never", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "This text is about daily activities. What is the topic?",
+        "type": "QCU",
+        "options": [
+          { "text": "daily life", "isCorrect": true },
+          { "text": "history", "isCorrect": false },
+          { "text": "science", "isCorrect": false },
+          { "text": "sports", "isCorrect": false }
+        ]
+      }
+    ]
+  }
+}

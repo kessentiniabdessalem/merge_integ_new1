@@ -1,0 +1,94 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+          <a routerLink="/messenger" class="btn btn-sm btn-outline-primary">Open Messenger</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-6">
+      <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">Feedback</h1>
+        <p class="lead text-muted">Share your experience and view feedback</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-4">Submit Feedback</h5>
+            <form>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Course (optional)</label>
+                <input type="text" class="form-control rounded-pill" placeholder="Course name"
+                       [(ngModel)]="newFeedback.course" name="course">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Rating</label>
+                <div class="d-flex gap-2">
+                  @for (r of [1,2,3,4,5]; track r) {
+                    <button type="button" class="btn btn-sm"
+                            [class.btn-warning]="newFeedback.rating >= r"
+                            [class.btn-outline-warning]="newFeedback.rating < r"
+                            (click)="setRating(r)">
+                      ★
+                    </button>
+                  }
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Comment</label>
+                <textarea class="form-control rounded-3" rows="4" placeholder="Share your experience..."
+                          [(ngModel)]="newFeedback.comment" name="comment"></textarea>
+              </div>
+              <button type="button" class="btn btn-primary w-100 rounded-pill" (click)="submitFeedback()">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-4">My Feedback</h5>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of feedbackList; track item.id) {
+                    <tr>
+                      <td>{{ item.course }}</td>
+                      <td>
+                        <span class="text-warning">{{ '★'.repeat(item.rating) }}{{ '☆'.repeat(5 - item.rating) }}</span>
+                      </td>
+                      <td class="text-muted small">{{ item.comment }}</td>
+                      <td>{{ item.date }}</td>
+                      <td><span class="badge bg-success">{{ item.status }}</span></td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,310 @@
+﻿{
+  "B2": {
+    "grammar": [
+      {
+        "text": "If I had known about the meeting, I ___ earlier.",
+        "type": "QCU",
+        "options": [
+          { "text": "would come", "isCorrect": false },
+          { "text": "would have come", "isCorrect": true },
+          { "text": "will come", "isCorrect": false },
+          { "text": "came", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She ___ in this company for ten years before she got promoted.",
+        "type": "QCU",
+        "options": [
+          { "text": "worked", "isCorrect": false },
+          { "text": "had been working", "isCorrect": true },
+          { "text": "has worked", "isCorrect": false },
+          { "text": "works", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The new bridge ___ by the end of next year.",
+        "type": "QCU",
+        "options": [
+          { "text": "will complete", "isCorrect": false },
+          { "text": "will have been completed", "isCorrect": true },
+          { "text": "completes", "isCorrect": false },
+          { "text": "is completing", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Hardly ___ home when the phone rang.",
+        "type": "QCU",
+        "options": [
+          { "text": "I had arrived", "isCorrect": false },
+          { "text": "had I arrived", "isCorrect": true },
+          { "text": "I arrived", "isCorrect": false },
+          { "text": "did I arrive", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She suggested ___ the report before the deadline.",
+        "type": "QCU",
+        "options": [
+          { "text": "to finish", "isCorrect": false },
+          { "text": "finishing", "isCorrect": true },
+          { "text": "finish", "isCorrect": false },
+          { "text": "finished", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Not only ___ late, but he also forgot the documents.",
+        "type": "QCU",
+        "options": [
+          { "text": "he arrived", "isCorrect": false },
+          { "text": "did he arrive", "isCorrect": true },
+          { "text": "he did arrive", "isCorrect": false },
+          { "text": "arrived he", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I wish I ___ more time to travel when I was younger.",
+        "type": "QCU",
+        "options": [
+          { "text": "had had", "isCorrect": true },
+          { "text": "have", "isCorrect": false },
+          { "text": "would have", "isCorrect": false },
+          { "text": "had", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The manager asked whether the report ___ yet.",
+        "type": "QCU",
+        "options": [
+          { "text": "had finished", "isCorrect": false },
+          { "text": "had been finished", "isCorrect": true },
+          { "text": "finished", "isCorrect": false },
+          { "text": "has finished", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The more experience you gain, the ___ your decisions become.",
+        "type": "QCU",
+        "options": [
+          { "text": "wisest", "isCorrect": false },
+          { "text": "wiser", "isCorrect": true },
+          { "text": "wise", "isCorrect": false },
+          { "text": "more wisely", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He denied ___ the confidential file to anyone.",
+        "type": "QCU",
+        "options": [
+          { "text": "to send", "isCorrect": false },
+          { "text": "sending", "isCorrect": true },
+          { "text": "send", "isCorrect": false },
+          { "text": "sent", "isCorrect": false }
+        ]
+      }
+    ],
+    "vocabulary": [
+      {
+        "text": "What does \"reliable\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "easy to forget", "isCorrect": false },
+          { "text": "able to be trusted", "isCorrect": true },
+          { "text": "very expensive", "isCorrect": false },
+          { "text": "difficult to carry", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"increase\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "reduce", "isCorrect": false },
+          { "text": "expand", "isCorrect": true },
+          { "text": "delay", "isCorrect": false },
+          { "text": "remove", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What is the opposite of \"efficient\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "productive", "isCorrect": false },
+          { "text": "inefficient", "isCorrect": true },
+          { "text": "useful", "isCorrect": false },
+          { "text": "careful", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"to solve a problem\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "ignore", "isCorrect": false },
+          { "text": "resolve", "isCorrect": true },
+          { "text": "postpone", "isCorrect": false },
+          { "text": "worsen", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"challenge\" mean in most contexts?",
+        "type": "QCU",
+        "options": [
+          { "text": "an easy task", "isCorrect": false },
+          { "text": "a difficult situation or task", "isCorrect": true },
+          { "text": "a celebration", "isCorrect": false },
+          { "text": "a routine habit", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"opportunity\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "chance", "isCorrect": true },
+          { "text": "danger", "isCorrect": false },
+          { "text": "rule", "isCorrect": false },
+          { "text": "loss", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"achieve\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "to succeed in doing something", "isCorrect": true },
+          { "text": "to avoid something", "isCorrect": false },
+          { "text": "to repeat something", "isCorrect": false },
+          { "text": "to hide something", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"to delay until a later time\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "complete", "isCorrect": false },
+          { "text": "postpone", "isCorrect": true },
+          { "text": "replace", "isCorrect": false },
+          { "text": "repair", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"environmentally friendly\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "harmful to nature", "isCorrect": false },
+          { "text": "not damaging the environment", "isCorrect": true },
+          { "text": "very modern", "isCorrect": false },
+          { "text": "cheap to produce", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"improve\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "enhance", "isCorrect": true },
+          { "text": "ignore", "isCorrect": false },
+          { "text": "reduce", "isCorrect": false },
+          { "text": "break", "isCorrect": false }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "text": "More companies now allow employees to work remotely. This can reduce commuting time and improve work-life balance, but it may also make team communication more difficult. What is one advantage of remote work?",
+        "type": "QCU",
+        "options": [
+          { "text": "more office meetings", "isCorrect": false },
+          { "text": "less commuting time", "isCorrect": true },
+          { "text": "more traffic", "isCorrect": false },
+          { "text": "less flexibility", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "More companies now allow employees to work remotely. This can reduce commuting time and improve work-life balance, but it may also make team communication more difficult. What is one disadvantage mentioned?",
+        "type": "QCU",
+        "options": [
+          { "text": "better concentration", "isCorrect": false },
+          { "text": "more difficult team communication", "isCorrect": true },
+          { "text": "higher salaries", "isCorrect": false },
+          { "text": "longer holidays", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "More companies now allow employees to work remotely. This can reduce commuting time and improve work-life balance, but it may also make team communication more difficult. What is the main topic of the text?",
+        "type": "QCU",
+        "options": [
+          { "text": "the history of office buildings", "isCorrect": false },
+          { "text": "advantages and disadvantages of remote work", "isCorrect": true },
+          { "text": "how to get a promotion", "isCorrect": false },
+          { "text": "the best transport methods", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many cities are investing in public transport systems to reduce pollution and traffic congestion. As a result, buses and trains are becoming more efficient and accessible. Why are cities investing in public transport?",
+        "type": "QCU",
+        "options": [
+          { "text": "to increase car sales", "isCorrect": false },
+          { "text": "to reduce pollution and traffic", "isCorrect": true },
+          { "text": "to make travel slower", "isCorrect": false },
+          { "text": "to close train stations", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many cities are investing in public transport systems to reduce pollution and traffic congestion. As a result, buses and trains are becoming more efficient and accessible. What is improving according to the text?",
+        "type": "QCU",
+        "options": [
+          { "text": "public transport efficiency", "isCorrect": true },
+          { "text": "airplane ticket prices", "isCorrect": false },
+          { "text": "private car ownership", "isCorrect": false },
+          { "text": "factory production", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many cities are investing in public transport systems to reduce pollution and traffic congestion. As a result, buses and trains are becoming more efficient and accessible. What does \"accessible\" most likely mean here?",
+        "type": "QCU",
+        "options": [
+          { "text": "easy to use or reach", "isCorrect": true },
+          { "text": "expensive to maintain", "isCorrect": false },
+          { "text": "dangerous to enter", "isCorrect": false },
+          { "text": "limited to tourists", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Learning a new language often requires patience, regular practice, and exposure to authentic content such as books, podcasts, and conversations. Students who practice consistently usually make faster progress. What helps students improve faster?",
+        "type": "QCU",
+        "options": [
+          { "text": "studying only once a month", "isCorrect": false },
+          { "text": "consistent practice", "isCorrect": true },
+          { "text": "avoiding conversations", "isCorrect": false },
+          { "text": "memorizing isolated words only", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Learning a new language often requires patience, regular practice, and exposure to authentic content such as books, podcasts, and conversations. Students who practice consistently usually make faster progress. What kind of content is mentioned?",
+        "type": "QCU",
+        "options": [
+          { "text": "authentic content", "isCorrect": true },
+          { "text": "fictional advertisements only", "isCorrect": false },
+          { "text": "legal documents only", "isCorrect": false },
+          { "text": "mathematical formulas", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Learning a new language often requires patience, regular practice, and exposure to authentic content such as books, podcasts, and conversations. Students who practice consistently usually make faster progress. What is the main idea of the text?",
+        "type": "QCU",
+        "options": [
+          { "text": "language learning depends on luck", "isCorrect": false },
+          { "text": "regular practice supports language progress", "isCorrect": true },
+          { "text": "books are not useful", "isCorrect": false },
+          { "text": "conversation is unnecessary", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Technology has transformed communication by making it faster and more convenient. However, some people argue that it has also reduced the quality of face-to-face interaction. What concern is mentioned?",
+        "type": "QCU",
+        "options": [
+          { "text": "communication is slower", "isCorrect": false },
+          { "text": "face-to-face interaction may be reduced", "isCorrect": true },
+          { "text": "people write more letters", "isCorrect": false },
+          { "text": "technology is disappearing", "isCorrect": false }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "B1": {
+    "grammar": [
+      {
+        "text": "If I ___ enough money, I will buy a new laptop.",
+        "type": "QCU",
+        "options": [
+          { "text": "have", "isCorrect": true },
+          { "text": "had", "isCorrect": false },
+          { "text": "will have", "isCorrect": false },
+          { "text": "having", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She said that she ___ tired.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "was", "isCorrect": true },
+          { "text": "has been", "isCorrect": false },
+          { "text": "will be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "By the time we arrived, the film ___.",
+        "type": "QCU",
+        "options": [
+          { "text": "starts", "isCorrect": false },
+          { "text": "started", "isCorrect": false },
+          { "text": "had started", "isCorrect": true },
+          { "text": "has started", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "This book ___ by millions of people every year.",
+        "type": "QCU",
+        "options": [
+          { "text": "reads", "isCorrect": false },
+          { "text": "is read", "isCorrect": true },
+          { "text": "is reading", "isCorrect": false },
+          { "text": "read", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He is interested ___ learning Spanish.",
+        "type": "QCU",
+        "options": [
+          { "text": "on", "isCorrect": false },
+          { "text": "at", "isCorrect": false },
+          { "text": "in", "isCorrect": true },
+          { "text": "for", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ here for five years.",
+        "type": "QCU",
+        "options": [
+          { "text": "live", "isCorrect": false },
+          { "text": "am living", "isCorrect": false },
+          { "text": "have lived", "isCorrect": true },
+          { "text": "lived", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "You ___ see a doctor if you still feel sick.",
+        "type": "QCU",
+        "options": [
+          { "text": "should", "isCorrect": true },
+          { "text": "must to", "isCorrect": false },
+          { "text": "can to", "isCorrect": false },
+          { "text": "ought", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The man ___ lives next door is very friendly.",
+        "type": "QCU",
+        "options": [
+          { "text": "which", "isCorrect": false },
+          { "text": "who", "isCorrect": true },
+          { "text": "where", "isCorrect": false },
+          { "text": "whose", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "If she ___ earlier, she would have caught the bus.",
+        "type": "QCU",
+        "options": [
+          { "text": "left", "isCorrect": true },
+          { "text": "leaves", "isCorrect": false },
+          { "text": "had lefted", "isCorrect": false },
+          { "text": "has left", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I don’t have enough time, ___ I’ll finish this tomorrow.",
+        "type": "QCU",
+        "options": [
+          { "text": "because", "isCorrect": false },
+          { "text": "so", "isCorrect": true },
+          { "text": "although", "isCorrect": false },
+          { "text": "unless", "isCorrect": false }
+        ]
+      }
+    ],
+    "vocabulary": [
+      {
+        "text": "What does \"improve\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "to make better", "isCorrect": true },
+          { "text": "to make smaller", "isCorrect": false },
+          { "text": "to lose", "isCorrect": false },
+          { "text": "to forget", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"honest\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "lazy", "isCorrect": false },
+          { "text": "truthful", "isCorrect": true },
+          { "text": "careless", "isCorrect": false },
+          { "text": "nervous", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What is the opposite of \"success\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "victory", "isCorrect": false },
+          { "text": "failure", "isCorrect": true },
+          { "text": "chance", "isCorrect": false },
+          { "text": "effort", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"a place where books are kept\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "laboratory", "isCorrect": false },
+          { "text": "library", "isCorrect": true },
+          { "text": "factory", "isCorrect": false },
+          { "text": "bakery", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"crowded\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "full of people", "isCorrect": true },
+          { "text": "very clean", "isCorrect": false },
+          { "text": "extremely cold", "isCorrect": false },
+          { "text": "quite cheap", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word best completes the sentence: \"He made an important ___ about his future.\"",
+        "type": "QCU",
+        "options": [
+          { "text": "decision", "isCorrect": true },
+          { "text": "accident", "isCorrect": false },
+          { "text": "distance", "isCorrect": false },
+          { "text": "difference", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"borrow\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "to take something and give it back later", "isCorrect": true },
+          { "text": "to buy something expensive", "isCorrect": false },
+          { "text": "to throw something away", "isCorrect": false },
+          { "text": "to repair something broken", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"quiet\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "silent", "isCorrect": true },
+          { "text": "angry", "isCorrect": false },
+          { "text": "crowded", "isCorrect": false },
+          { "text": "active", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"environment\" refer to?",
+        "type": "QCU",
+        "options": [
+          { "text": "the natural world around us", "isCorrect": true },
+          { "text": "a school exam", "isCorrect": false },
+          { "text": "a type of machine", "isCorrect": false },
+          { "text": "a music lesson", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"to continue\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "stop", "isCorrect": false },
+          { "text": "begin", "isCorrect": false },
+          { "text": "carry on", "isCorrect": true },
+          { "text": "return", "isCorrect": false }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "text": "Emma started learning English three years ago because she wanted to travel abroad. Now she can speak with tourists and understand simple books. Why did Emma start learning English?",
+        "type": "QCU",
+        "options": [
+          { "text": "to get a new job", "isCorrect": false },
+          { "text": "to travel abroad", "isCorrect": true },
+          { "text": "to teach children", "isCorrect": false },
+          { "text": "to write books", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Emma started learning English three years ago because she wanted to travel abroad. Now she can speak with tourists and understand simple books. What can Emma do now?",
+        "type": "QCU",
+        "options": [
+          { "text": "translate difficult articles", "isCorrect": false },
+          { "text": "speak with tourists", "isCorrect": true },
+          { "text": "teach English at school", "isCorrect": false },
+          { "text": "write academic essays", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Emma started learning English three years ago because she wanted to travel abroad. Now she can speak with tourists and understand simple books. How long has she been learning English?",
+        "type": "QCU",
+        "options": [
+          { "text": "for one year", "isCorrect": false },
+          { "text": "for two years", "isCorrect": false },
+          { "text": "for three years", "isCorrect": true },
+          { "text": "for four years", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Last Saturday, Adam planned to go hiking with his friends, but it started raining heavily in the morning. They decided to stay home and watch a film instead. Why didn’t Adam go hiking?",
+        "type": "QCU",
+        "options": [
+          { "text": "he felt sick", "isCorrect": false },
+          { "text": "his friends were busy", "isCorrect": false },
+          { "text": "it rained heavily", "isCorrect": true },
+          { "text": "he had to work", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Last Saturday, Adam planned to go hiking with his friends, but it started raining heavily in the morning. They decided to stay home and watch a film instead. What did they do instead?",
+        "type": "QCU",
+        "options": [
+          { "text": "played football", "isCorrect": false },
+          { "text": "watched a film", "isCorrect": true },
+          { "text": "went shopping", "isCorrect": false },
+          { "text": "visited a museum", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Last Saturday, Adam planned to go hiking with his friends, but it started raining heavily in the morning. They decided to stay home and watch a film instead. When did the weather change?",
+        "type": "QCU",
+        "options": [
+          { "text": "in the evening", "isCorrect": false },
+          { "text": "in the afternoon", "isCorrect": false },
+          { "text": "in the morning", "isCorrect": true },
+          { "text": "at night", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many students find online learning convenient because they can study from home and choose their own schedule. However, some miss face-to-face interaction with teachers and classmates. Why do many students like online learning?",
+        "type": "QCU",
+        "options": [
+          { "text": "it is always easier", "isCorrect": false },
+          { "text": "they can study from home", "isCorrect": true },
+          { "text": "they don’t need teachers", "isCorrect": false },
+          { "text": "it is cheaper in all cases", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many students find online learning convenient because they can study from home and choose their own schedule. However, some miss face-to-face interaction with teachers and classmates. What do some students miss?",
+        "type": "QCU",
+        "options": [
+          { "text": "homework", "isCorrect": false },
+          { "text": "face-to-face interaction", "isCorrect": true },
+          { "text": "online videos", "isCorrect": false },
+          { "text": "their exams", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many students find online learning convenient because they can study from home and choose their own schedule. However, some miss face-to-face interaction with teachers and classmates. What is the main topic of the text?",
+        "type": "QCU",
+        "options": [
+          { "text": "advantages and disadvantages of online learning", "isCorrect": true },
+          { "text": "how to become a teacher", "isCorrect": false },
+          { "text": "the history of schools", "isCorrect": false },
+          { "text": "traveling to study abroad", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The city library has introduced a new mobile app. With it, users can search for books, reserve them, and check return dates easily. What can users do with the new app?",
+        "type": "QCU",
+        "options": [
+          { "text": "buy books online", "isCorrect": false },
+          { "text": "search for books and reserve them", "isCorrect": true },
+          { "text": "speak to authors directly", "isCorrect": false },
+          { "text": "print books at home", "isCorrect": false }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,290 @@
+// ─── Admin Shared Styles — Brand Palette ───────────────
+$admin-primary: #2D5757;
+$admin-secondary: #3D3D60;
+$admin-accent: #F6BD60;
+$admin-cta: #C84630;
+$admin-bg: #F7EDE2;
+$card-bg: #fff;
+$border-color: rgba(#2D5757, 0.08);
+$text-dark: #3D3D60;
+$text-muted: rgba(#3D3D60, 0.55);
+
+// ─── Page Header ───────────────────────────────────────
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0;
+    color: $admin-secondary;
+}
+
+// ─── Filters Row ───────────────────────────────────────
+.filters-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-input,
+.filter-select {
+    padding: 8px 14px;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    background: $card-bg;
+    color: $text-dark;
+    transition: all 0.2s;
+
+    &::placeholder {
+        color: $text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $admin-primary;
+        box-shadow: 0 0 0 3px rgba($admin-primary, 0.08);
+    }
+}
+
+.search-input {
+    width: 260px;
+}
+
+.filter-select {
+    min-width: 140px;
+}
+
+// ─── Tables ────────────────────────────────────────────
+.data-table-card {
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        padding: 14px 18px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: $text-muted;
+        background: rgba($admin-primary, 0.03);
+        border-bottom: 1px solid $border-color;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+    }
+
+    td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: $text-dark;
+        border-bottom: 1px solid rgba($admin-primary, 0.04);
+        vertical-align: middle;
+    }
+
+    tr {
+        transition: background 0.15s;
+
+        &:hover td {
+            background: rgba($admin-accent, 0.04);
+        }
+
+        &:last-child td {
+            border-bottom: none;
+        }
+    }
+}
+
+// ─── Badges ────────────────────────────────────────────
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+
+    &.active,
+    &.upcoming {
+        background: rgba($admin-primary, 0.1);
+        color: $admin-primary;
+    }
+
+    &.inactive,
+    &.past,
+    &.cancelled {
+        background: rgba($admin-cta, 0.08);
+        color: $admin-cta;
+    }
+
+    &.pending {
+        background: rgba($admin-accent, 0.15);
+        color: darken($admin-accent, 20%);
+    }
+
+    &.admin {
+        background: rgba($admin-secondary, 0.1);
+        color: $admin-secondary;
+    }
+}
+
+// ─── Row Actions ───────────────────────────────────────
+.row-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    i {
+        font-size: 17px;
+    }
+
+    &:hover {
+        background: rgba($admin-primary, 0.06);
+        color: $admin-primary;
+    }
+
+    &.danger:hover {
+        background: rgba($admin-cta, 0.08);
+        color: $admin-cta;
+    }
+}
+
+// ─── Button Admin ──────────────────────────────────────
+.btn-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+
+    i {
+        font-size: 17px;
+    }
+
+    &.primary {
+        background: linear-gradient(135deg, $admin-primary, darken($admin-primary, 8%));
+        color: #fff;
+
+        &:hover {
+            box-shadow: 0 4px 16px rgba($admin-primary, 0.3);
+            transform: translateY(-1px);
+        }
+    }
+}
+
+// ─── Progress Bars ─────────────────────────────────────
+.capacity-bar {
+    height: 6px;
+    border-radius: 10px;
+    background: rgba($admin-primary, 0.06);
+    overflow: hidden;
+    width: 100%;
+    max-width: 120px;
+
+    .fill {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, $admin-primary, $admin-accent);
+        transition: width 0.5s ease;
+    }
+}
+
+// ─── Empty State ───────────────────────────────────────
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: $text-muted;
+
+    i {
+        font-size: 48px;
+        margin-bottom: 12px;
+        color: rgba($admin-accent, 0.4);
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+// ─── User / Avatar ─────────────────────────────────────
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba($admin-primary, 0.12), rgba($admin-accent, 0.12));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    i {
+        font-size: 16px;
+        color: $admin-primary;
+    }
+}
+
+// ─── Responsive ────────────────────────────────────────
+@media (max-width: 768px) {
+    .filters-row {
+        flex-direction: column;
+    }
+
+    .search-input,
+    .filter-select {
+        width: 100%;
+    }
+
+    .data-table {
+        font-size: 12px;
+
+        th,
+        td {
+            padding: 10px 12px;
+        }
+    }
+}

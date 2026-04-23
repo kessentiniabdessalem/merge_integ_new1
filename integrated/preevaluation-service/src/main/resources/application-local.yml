@@ -1,0 +1,7 @@
+# Profil optionnel : démarrage sans Eureka (dev local, proxy Angular → 8089).
+# Commande : mvn spring-boot:run -Dspring-boot.run.profiles=local
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false

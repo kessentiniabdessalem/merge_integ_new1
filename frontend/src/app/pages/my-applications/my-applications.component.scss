@@ -1,0 +1,219 @@
+:host {
+  display: block;
+}
+
+.my-apps-page {
+  min-height: 100vh;
+  background: var(--color-gray-50, #f8fafc);
+  padding: 2.5rem 0 4rem;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Header ── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary, #1a237e);
+  margin: 0 0 .25rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.page-subtitle { color: #64748b; margin: 0; }
+
+.header-actions { display: flex; align-items: center; gap: .75rem; padding-top: .25rem; }
+.btn-link {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .5rem 1rem; border-radius: 8px;
+  font-weight: 500; font-size: .875rem;
+  color: var(--color-primary, #1a237e);
+  border: 1.5px solid var(--color-primary, #1a237e);
+  text-decoration: none;
+  transition: background .18s, color .18s;
+  &:hover { background: var(--color-primary, #1a237e); color: #fff; }
+}
+.btn-cta {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .65rem 1.4rem; border-radius: 10px;
+  background: var(--color-cta, #e53935); color: #fff;
+  font-weight: 600; font-size: .9rem; text-decoration: none;
+  border: none; cursor: pointer; transition: opacity .18s;
+  &:hover { opacity: .88; }
+}
+
+/* ── State Boxes ── */
+.state-box {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: .75rem;
+  padding: 4rem 2rem; text-align: center; color: #64748b;
+  i { font-size: 2.5rem; }
+  &.error { color: #e53935; }
+}
+
+/* ── Application Cards ── */
+.apps-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.app-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  overflow: hidden;
+  transition: box-shadow .2s;
+  &:hover { box-shadow: 0 6px 24px rgba(0,0,0,.11); }
+}
+
+.app-card-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; flex-wrap: wrap;
+  gap: 1rem; padding: 1.25rem 1.5rem 1rem;
+}
+.app-job-id {
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--color-primary, #1a237e); margin: 0 0 .4rem;
+}
+.app-meta {
+  display: flex; flex-wrap: wrap; gap: .75rem;
+  .meta-item {
+    display: flex; align-items: center; gap: .3rem;
+    font-size: .82rem; color: #64748b;
+    i { font-size: .95rem; }
+  }
+  .match { color: #0d9488; font-weight: 600; }
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block; padding: .3rem .85rem;
+  border-radius: 20px; font-size: .78rem; font-weight: 700;
+  letter-spacing: .03em; text-transform: uppercase;
+  &[data-status="PENDING"]  { background: #fef9c3; color: #854d0e; }
+  &[data-status="ACCEPTED"] { background: #dcfce7; color: #166534; }
+  &[data-status="REJECTED"] { background: #fee2e2; color: #991b1b; }
+}
+
+/* Cover Letter */
+.cover-letter {
+  padding: 0 1.5rem .75rem;
+  p { font-size: .88rem; color: #475569; line-height: 1.6; margin: 0; }
+}
+
+/* Footer Row */
+.app-card-footer {
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap;
+  gap: .75rem; padding: .75rem 1.5rem 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+.btn-meetings {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .45rem 1rem; border-radius: 8px;
+  background: var(--color-primary, #1a237e); color: #fff;
+  border: none; cursor: pointer; font-size: .84rem; font-weight: 500;
+  transition: opacity .18s;
+  &:hover { opacity: .85; }
+}
+.btn-danger {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .45rem 1rem; border-radius: 8px;
+  background: #fee2e2; color: #991b1b;
+  border: 1.5px solid #fca5a5; cursor: pointer;
+  font-size: .84rem; font-weight: 500;
+  transition: background .18s;
+  &:hover { background: #fecaca; }
+}
+
+/* ── Meetings Panel ── */
+.meetings-panel {
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+}
+.meetings-loading, .meetings-empty {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .87rem; color: #94a3b8; padding: .5rem 0;
+}
+.meetings-list { display: flex; flex-direction: column; gap: .75rem; }
+.meeting-row {
+  background: #fff; border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: .9rem 1.1rem;
+  display: flex; flex-wrap: wrap; gap: .5rem .75rem;
+  align-items: flex-start;
+}
+.meeting-time {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .88rem; color: #334155; flex: 1 1 180px;
+  .duration {
+    font-size: .78rem; background: #e0e7ff; color: #3730a3;
+    padding: .15rem .5rem; border-radius: 10px; margin-left: .2rem;
+  }
+}
+.meeting-details {
+  display: flex; align-items: center; gap: 1rem;
+  flex-wrap: wrap; font-size: .85rem; color: #475569;
+}
+.meeting-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  color: var(--color-cta, #e53935); font-weight: 600;
+  text-decoration: none; font-size: .85rem;
+  &:hover { text-decoration: underline; }
+}
+.meeting-notes {
+  flex: 1 1 100%; font-size: .82rem; color: #64748b;
+  display: flex; align-items: center; gap: .3rem;
+}
+
+/* ── Spinner ── */
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Delete Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-box {
+  background: #fff; border-radius: 16px;
+  padding: 2rem 2rem 1.5rem;
+  max-width: 420px; width: 92%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  h3 {
+    font-size: 1.15rem; font-weight: 700;
+    display: flex; align-items: center; gap: .5rem;
+    color: #991b1b; margin: 0 0 .75rem;
+  }
+  p { color: #475569; font-size: .93rem; margin-bottom: 1.5rem; }
+}
+.modal-actions {
+  display: flex; justify-content: flex-end; gap: .75rem;
+}
+.btn-cancel {
+  padding: .5rem 1.25rem; border-radius: 8px;
+  border: 1.5px solid #cbd5e1; background: transparent;
+  color: #475569; cursor: pointer; font-weight: 500;
+  transition: background .15s;
+  &:hover { background: #f1f5f9; }
+}
+.btn-confirm-danger {
+  padding: .5rem 1.25rem; border-radius: 8px;
+  background: #e53935; color: #fff; border: none;
+  cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: .35rem;
+  transition: opacity .15s;
+  &:disabled { opacity: .6; cursor: default; }
+  &:hover:not(:disabled) { opacity: .88; }
+}

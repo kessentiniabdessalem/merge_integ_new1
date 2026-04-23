@@ -1,0 +1,114 @@
+<!-- Floating Chat Button -->
+<button 
+  *ngIf="!isOpen" 
+  class="chat-fab" 
+  (click)="toggleChat()"
+  title="Open LearnBot">
+  <i class="bi bi-robot"></i>
+  <span class="chat-badge" *ngIf="messages.length === 1">1</span>
+</button>
+
+<!-- Chat Window -->
+<div class="chat-window" *ngIf="isOpen" [class.minimized]="isMinimized">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="bot-avatar">
+        <i class="bi bi-robot"></i>
+      </div>
+      <div class="bot-info">
+        <h4>LearnBot</h4>
+        <span class="bot-status">
+          <span class="status-dot"></span>
+          {{ isTyping ? 'Typing...' : 'Online' }}
+        </span>
+      </div>
+    </div>
+    <div class="chat-header-actions">
+      <button class="header-btn" (click)="minimizeChat()" title="Minimize">
+        <i class="bi" [class.bi-dash-lg]="!isMinimized" [class.bi-arrows-angle-expand]="isMinimized"></i>
+      </button>
+      <button class="header-btn" (click)="clearChat()" title="Clear chat">
+        <i class="bi bi-trash"></i>
+      </button>
+      <button class="header-btn close-btn" (click)="closeChat()" title="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Body -->
+  <div class="chat-body" *ngIf="!isMinimized">
+    <!-- Messages -->
+    <div class="messages-container">
+      <div 
+        *ngFor="let message of messages" 
+        class="message"
+        [class.user-message]="message.isUser"
+        [class.bot-message]="!message.isUser">
+        
+        <div class="message-avatar" *ngIf="!message.isUser">
+          <i class="bi bi-robot"></i>
+        </div>
+        
+        <div class="message-content">
+          <div class="message-bubble">
+            {{ message.text }}
+          </div>
+          <div class="message-time">
+            {{ message.timestamp | date:'shortTime' }}
+          </div>
+        </div>
+        
+        <div class="message-avatar" *ngIf="message.isUser">
+          <i class="bi bi-person-circle"></i>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="message bot-message" *ngIf="isTyping">
+        <div class="message-avatar">
+          <i class="bi bi-robot"></i>
+        </div>
+        <div class="message-content">
+          <div class="message-bubble typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions" *ngIf="messages.length <= 1 && !isTyping">
+      <p class="suggestions-title">Try asking:</p>
+      <button 
+        *ngFor="let suggestion of suggestions" 
+        class="suggestion-btn"
+        (click)="useSuggestion(suggestion)">
+        {{ suggestion }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Input -->
+  <div class="chat-input" *ngIf="!isMinimized">
+    <form (ngSubmit)="sendMessage()">
+      <input 
+        type="text" 
+        [(ngModel)]="userInput"
+        name="userInput"
+        placeholder="Type your message..."
+        [disabled]="isTyping"
+        class="input-field"
+      >
+      <button 
+        type="submit" 
+        class="send-btn"
+        [disabled]="!userInput.trim() || isTyping">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </form>
+  </div>
+</div>

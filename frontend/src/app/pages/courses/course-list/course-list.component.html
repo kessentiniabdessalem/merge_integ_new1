@@ -1,0 +1,208 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/clubs" class="btn btn-sm btn-outline-primary">Join Club</a>
+          <a routerLink="/messenger" class="btn btn-sm btn-outline-primary">Open Messenger</a>
+          <a routerLink="/job-offers" class="btn btn-sm btn-outline-primary">Apply for Job</a>
+        </div>
+      </div>
+    </div>
+    <!-- Header -->
+    <div class="row mb-6">
+      <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">All Courses</h1>
+        <p class="lead text-muted">Browse our complete course catalog</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-6">
+      <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <div class="row g-3">
+              
+              <!-- Category Filter -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Filter by Category</label>
+                <div class="btn-group w-100" role="group">
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-primary]="selectedCategory === 'All'"
+                          [class.btn-outline-primary]="selectedCategory !== 'All'"
+                          (click)="filterByCategory('All')">
+                    All
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-primary]="selectedCategory === 'Development'"
+                          [class.btn-outline-primary]="selectedCategory !== 'Development'"
+                          (click)="filterByCategory('Development')">
+                    Development
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-primary]="selectedCategory === 'Design'"
+                          [class.btn-outline-primary]="selectedCategory !== 'Design'"
+                          (click)="filterByCategory('Design')">
+                    Design
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-primary]="selectedCategory === 'Marketing'"
+                          [class.btn-outline-primary]="selectedCategory !== 'Marketing'"
+                          (click)="filterByCategory('Marketing')">
+                    Marketing
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-primary]="selectedCategory === 'Data Science'"
+                          [class.btn-outline-primary]="selectedCategory !== 'Data Science'"
+                          (click)="filterByCategory('Data Science')">
+                    Data Science
+                  </button>
+                </div>
+              </div>
+
+              <!-- Level Filter -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Filter by Level</label>
+                <div class="btn-group w-100" role="group">
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-success]="selectedLevel === 'All'"
+                          [class.btn-outline-success]="selectedLevel !== 'All'"
+                          (click)="filterByLevel('All')">
+                    All Levels
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-success]="selectedLevel === 'Beginner'"
+                          [class.btn-outline-success]="selectedLevel !== 'Beginner'"
+                          (click)="filterByLevel('Beginner')">
+                    Beginner
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-success]="selectedLevel === 'Intermediate'"
+                          [class.btn-outline-success]="selectedLevel !== 'Intermediate'"
+                          (click)="filterByLevel('Intermediate')">
+                    Intermediate
+                  </button>
+                  <button type="button" 
+                          class="btn" 
+                          [class.btn-success]="selectedLevel === 'Advanced'"
+                          [class.btn-outline-success]="selectedLevel !== 'Advanced'"
+                          (click)="filterByLevel('Advanced')">
+                    Advanced
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Cards -->
+    <div class="row g-4">
+      @for (course of filteredCourses; track course.id) {
+        <div class="col-lg-4 col-md-6">
+          <div class="card shadow-sm h-100 rounded-4 card-hover">
+            
+            <!-- Course Image -->
+            <div class="position-relative overflow-hidden">
+              <img [src]="course.image" class="card-img-top rounded-top-4" [alt]="course.title">
+              <div class="position-absolute top-0 start-0 p-3">
+                <span class="badge bg-primary rounded-pill">{{ course.category }}</span>
+              </div>
+              <div class="position-absolute top-0 end-0 p-3">
+                <span class="badge bg-success rounded-pill">{{ course.level }}</span>
+              </div>
+            </div>
+
+            <!-- Course Body -->
+            <div class="card-body p-4">
+              <h5 class="card-title mb-3 fw-bold">{{ course.title }}</h5>
+              <p class="card-text text-muted small mb-3">{{ course.description }}</p>
+
+              <!-- Instructor -->
+              <div class="d-flex align-items-center mb-3">
+                <img [src]="course.instructorAvatar" 
+                     alt="{{ course.instructor }}" 
+                     class="rounded-circle me-2" 
+                     width="32" 
+                     height="32">
+                <span class="small text-muted">{{ course.instructor }}</span>
+              </div>
+
+              <!-- Stats -->
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                <div class="d-flex align-items-center gap-1 small">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>{{ course.duration }}</span>
+                </div>
+                <div class="d-flex align-items-center gap-1 small">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  <span>{{ course.students }}</span>
+                </div>
+                <div class="d-flex align-items-center gap-1 small">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-warning">
+                    <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.093 -6.26l3.093 6.26l6.9 1l-5 4.867l1.179 6.873z"/>
+                  </svg>
+                  <span>{{ course.rating }}</span>
+                </div>
+              </div>
+
+              <!-- Price & Enroll -->
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fs-4 fw-bold text-primary">{{ course.price }}</span>
+                <a href="#" class="btn btn-sm btn-primary">
+                  Enroll Now
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ms-1">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <line x1="13" y1="18" x2="19" y2="12"></line>
+                    <line x1="13" y1="6" x2="19" y2="12"></line>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- No Results -->
+    @if (filteredCourses.length === 0) {
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <div class="py-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted mb-3">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <h4 class="text-muted">No courses found</h4>
+            <p class="text-muted">Try adjusting your filters</p>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+</section>
+
+<app-footer></app-footer>

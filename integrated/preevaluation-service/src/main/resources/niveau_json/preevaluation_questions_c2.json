@@ -1,0 +1,310 @@
+﻿{
+  "C2": {
+    "grammar": [
+      {
+        "text": "Had I known about the traffic, I ___ earlier.",
+        "type": "QCU",
+        "options": [
+          { "text": "would leave", "isCorrect": false },
+          { "text": "would have left", "isCorrect": true },
+          { "text": "will leave", "isCorrect": false },
+          { "text": "leave", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "No sooner ___ the meeting started than the fire alarm went off.",
+        "type": "QCU",
+        "options": [
+          { "text": "had", "isCorrect": true },
+          { "text": "did", "isCorrect": false },
+          { "text": "has", "isCorrect": false },
+          { "text": "was", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She acts as if she ___ everything.",
+        "type": "QCU",
+        "options": [
+          { "text": "knows", "isCorrect": false },
+          { "text": "knew", "isCorrect": true },
+          { "text": "has known", "isCorrect": false },
+          { "text": "is knowing", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "It is essential that he ___ present at the meeting.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "be", "isCorrect": true },
+          { "text": "was", "isCorrect": false },
+          { "text": "has been", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The report is believed ___ by a team of experts.",
+        "type": "QCU",
+        "options": [
+          { "text": "to write", "isCorrect": false },
+          { "text": "to have been written", "isCorrect": true },
+          { "text": "written", "isCorrect": false },
+          { "text": "writing", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Scarcely ___ we arrived when it started raining.",
+        "type": "QCU",
+        "options": [
+          { "text": "had", "isCorrect": true },
+          { "text": "did", "isCorrect": false },
+          { "text": "has", "isCorrect": false },
+          { "text": "was", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She would rather you ___ earlier next time.",
+        "type": "QCU",
+        "options": [
+          { "text": "arrive", "isCorrect": false },
+          { "text": "arrived", "isCorrect": true },
+          { "text": "will arrive", "isCorrect": false },
+          { "text": "arriving", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Not until he apologized ___ willing to speak to him again.",
+        "type": "QCU",
+        "options": [
+          { "text": "she was", "isCorrect": false },
+          { "text": "was she", "isCorrect": true },
+          { "text": "she is", "isCorrect": false },
+          { "text": "is she", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "If only I ___ more time to finish the project.",
+        "type": "QCU",
+        "options": [
+          { "text": "have", "isCorrect": false },
+          { "text": "had", "isCorrect": true },
+          { "text": "will have", "isCorrect": false },
+          { "text": "having", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He denied ___ the confidential information.",
+        "type": "QCU",
+        "options": [
+          { "text": "to share", "isCorrect": false },
+          { "text": "sharing", "isCorrect": true },
+          { "text": "share", "isCorrect": false },
+          { "text": "shared", "isCorrect": false }
+        ]
+      }
+    ],
+    "vocabulary": [
+      {
+        "text": "What does \"ambiguous\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "clear", "isCorrect": false },
+          { "text": "unclear", "isCorrect": true },
+          { "text": "simple", "isCorrect": false },
+          { "text": "short", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"crucial\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "unimportant", "isCorrect": false },
+          { "text": "essential", "isCorrect": true },
+          { "text": "minor", "isCorrect": false },
+          { "text": "optional", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"inevitable\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "avoidable", "isCorrect": false },
+          { "text": "certain to happen", "isCorrect": true },
+          { "text": "unlikely", "isCorrect": false },
+          { "text": "rare", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"to make something less severe\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "intensify", "isCorrect": false },
+          { "text": "mitigate", "isCorrect": true },
+          { "text": "destroy", "isCorrect": false },
+          { "text": "ignore", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"comprehensive\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "limited", "isCorrect": false },
+          { "text": "complete and detailed", "isCorrect": true },
+          { "text": "simple", "isCorrect": false },
+          { "text": "short", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"enhance\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "reduce", "isCorrect": false },
+          { "text": "improve", "isCorrect": true },
+          { "text": "ignore", "isCorrect": false },
+          { "text": "replace", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"controversial\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "widely agreed", "isCorrect": false },
+          { "text": "causing disagreement", "isCorrect": true },
+          { "text": "easy to understand", "isCorrect": false },
+          { "text": "well-known", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word means \"to express something clearly\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "articulate", "isCorrect": true },
+          { "text": "hide", "isCorrect": false },
+          { "text": "forget", "isCorrect": false },
+          { "text": "confuse", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"sustainable\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "harmful long-term", "isCorrect": false },
+          { "text": "able to continue over time", "isCorrect": true },
+          { "text": "expensive", "isCorrect": false },
+          { "text": "temporary", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is closest in meaning to \"significant\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "important", "isCorrect": true },
+          { "text": "small", "isCorrect": false },
+          { "text": "rare", "isCorrect": false },
+          { "text": "unclear", "isCorrect": false }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "text": "Despite the rapid advancement of technology, many experts argue that human interaction remains essential for effective communication. What is the main idea?",
+        "type": "QCU",
+        "options": [
+          { "text": "technology replaces humans", "isCorrect": false },
+          { "text": "human interaction is still important", "isCorrect": true },
+          { "text": "technology is useless", "isCorrect": false },
+          { "text": "communication is impossible", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Despite the rapid advancement of technology, many experts argue that human interaction remains essential for effective communication. What is contrasted?",
+        "type": "QCU",
+        "options": [
+          { "text": "technology and human interaction", "isCorrect": true },
+          { "text": "education and work", "isCorrect": false },
+          { "text": "travel and culture", "isCorrect": false },
+          { "text": "science and art", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many governments are implementing policies to reduce carbon emissions, aiming to combat climate change and promote sustainability. What is the goal of these policies?",
+        "type": "QCU",
+        "options": [
+          { "text": "increase emissions", "isCorrect": false },
+          { "text": "combat climate change", "isCorrect": true },
+          { "text": "reduce education", "isCorrect": false },
+          { "text": "support pollution", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Many governments are implementing policies to reduce carbon emissions, aiming to combat climate change and promote sustainability. What does \"sustainability\" refer to?",
+        "type": "QCU",
+        "options": [
+          { "text": "short-term growth", "isCorrect": false },
+          { "text": "long-term environmental balance", "isCorrect": true },
+          { "text": "economic decline", "isCorrect": false },
+          { "text": "technology use", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The rise of remote work has transformed traditional office culture, offering flexibility but also creating challenges in maintaining team cohesion. What is one benefit?",
+        "type": "QCU",
+        "options": [
+          { "text": "less flexibility", "isCorrect": false },
+          { "text": "more flexibility", "isCorrect": true },
+          { "text": "more stress", "isCorrect": false },
+          { "text": "less productivity", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "The rise of remote work has transformed traditional office culture, offering flexibility but also creating challenges in maintaining team cohesion. What is one challenge?",
+        "type": "QCU",
+        "options": [
+          { "text": "team cohesion", "isCorrect": true },
+          { "text": "flexibility", "isCorrect": false },
+          { "text": "salary", "isCorrect": false },
+          { "text": "location", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Research shows that regular exercise not only improves physical health but also enhances mental well-being. What is the effect of exercise?",
+        "type": "QCU",
+        "options": [
+          { "text": "only physical benefits", "isCorrect": false },
+          { "text": "physical and mental benefits", "isCorrect": true },
+          { "text": "only mental benefits", "isCorrect": false },
+          { "text": "no benefits", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Research shows that regular exercise not only improves physical health but also enhances mental well-being. What does \"enhances\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "reduces", "isCorrect": false },
+          { "text": "improves", "isCorrect": true },
+          { "text": "destroys", "isCorrect": false },
+          { "text": "ignores", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Globalization has led to increased cultural exchange, allowing people to experience different traditions and perspectives. What is one result of globalization?",
+        "type": "QCU",
+        "options": [
+          { "text": "less communication", "isCorrect": false },
+          { "text": "cultural exchange", "isCorrect": true },
+          { "text": "isolation", "isCorrect": false },
+          { "text": "conflict only", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Globalization has led to increased cultural exchange, allowing people to experience different traditions and perspectives. What is the main topic?",
+        "type": "QCU",
+        "options": [
+          { "text": "effects of globalization", "isCorrect": true },
+          { "text": "sports activities", "isCorrect": false },
+          { "text": "technology failure", "isCorrect": false },
+          { "text": "education systems", "isCorrect": false }
+        ]
+      }
+    ]
+  }
+}

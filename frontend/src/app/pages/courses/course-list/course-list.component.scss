@@ -1,0 +1,15 @@
+.card-hover {
+  transition: all 0.3s ease;
+  border: none;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+.btn-group {
+  .btn {
+    font-size: 0.875rem;
+  }
+}

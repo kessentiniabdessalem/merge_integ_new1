@@ -1,0 +1,45 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: ai-service
+  # Fichier optionnel (non versionné) : voir application-secrets.yml.example
+  config:
+    import: optional:classpath:application-secrets.yml
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ai_db?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    username: root
+    password:    # replace with your MySQL root password if you set one
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+gemini:
+  api:
+    # Priorité : 1) application-secrets.yml (voir .example)  2) variable d’environnement GEMINI_API_KEY
+    key: ${GEMINI_API_KEY:}
+    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

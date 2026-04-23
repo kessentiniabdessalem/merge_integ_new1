@@ -1,0 +1,55 @@
+<div class="card p-3">
+  <h4>Add Tutor</h4>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label>First name</label>
+      <input class="form-control" formControlName="firstName">
+    </div>
+
+    <div class="mb-3">
+      <label>Last name</label>
+      <input class="form-control" formControlName="lastName">
+    </div>
+
+    <div class="mb-3">
+      <label>Email</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="ex: ahmed" formControlName="username">
+        <span class="input-group-text">{{ domain }}</span>
+      </div>
+      <small class="text-muted">Final email: {{ email }}</small>
+    </div>
+
+    <div class="mb-3">
+      <label>Personal email</label>
+      <input type="email" class="form-control" formControlName="personalEmail" placeholder="your@email.com">
+      <small class="text-muted">Personal email to receive credentials. Must be different from Learnify email and must not end with &#64;learnify.com</small>
+      <div class="text-danger small" *ngIf="form.get('personalEmail')?.invalid && form.get('personalEmail')?.touched">
+        <span *ngIf="form.get('personalEmail')?.errors?.['required']">Required field.</span>
+        <span *ngIf="form.get('personalEmail')?.errors?.['email']">Invalid email.</span>
+        <span *ngIf="form.get('personalEmail')?.errors?.['sameAsLearnify']">Personal email must be different from Learnify email.</span>
+        <span *ngIf="form.get('personalEmail')?.errors?.['endsWithLearnify']">Personal email must not end with &#64;learnify.com.</span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>Password</label>
+      <input type="password" class="form-control" formControlName="password">
+    </div>
+
+    <!-- Toast feedback -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+      <div *ngIf="msg" class="toast show align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex"><div class="toast-body">{{ msg }}</div></div>
+      </div>
+      <div *ngIf="err" class="toast show align-items-center text-bg-danger border-0" role="alert">
+        <div class="d-flex"><div class="toast-body">{{ err }}</div></div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" [disabled]="loading" (click)="submit()">
+      {{ loading ? 'Creating...' : 'Create Tutor' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,425 @@
+<!-- Navbar pour mode public -->
+<app-navbar *ngIf="!isAdminMode"></app-navbar>
+
+<!-- MODE ADMIN: Design moderne avec CRUD complet -->
+<div *ngIf="isAdminMode" class="feedback-page admin-mode">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          <i class="hero-icon bi bi-chat-heart"></i>
+          Feedback Management
+        </h1>
+        <p class="hero-subtitle">
+          Monitor and manage student feedback across all courses
+        </p>
+      </div>
+      
+      <!-- Action Button for Admin -->
+      <div class="hero-actions">
+        <button class="btn-hero-primary" [routerLink]="getNewFeedbackLink()">
+          <i class="bi bi-plus-lg"></i>
+          <span>Add New Feedback</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid" *ngIf="!loading">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="bi bi-chat-dots"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ filteredFeedbacks.length }}</div>
+          <div class="stat-label">Total Feedbacks</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon rating">
+          <i class="bi bi-star-fill"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ getAverageRating() | number:'1.1-1' }}</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon positive">
+          <i class="bi bi-emoji-smile"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ getPositiveFeedbackPercentage() }}%</div>
+          <div class="stat-label">Positive Reviews</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-container">
+      
+      <!-- Filters & Search -->
+      <div class="filters-section">
+        <div class="search-filter">
+          <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input 
+              type="text" 
+              placeholder="Search feedbacks..." 
+              [(ngModel)]="searchTerm"
+              (input)="applyFilters()"
+              class="search-input"
+            >
+          </div>
+        </div>
+        
+        <div class="rating-filters">
+          <div class="filter-group">
+            <label class="filter-label">Filter by Rating</label>
+            <div class="rating-buttons">
+              <button 
+                class="rating-btn" 
+                [class.active]="filterRating === 0"
+                (click)="setRatingFilter(0)">
+                All
+              </button>
+              <button 
+                *ngFor="let rating of [5,4,3,2,1]"
+                class="rating-btn" 
+                [class.active]="filterRating === rating"
+                (click)="setRatingFilter(rating)">
+                <span class="rating-stars">
+                  <i class="bi bi-star-fill" *ngFor="let star of getStarArray(rating)"></i>
+                </span>
+                {{ rating }}
+              </button>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">Filter by Type</label>
+            <select class="type-select" [(ngModel)]="filterType" (change)="applyFilters()">
+              <option value="">All Types</option>
+              <option value="QUIZ_FEEDBACK">Quiz Feedback</option>
+              <option value="COURSE_FEEDBACK">Course Feedback</option>
+              <option value="GENERAL">General</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-section">
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+        <p class="loading-text">Loading feedbacks...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && filteredFeedbacks.length === 0" class="empty-section">
+        <div class="empty-illustration">
+          <i class="bi bi-chat-square-heart"></i>
+        </div>
+        <h3 class="empty-title">No feedbacks found</h3>
+        <p class="empty-description">
+          {{ searchTerm ? 'Try adjusting your search criteria' : 'No feedbacks available yet' }}
+        </p>
+      </div>
+
+      <!-- Feedbacks Grid -->
+      <div *ngIf="!loading && filteredFeedbacks.length > 0" class="feedbacks-grid">
+        <div class="feedback-card" *ngFor="let feedback of filteredFeedbacks; trackBy: trackByFeedback">
+          
+          <!-- Card Header -->
+          <div class="card-header">
+            <div class="student-info">
+              <div class="student-avatar">
+                <i class="bi bi-person-circle"></i>
+              </div>
+              <div class="student-details">
+                <h4 class="student-name">{{ feedback.studentName || 'Anonymous Student' }}</h4>
+                <div class="rating-display">
+                  <div class="stars">
+                    <i *ngFor="let star of getStarArray(feedback.rating)" 
+                       class="bi" 
+                       [class.bi-star-fill]="star === 1" 
+                       [class.bi-star]="star === 0"></i>
+                  </div>
+                  <span class="rating-text">{{ feedback.rating }}/5</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-actions">
+              <button class="action-btn view-btn" (click)="viewFeedback(feedback)" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="action-btn edit-btn" (click)="editFeedback(feedback.id!)" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="confirmDelete(feedback)" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="card-content">
+            <div class="feedback-text">
+              <p class="comment">{{ feedback.comment || 'No comment provided' }}</p>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <div class="feedback-meta">
+              <span class="type-badge" [attr.data-type]="feedback.type">
+                <i class="bi bi-tag"></i>
+                {{ getTypeLabel(feedback.type) }}
+              </span>
+              <span class="date-info">
+                <i class="bi bi-calendar3"></i>
+                {{ feedback.createdAt | date:'MMM d, y' }}
+              </span>
+              <span class="quiz-info" *ngIf="feedback.quizId">
+                <i class="bi bi-journal-text"></i>
+                Quiz #{{ feedback.quizId }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE PUBLIC: Vue simple lecture seule avec bouton d'ajout -->
+<div *ngIf="!isAdminMode" class="student-feedback-page">
+  <!-- Hero Header -->
+  <div class="student-hero">
+    <div class="student-hero-content">
+      <h1 class="student-hero-title">
+        <i class="bi bi-chat-heart-fill"></i>
+        Student Testimonials
+      </h1>
+      <p class="student-hero-subtitle">Discover what our learning community has to say</p>
+      
+      <button class="btn-add-feedback" (click)="showAddFeedbackForm = true">
+        <i class="bi bi-plus-circle"></i>
+        Share Your Feedback
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="student-loading">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading feedbacks...</p>
+  </div>
+
+  <!-- Feedbacks List -->
+  <div *ngIf="!loading" class="student-feedbacks-container">
+    <div *ngIf="feedbacks.length === 0" class="student-empty">
+      <i class="bi bi-chat-square-text"></i>
+      <h3>No feedbacks yet</h3>
+      <p>Be the first to share your experience!</p>
+    </div>
+
+    <div class="student-feedback-item" *ngFor="let feedback of feedbacks">
+      <div class="feedback-header">
+        <div class="student-avatar-circle">
+          {{ (feedback.studentName || 'A').charAt(0).toUpperCase() }}
+        </div>
+        <div class="feedback-info">
+          <h4 class="feedback-student-name">{{ feedback.studentName || 'Anonymous' }}</h4>
+          <div class="feedback-stars">
+            <i *ngFor="let star of getStarArray(feedback.rating)" 
+               class="bi bi-star-fill"></i>
+          </div>
+        </div>
+        <span class="feedback-date">{{ feedback.createdAt | date:'MMM d, y' }}</span>
+      </div>
+      
+      <div class="feedback-body">
+        <p class="feedback-comment">{{ feedback.comment || 'No comment provided' }}</p>
+      </div>
+      
+      <div class="feedback-footer" *ngIf="feedback.quizId">
+        <span class="feedback-quiz-badge">
+          <i class="bi bi-journal-check"></i>
+          Quiz #{{ feedback.quizId }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add Feedback Form -->
+<div *ngIf="showAddFeedbackForm && !isAdminMode" class="modal-overlay" (click)="showAddFeedbackForm = false">
+  <div class="modal-content add-feedback-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Share Your Feedback</h3>
+      <button class="modal-close" (click)="showAddFeedbackForm = false">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitNewFeedback()">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="newFeedback.studentName"
+            name="studentName"
+            placeholder="Enter your name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Select Quiz (Optional)</label>
+          <select 
+            class="form-control" 
+            [(ngModel)]="newFeedback.quizId"
+            name="quizId"
+          >
+            <option [ngValue]="null">General Feedback</option>
+            <option *ngFor="let quiz of availableQuizzes" [ngValue]="quiz.id">
+              {{ quiz.title }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="rating-selector">
+            <button 
+              type="button"
+              *ngFor="let star of [1,2,3,4,5]" 
+              class="star-btn"
+              [class.active]="star <= newFeedback.rating"
+              (click)="newFeedback.rating = star"
+            >
+              <i class="bi bi-star-fill"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Your Comment</label>
+          <textarea 
+            class="form-control" 
+            [(ngModel)]="newFeedback.comment"
+            name="comment"
+            rows="4"
+            placeholder="Share your experience..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-modal secondary" (click)="showAddFeedbackForm = false">
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal primary" [disabled]="submittingFeedback">
+            <i class="bi bi-send"></i>
+            {{ submittingFeedback ? 'Submitting...' : 'Submit Feedback' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- View Modal (Admin only) -->
+<div *ngIf="showViewModal && selectedFeedback && isAdminMode" class="modal-overlay" (click)="closeViewModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Feedback Details</h3>
+      <button class="modal-close" (click)="closeViewModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="feedback-detail">
+        <div class="detail-section">
+          <div class="detail-row">
+            <span class="detail-label">Student:</span>
+            <span class="detail-value">{{ selectedFeedback.studentName || 'Anonymous' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Rating:</span>
+            <div class="detail-rating">
+              <div class="stars">
+                <i *ngFor="let star of getStarArray(selectedFeedback.rating)" 
+                   class="bi" 
+                   [class.bi-star-fill]="star === 1" 
+                   [class.bi-star]="star === 0"></i>
+              </div>
+              <span>{{ selectedFeedback.rating }}/5</span>
+            </div>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Type:</span>
+            <span class="detail-value">{{ getTypeLabel(selectedFeedback.type) }}</span>
+          </div>
+          <div class="detail-row" *ngIf="selectedFeedback.quizId">
+            <span class="detail-label">Quiz ID:</span>
+            <span class="detail-value">#{{ selectedFeedback.quizId }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span class="detail-value">{{ selectedFeedback.createdAt | date:'full' }}</span>
+          </div>
+        </div>
+        <div class="comment-section">
+          <span class="detail-label">Comment:</span>
+          <div class="comment-content">
+            {{ selectedFeedback.comment || 'No comment provided' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal secondary" (click)="closeViewModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal (Admin only) -->
+<div *ngIf="showDeleteModal && isAdminMode" class="modal-overlay" (click)="cancelDelete()">
+  <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirm Delete</h3>
+      <button class="modal-close" (click)="cancelDelete()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        <p>Are you sure you want to delete this feedback from <strong>{{ feedbackToDelete?.studentName || 'Anonymous' }}</strong>?</p>
+        <p class="warning-text">This action cannot be undone.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal secondary" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-modal danger" (click)="deleteFeedback()">
+        <i class="bi bi-trash"></i>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer pour mode public -->
+<app-footer *ngIf="!isAdminMode"></app-footer>

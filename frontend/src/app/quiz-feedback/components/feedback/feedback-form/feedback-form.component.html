@@ -1,0 +1,119 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>{{ isEditMode ? 'Modifier le Feedback' : 'Soumettre un Feedback' }}</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4 text-center">
+              <label class="form-label d-block">Rating *</label>
+              <div class="star-rating d-flex justify-content-center gap-2">
+                <span
+                  *ngFor="let star of [1,2,3,4,5]"
+                  (click)="setRating(star)"
+                  style="font-size: 2.5rem; cursor: pointer; color: {{ star <= selectedRating ? '#ffc107' : '#dee2e6' }};"
+                >
+                  {{ star <= selectedRating ? '★' : '☆' }}
+                </span>
+              </div>
+              <div *ngIf="feedbackForm.get('rating')?.invalid && feedbackForm.get('rating')?.touched" class="text-danger mt-2">
+                Please select a rating
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="type" class="form-label">Feedback Type *</label>
+              <select class="form-select" id="type" formControlName="type">
+                <option value="QUIZ_FEEDBACK">Quiz Feedback</option>
+                <option value="COURSE_FEEDBACK">Course Feedback</option>
+                <option value="GENERAL">General</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comment</label>
+              
+              <!-- AI Suggestions Button -->
+              <div class="d-flex justify-content-between align-items-center mb-2" *ngIf="attemptId">
+                <small class="text-muted">Besoin d'inspiration ? Utilisez l'IA pour des suggestions personnalisées</small>
+                <button 
+                  type="button" 
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="toggleSuggestions()"
+                  [disabled]="loadingSuggestions">
+                  <span *ngIf="loadingSuggestions" class="spinner-border spinner-border-sm me-1"></span>
+                  <i *ngIf="!loadingSuggestions" class="bi bi-lightbulb me-1"></i>
+                  {{ showSuggestions ? 'Masquer' : 'Suggestions IA' }}
+                </button>
+              </div>
+              
+              <!-- AI Suggestions Panel -->
+              <div *ngIf="showSuggestions && aiSuggestions" class="card mb-3 border-primary">
+                <div class="card-header bg-primary text-white py-2">
+                  <h6 class="mb-0">
+                    <i class="bi bi-robot me-2"></i>
+                    Suggestions IA 
+                    <span class="badge bg-light text-primary ms-2">{{ aiSuggestions.tone }}</span>
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div *ngFor="let suggestion of aiSuggestions.suggestions" class="col-12 mb-2">
+                      <div class="d-flex align-items-start">
+                        <div class="flex-grow-1 me-2">
+                          <small class="text-muted">{{ suggestion }}</small>
+                        </div>
+                        <button 
+                          type="button" 
+                          class="btn btn-sm btn-outline-success"
+                          (click)="applySuggestion(suggestion)"
+                          title="Ajouter cette suggestion">
+                          <i class="bi bi-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <small class="text-info">
+                      <i class="bi bi-info-circle me-1"></i>
+                      Focus: {{ aiSuggestions.focusArea === 'strengths' ? 'Points forts' : 
+                                aiSuggestions.focusArea === 'improvements' ? 'Améliorations' : 'Général' }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              
+              <textarea
+                class="form-control"
+                id="comment"
+                rows="5"
+                formControlName="comment"
+                placeholder="Share your thoughts..."
+                (input)="onCommentChange()"
+                [class.is-invalid]="feedbackForm.get('comment')?.errors?.['profanity']"
+              ></textarea>
+              
+              <!-- Message d'erreur pour contenu inapproprié -->
+              <div *ngIf="feedbackForm.get('comment')?.errors?.['profanity']" class="invalid-feedback">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                {{ getCommentErrorMessage() }}
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="loading">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="feedbackForm.invalid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ isEditMode ? 'Modifier' : 'Soumettre' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

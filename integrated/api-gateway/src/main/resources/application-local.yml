@@ -1,0 +1,20 @@
+# Profil « local » : gateway sans Eureka (ex. dev rapide auth uniquement).
+# Démarrage : mvn spring-boot:run -Dspring-boot.run.profiles=local
+# Prérequis : user-service sur 127.0.0.1:8087 (mvn spring-boot:run dans user-service).
+
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            user-service:
+              - uri: http://127.0.0.1:8087
+            preevaluation-service:
+              - uri: http://127.0.0.1:8089
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false

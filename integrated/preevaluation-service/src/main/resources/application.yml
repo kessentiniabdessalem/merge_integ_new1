@@ -1,0 +1,61 @@
+# Microservice distinct du user-service : à lancer depuis ce dossier
+# (integrated/preevaluation-service) avec :
+#   mvn spring-boot:run
+# ou sans Eureka :
+#   mvn spring-boot:run -Dspring-boot.run.profiles=local
+# Sans processus sur le port 8089, le front reçoit des erreurs sur /api/preevaluation/*.
+#
+# Base de données :
+# - Par défaut : H2 en mémoire (aucun MySQL requis pour le dev local).
+# - Production / MySQL : définir SPRING_DATASOURCE_URL, USERNAME, PASSWORD (voir commentaires ci-dessous).
+# Schéma SQL manuel MySQL : src/main/resources/db/mysql-preevaluation-schema.sql
+
+server:
+  port: 8089
+
+spring:
+  application:
+    name: preevaluation-service
+
+  datasource:
+    # Défaut = H2 (évite Internal Server Error si MySQL n’est pas installé / démarré).
+    # Pour MySQL : export SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/preevaluation_db?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:preevaluation;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+# Aligné sur user-service (JwtUtil) — même secret pour valider le JWT émis au login.
+jwt:
+  secret: learnifySecretKeyUltraLongueEtTresSecurisee!
+
+# Groq / OpenAI (optionnel) — ex. GROQ_API_KEY en variable d'environnement
+preevaluation:
+  ai:
+    provider: groq
+    api-key: ${GROQ_API_KEY:}
+    base-url:
+    model:
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

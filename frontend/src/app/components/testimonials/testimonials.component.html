@@ -1,0 +1,38 @@
+<section class="testimonials-section py-lg-13 py-8" id="testimonials">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-6 mx-auto">
+        <div class="mb-10">
+          <span class="section-label">Testimonials</span>
+          <h2 class="fw-bold mt-4 mb-4">What Our <span class="text-primary">Learners Say</span></h2>
+          <p class="mb-0">
+            Hear from our community of English learners who have transformed their communication skills with Jungle In
+            English.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4">
+      @for (t of testimonials; track t.name) {
+      <div class="col-lg-4">
+        <div class="testimonial-card h-100">
+          <div class="quote-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M6.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35l.539-.222.474-.197-.485-1.938-.597.144c-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.3.37-.635.78-.866 1.272-.24.474-.46 1.037-.633 1.608-.161.572-.293 1.184-.349 1.862L3 13v4c0 1.657 1.343 3 3 3h2c1.657 0 3-1.343 3-3v-4c0-1.657-1.343-3-3-3H6.5zm10 0c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35l.539-.222.474-.197-.485-1.938-.597.144c-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.3.37-.635.78-.866 1.272-.24.474-.46 1.037-.633 1.608-.161.572-.293 1.184-.349 1.862L13 13v4c0 1.657 1.343 3 3 3h2c1.657 0 3-1.343 3-3v-4c0-1.657-1.343-3-3-3h-1.5z" />
+            </svg>
+          </div>
+          <p class="testimonial-quote">{{ t.quote }}</p>
+          <div class="testimonial-author">
+            <img [src]="t.avatar" [alt]="t.name" class="avatar avatar-md rounded-circle">
+            <div>
+              <div class="fw-bold">{{ t.name }}</div>
+              <small class="text-body-secondary">{{ t.role }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

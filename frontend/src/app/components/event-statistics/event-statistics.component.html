@@ -1,0 +1,88 @@
+<div class="statistics-container">
+  <h2 class="section-title">📊 Statistiques Dashboard</h2>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Chargement des statistiques...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error && !loading) {
+    <div class="error-message alert alert-danger">
+      <p>{{ error }}</p>
+    </div>
+  }
+
+  <!-- Statistics -->
+  @if (stats && !loading) {
+    <div class="stats-content">
+      <!-- Cards Statistiques -->
+      <div class="stats-cards">
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <h3>{{ stats.totalEvents }}</h3>
+          <p>Total Événements</p>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🎟️</div>
+          <h3>{{ stats.totalReservations }}</h3>
+          <p>Total Réservations</p>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <h3>{{ stats.totalParticipants }}</h3>
+          <p>Total Participants</p>
+        </div>
+      </div>
+
+      <!-- Top 5 Événements -->
+      @if (stats.topReservedEvents.length > 0) {
+        <div class="top-events">
+          <h3>🏆 Top 5 Événements les Plus Réservés</h3>
+          <div class="events-list">
+            @for (event of stats.topReservedEvents; track event.id; let i = $index) {
+              <div class="event-item">
+                <span class="rank">#{{ i + 1 }}</span>
+                <div class="event-info">
+                  <h4>{{ event.name }}</h4>
+                  <p class="event-category">{{ event.category }}</p>
+                </div>
+                <div class="event-stats">
+                  <span class="places">{{ event.reservedPlaces }} / {{ event.placesLimit }}</span>
+                  <div class="progress-bar">
+                    <div class="progress" [style.width.%]="(event.reservedPlaces / event.placesLimit) * 100"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Répartition par Catégorie -->
+      @if (getCategoryKeys().length > 0) {
+        <div class="category-distribution">
+          <h3>📈 Répartition par Catégorie</h3>
+          <div class="category-list">
+            @for (category of getCategoryKeys(); track category) {
+              <div class="category-item">
+                <span class="category-name">{{ category }}</span>
+                <div class="category-bar">
+                  <div class="bar-fill" [style.width.%]="(getCategoryValue(category) / stats.totalEvents) * 100"></div>
+                </div>
+                <span class="category-count">{{ getCategoryValue(category) }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

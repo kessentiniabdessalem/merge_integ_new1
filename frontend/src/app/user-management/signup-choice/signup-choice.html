@@ -1,0 +1,36 @@
+<div class="signup-choice-page">
+  <div class="signup-choice-container">
+    <a href="#" class="back-link" (click)="goBack(); $event.preventDefault()">
+      <i class="ti ti-arrow-left"></i> Back
+    </a>
+
+    <div class="signup-choice-icon">
+      <i class="ti ti-user-circle"></i>
+    </div>
+    <h1 class="signup-choice-title">Create an account</h1>
+    <p class="signup-choice-subtitle">How do you plan to use LearnifyEnglish?</p>
+
+    <div class="choice-cards">
+      <div class="choice-card" (click)="selectStudent()">
+        <div class="choice-card-icon student">
+          <i class="ti ti-school"></i>
+        </div>
+        <h3 class="choice-card-title">Student</h3>
+        <p class="choice-card-desc">Learn, take quizzes, track your progress</p>
+      </div>
+
+      <div class="choice-card" (click)="selectCandidate()">
+        <div class="choice-card-icon candidate">
+          <i class="ti ti-briefcase"></i>
+        </div>
+        <h3 class="choice-card-title">Candidate</h3>
+        <p class="choice-card-desc">Apply for jobs, build your CV, discover opportunities</p>
+      </div>
+    </div>
+
+    <p class="signin-link-wrap">
+      Already have an account?
+      <a [routerLink]="['/auth/login']" class="signin-link">Sign in</a>
+    </p>
+  </div>
+</div>

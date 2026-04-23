@@ -1,0 +1,121 @@
+<app-navbar></app-navbar>
+
+<section class="rate-page">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title"><i class="ti ti-star"></i> Rate a Tutor</h1>
+        <p class="page-subtitle">Share your experience with tutors on the platform</p>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="btn-link"><i class="ti ti-arrow-left"></i> Home</a>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="state-box">
+      <i class="ti ti-loader-2 spin"></i>
+      <p>Loading tutors...</p>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && tutors.length === 0" class="state-box">
+      <i class="ti ti-users-group"></i>
+      <p>No tutor ratings yet. Be the first to rate a tutor!</p>
+    </div>
+
+    <!-- Tutors Grid -->
+    <div class="tutors-grid" *ngIf="!loading && tutors.length > 0">
+      <div class="tutor-card" *ngFor="let tutor of tutors">
+        <div class="tutor-top">
+          <div class="tutor-avatar">
+            <span>{{ tutor.teacherName ? tutor.teacherName[0].toUpperCase() : '?' }}</span>
+          </div>
+          <div class="tutor-info">
+            <h3 class="tutor-name">{{ tutor.teacherName }}</h3>
+            <div class="tutor-rating">
+              <span class="stars-display">
+                <i *ngFor="let s of starArray(5)"
+                   [class]="s <= (tutor.avgRating || 0) ? 'ti ti-star-filled' : 'ti ti-star'"></i>
+              </span>
+              <span class="avg-label" *ngIf="tutor.avgRating != null">
+                {{ tutor.avgRating }}/5
+              </span>
+              <span class="count-label">({{ tutor.totalRatings }} {{ tutor.totalRatings === 1 ? 'review' : 'reviews' }})</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutor-actions">
+          <button class="btn-view-reviews" (click)="toggleRatings(tutor)">
+            <i [class]="tutor.showRatings ? 'ti ti-chevron-up' : 'ti ti-message-circle'"></i>
+            {{ tutor.showRatings ? 'Hide Reviews' : 'Reviews' }}
+          </button>
+          <button class="btn-rate" (click)="openModal(tutor)">
+            <i class="ti ti-star-filled"></i> Rate
+          </button>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="reviews-list" *ngIf="tutor.showRatings">
+          <div class="review-item" *ngFor="let r of tutor.ratings">
+            <div class="review-header">
+              <span class="review-stars">
+                <i *ngFor="let s of starArray(5)"
+                   [class]="s <= r.note ? 'ti ti-star-filled' : 'ti ti-star'"></i>
+              </span>
+              <span class="review-date">{{ formatDate(r.createdAt) }}</span>
+            </div>
+            <p class="review-comment">{{ r.commentaire }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Rating Modal -->
+<div class="modal-overlay" *ngIf="modalTutor" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3><i class="ti ti-star-filled"></i> Rate {{ modalTutor.teacherName }}</h3>
+      <button class="modal-close" (click)="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- Star Picker -->
+    <div class="star-picker">
+      <span class="star-label">Your Rating</span>
+      <div class="stars-interactive" (mouseleave)="clearHover()">
+        <i *ngFor="let s of starArray(5)"
+           [class]="s <= (hoverStar || stars) ? 'ti ti-star-filled' : 'ti ti-star'"
+           (mouseenter)="setHover(s)"
+           (click)="setStars(s)"></i>
+      </div>
+      <span class="star-text">{{ stars }}/5</span>
+    </div>
+
+    <!-- Comment -->
+    <div class="form-group">
+      <label>Comment <span class="required">*</span></label>
+      <textarea [(ngModel)]="comment" rows="4" placeholder="Share your experience with this tutor..."></textarea>
+    </div>
+
+    <!-- Feedback -->
+    <div class="submit-error" *ngIf="submitError">
+      <i class="ti ti-alert-circle"></i> {{ submitError }}
+    </div>
+    <div class="submit-success" *ngIf="submitSuccess">
+      <i class="ti ti-circle-check"></i> {{ submitSuccess }}
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-submit" (click)="submitRating()" [disabled]="submitting">
+        <i class="ti ti-send"></i> {{ submitting ? 'Submitting...' : 'Submit Rating' }}
+      </button>
+    </div>
+  </div>
+</div>

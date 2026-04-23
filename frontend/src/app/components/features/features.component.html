@@ -1,0 +1,77 @@
+<section class="features-section" id="features">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <span class="section-badge">Why Learnify English</span>
+      <h2 class="section-title">
+        Everything You Need to
+        <span class="title-highlight">Master English</span>
+      </h2>
+      <p class="section-description">
+        Our platform combines cutting-edge technology with expert instruction to deliver 
+        an unparalleled learning experience. Join thousands achieving their language goals.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+      @for (feature of features; track feature.title; let i = $index) {
+        <div class="feature-card" [style.animation-delay]="i * 100 + 'ms'">
+          <div class="feature-icon-wrapper">
+            <div class="feature-icon" [style.background]="feature.gradient">
+              @switch(feature.icon) {
+                @case('book') {
+                  <i class="ti ti-book"></i>
+                }
+                @case('video') {
+                  <i class="ti ti-video"></i>
+                }
+                @case('users') {
+                  <i class="ti ti-users"></i>
+                }
+                @case('certificate') {
+                  <i class="ti ti-award"></i>
+                }
+                @case('calendar') {
+                  <i class="ti ti-calendar"></i>
+                }
+                @case('brain') {
+                  <i class="ti ti-brain"></i>
+                }
+                @case('chat') {
+                  <i class="ti ti-messages"></i>
+                }
+                @case('chart') {
+                  <i class="ti ti-chart-bar"></i>
+                }
+              }
+            </div>
+            <div class="feature-glow" [style.background]="feature.gradient"></div>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+          <a [href]="feature.link" class="feature-link">
+            Learn more <i class="ti ti-arrow-right"></i>
+          </a>
+        </div>
+      }
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="features-cta">
+      <div class="cta-content">
+        <h3>Ready to Start Your Journey?</h3>
+        <p>Join 50,000+ learners already improving their English with Learnify English</p>
+      </div>
+      <div class="cta-actions">
+        <a routerLink="/preevaluation/start" class="btn-cta-primary">
+          <i class="ti ti-player-play"></i>
+          Take Free Assessment
+        </a>
+        <a href="/courses" class="btn-cta-secondary">
+          Browse Courses
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

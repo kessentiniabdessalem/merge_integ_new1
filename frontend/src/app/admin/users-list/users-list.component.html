@@ -1,0 +1,86 @@
+<div class="page-head d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h3 class="mb-1">Users</h3>
+    <p class="text-muted mb-0">List of accounts created in the application</p>
+  </div>
+
+  <div class="d-flex gap-2">
+    <input
+      type="text"
+      class="form-control search"
+      placeholder="Search (name / email)..."
+      [(ngModel)]="q"
+      (ngModelChange)="setPage(1)"
+    />
+    <button class="btn btn-outline-secondary" (click)="reload()">Refresh</button>
+  </div>
+</div>
+
+<div class="card shadow-sm users-card">
+  <div class="card-body p-0">
+
+    <div *ngIf="loading" class="p-4 text-center">Loading...</div>
+
+    <div *ngIf="!loading && filteredUsers.length === 0" class="p-4 text-center text-muted">
+      No users found.
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && filteredUsers.length > 0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 80px; cursor: pointer;" (click)="setSort('id')">
+              ID <span *ngIf="sortField === 'id'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </th>
+            <th style="cursor: pointer;" (click)="setSort('name')">
+              User <span *ngIf="sortField === 'name'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </th>
+            <th style="cursor: pointer;" (click)="setSort('email')">
+              Email <span *ngIf="sortField === 'email'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </th>
+            <th style="width: 160px">Role</th>
+            <th style="width: 160px" class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of pagedUsers">
+            <td class="text-muted">{{ u.id }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <ng-container *ngIf="getAvatar(u) as src; else placeholder">
+                  <img [src]="src" class="avatar" alt="avatar" (error)="onAvatarError(u)" referrerpolicy="no-referrer" />
+                </ng-container>
+                <ng-template #placeholder>
+                  <div class="avatar placeholder">
+                    {{ (u.firstName && u.firstName.length > 0) ? u.firstName[0] : 'U' }}
+                  </div>
+                </ng-template>
+                <div>
+                  <div class="fw-semibold">{{ u.firstName }} {{ u.lastName }}</div>
+                  <small class="text-muted">Account</small>
+                </div>
+              </div>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>
+              <span class="badge bg-primary" *ngIf="u.role; else noRole">{{ u.role }}</span>
+              <ng-template #noRole><span class="badge bg-secondary">USER</span></ng-template>
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(u)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex align-items-center justify-content-between p-3 border-top">
+        <div class="text-muted">Showing {{ fromIndex }} - {{ toIndex }} of {{ filteredUsers.length }}</div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-secondary btn-sm" (click)="prevPage()" [disabled]="page === 1">Previous</button>
+          <span class="badge bg-light text-dark">Page {{ page }} / {{ totalPages }}</span>
+          <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

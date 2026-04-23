@@ -1,0 +1,105 @@
+:host {
+  display: block;
+}
+
+// Pricing section
+#pricing {
+  background: #F7EDE2;
+}
+
+// Pricing card overrides
+.card {
+  border-radius: 16px !important;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(#3D3D60, 0.1);
+  }
+}
+
+// Highlighted plan
+.border-primary {
+  border-color: #F6BD60 !important;
+  position: relative;
+  background: linear-gradient(180deg, #3D3D60 0%, #2d2d48 100%) !important;
+  color: #fff;
+
+  h5,
+  .display-5 {
+    color: #fff;
+  }
+
+  .text-body-secondary {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  span:not(.fw-bold) {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  li {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .text-primary {
+    color: #F6BD60 !important;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #F6BD60, #e5a83d) !important;
+    border: none !important;
+    color: #3D3D60 !important;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(#F6BD60, 0.35);
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(#F6BD60, 0.5);
+    }
+  }
+
+  // "Most Popular" badge
+  &::before {
+    content: 'Most Popular';
+    position: absolute;
+    top: 14px;
+    right: -28px;
+    background: linear-gradient(135deg, #F6BD60, #e5a83d);
+    color: #3D3D60;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 36px;
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+}
+
+// Regular plan card
+.card:not(.border-primary) {
+  background: #fff;
+  border: 1px solid rgba(#2D5757, 0.08);
+
+  .btn-outline-primary {
+    color: #2D5757;
+    border-color: #2D5757;
+
+    &:hover {
+      background: #2D5757;
+      border-color: #2D5757;
+      color: #fff;
+    }
+  }
+}
+
+// Check icon color
+li .text-primary {
+  color: #2D5757 !important;
+}
+
+// Price display
+.display-5 {
+  color: #3D3D60;
+}

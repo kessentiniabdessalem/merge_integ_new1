@@ -1,0 +1,25 @@
+<div class="signin-page">
+  <div class="signin-container">
+    <h2 class="signin-title text-center">PIN Learnify</h2>
+    <p class="text-muted text-center mb-4">Enter your PIN to continue.</p>
+
+    <div class="form-group">
+      <label>PIN</label>
+      <input
+        class="form-control form-control-lg"
+        type="password"
+        [(ngModel)]="pin"
+        name="pin"
+        placeholder="****"
+      />
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger py-2">
+      {{ error }}
+    </div>
+
+    <button class="btn btn-login w-100" type="button" (click)="onSubmit()" [disabled]="loading">
+      {{ loading ? '...' : 'Valider' }}
+    </button>
+  </div>
+</div>

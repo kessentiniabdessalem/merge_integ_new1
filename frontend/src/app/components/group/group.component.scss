@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+.group-cta-section {
+  background: transparent;
+}
+
+.group-banner {
+  background: linear-gradient(135deg, #2D5757 0%, #1f4040 60%, #3D3D60 100%);
+  border-radius: 24px;
+  padding: 64px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-decoration {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(#F6BD60, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -180px;
+    left: -100px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(#F6BD60, 0.08) 0%, transparent 70%);
+  }
+}
+
+@media (max-width: 768px) {
+  .group-banner {
+    padding: 40px 24px;
+    border-radius: 16px;
+  }
+}

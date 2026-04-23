@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+
+<section class="py-8 bg-light">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+          <a routerLink="/events" class="btn btn-sm btn-outline-primary">Events</a>
+          <a routerLink="/messenger" class="btn btn-sm btn-outline-primary">Open Messenger</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-6">
+      <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">Clubs</h1>
+        <p class="lead text-muted">Join clubs and practice with fellow students</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      @for (club of clubs; track club.id) {
+        <div class="col-lg-4 col-md-6">
+          <div class="card shadow-sm h-100 rounded-4 card-hover">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center mb-3">
+                <img [src]="club.avatar" alt="" class="rounded-circle me-3" width="56" height="56">
+                <div>
+                  <h5 class="card-title mb-1 fw-bold">{{ club.name }}</h5>
+                  <span class="badge bg-primary rounded-pill">{{ club.level }}</span>
+                </div>
+              </div>
+              <p class="card-text text-muted small mb-3">{{ club.description }}</p>
+              <div class="d-flex align-items-center gap-2 small text-muted mb-3">
+                <span>{{ club.members }} members</span>
+                <span>•</span>
+                <span>{{ club.meetingSchedule }}</span>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-primary flex-grow-1" (click)="viewClub(club)">View</button>
+                <button class="btn btn-sm btn-outline-primary" (click)="joinClub(club)">Join</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,162 @@
+.oral-exam-shell {
+  padding-bottom: 2rem;
+}
+
+/** Modale plein écran — alerte sécurité (anti-triche) */
+.oral-security-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.oral-security-modal-panel {
+  width: 100%;
+  max-width: 480px;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.oral-security-modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+}
+
+.oral-security-modal-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+}
+
+.oral-security-modal-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+  background: linear-gradient(to bottom, #fff, #a1a1a1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.oral-security-modal-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  color: #d1d1d1;
+}
+
+.oral-security-modal-warning-final {
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.05);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 77, 77, 0.1);
+  font-weight: 500;
+}
+
+.oral-security-modal-btn {
+  background: #fff !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.oral-security-modal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+  background: #f0f0f0 !important;
+}
+
+.oral-security-modal-btn:active {
+  transform: translateY(0);
+}
+
+.oral-video-wrap {
+  background: #111;
+  aspect-ratio: 4 / 3;
+  max-height: 420px;
+}
+
+.oral-video {
+  display: block;
+  object-fit: cover;
+  min-height: 200px;
+}
+
+.oral-hidden-canvas {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+}
+
+.oral-video-badges {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+}
+
+.oral-meter {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.oral-meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #20c997, #0dcaf0);
+  transition: width 0.08s linear;
+}
+
+.oral-quote {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.oral-timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.oral-result-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%) !important;
+}

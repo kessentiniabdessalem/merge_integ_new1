@@ -1,0 +1,213 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ isEditing ? 'Edit Certificate' : 'Create Certificate' }}</h2>
+    <button class="btn btn-outline-secondary" (click)="onCancel()">
+      <i class="bi bi-arrow-left me-1"></i>
+      Back to Certificates
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">{{ isEditing ? 'Loading certificate...' : 'Processing...' }}</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+  }
+
+  <!-- Certificate Form -->
+  @if (!isLoading) {
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form [formGroup]="certificateForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <!-- User ID -->
+                <div class="col-md-6 mb-3">
+                  <label for="user_id" class="form-label">User ID *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="user_id" 
+                    formControlName="user_id"
+                    [class.is-invalid]="isFieldInvalid('user_id')"
+                    placeholder="Enter user ID">
+                  @if (isFieldInvalid('user_id')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('user_id') }}</div>
+                  }
+                </div>
+
+                <!-- Course ID -->
+                <div class="col-md-6 mb-3">
+                  <label for="course_id" class="form-label">Course ID *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="course_id" 
+                    formControlName="course_id"
+                    [class.is-invalid]="isFieldInvalid('course_id')"
+                    placeholder="Enter course ID">
+                  @if (isFieldInvalid('course_id')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('course_id') }}</div>
+                  }
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Certificate Number -->
+                <div class="col-md-6 mb-3">
+                  <label for="certificate_number" class="form-label">Certificate Number *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="certificate_number" 
+                    formControlName="certificate_number"
+                    [class.is-invalid]="isFieldInvalid('certificate_number')"
+                    placeholder="e.g., CERT-2024-12345">
+                  @if (isFieldInvalid('certificate_number')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('certificate_number') }}</div>
+                  }
+                </div>
+
+                <!-- Verification Code -->
+                <div class="col-md-6 mb-3">
+                  <label for="verification_code" class="form-label">Verification Code *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="verification_code" 
+                    formControlName="verification_code"
+                    [class.is-invalid]="isFieldInvalid('verification_code')"
+                    placeholder="e.g., VERIFY-ABC12345">
+                  @if (isFieldInvalid('verification_code')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('verification_code') }}</div>
+                  }
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Completion Date -->
+                <div class="col-md-6 mb-3">
+                  <label for="completion_date" class="form-label">Completion Date *</label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    id="completion_date" 
+                    formControlName="completion_date"
+                    [class.is-invalid]="isFieldInvalid('completion_date')">
+                  @if (isFieldInvalid('completion_date')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('completion_date') }}</div>
+                  }
+                </div>
+
+                <!-- Issue Date -->
+                <div class="col-md-6 mb-3">
+                  <label for="issue_date" class="form-label">Issue Date *</label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    id="issue_date" 
+                    formControlName="issue_date"
+                    [class.is-invalid]="isFieldInvalid('issue_date')">
+                  @if (isFieldInvalid('issue_date')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('issue_date') }}</div>
+                  }
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Grade -->
+                <div class="col-md-6 mb-3">
+                  <label for="grade" class="form-label">Grade (%)</label>
+                  <input 
+                    type="number" 
+                    min="0" 
+                    max="100"
+                    class="form-control" 
+                    id="grade" 
+                    formControlName="grade"
+                    [class.is-invalid]="isFieldInvalid('grade')"
+                    placeholder="0-100">
+                  @if (isFieldInvalid('grade')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('grade') }}</div>
+                  }
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6 mb-3">
+                  <label for="status" class="form-label">Status *</label>
+                  <select 
+                    class="form-select" 
+                    id="status" 
+                    formControlName="status"
+                    [class.is-invalid]="isFieldInvalid('status')">
+                    @for (status of certificateStatuses; track status.value) {
+                      <option [value]="status.value">{{ status.label }}</option>
+                    }
+                  </select>
+                  @if (isFieldInvalid('status')) {
+                    <div class="invalid-feedback">{{ getErrorMessage('status') }}</div>
+                  }
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="certificateForm.invalid">
+                  <i class="bi bi-check-circle me-1"></i>
+                  {{ isEditing ? 'Update Certificate' : 'Create Certificate' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle me-2"></i>
+              Certificate Information
+            </h5>
+            <div class="text-muted">
+              <p class="mb-2">
+                <strong>User ID:</strong> The ID of the user who earned the certificate
+              </p>
+              <p class="mb-2">
+                <strong>Course ID:</strong> The ID of the completed course
+              </p>
+              <p class="mb-2">
+                <strong>Certificate Number:</strong> Unique identifier for the certificate
+              </p>
+              <p class="mb-2">
+                <strong>Verification Code:</strong> Code used to verify certificate authenticity
+              </p>
+              <p class="mb-2">
+                <strong>Grade:</strong> Final grade achieved (0-100%)
+              </p>
+              <p class="mb-0">
+                <strong>Status:</strong> Current status (draft, pending, issued, revoked)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

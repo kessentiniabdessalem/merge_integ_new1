@@ -1,0 +1,190 @@
+<div class="quiz-container" *ngIf="!loading && quiz">
+  <!-- Quiz Header -->
+  <div class="quiz-header">
+    <div class="quiz-info">
+      <div class="header-top">
+        <button class="btn-exit" (click)="exitQuiz()">
+          <i class="icon-arrow-left"></i> Exit Quiz
+        </button>
+        <h1>{{ quiz.title }}</h1>
+      </div>
+      <p class="quiz-description">{{ quiz.description }}</p>
+    </div>
+    
+    <div class="quiz-stats">
+      <div class="stat-item">
+        <span class="stat-label">Questions</span>
+        <span class="stat-value">{{ currentQuestionIndex + 1 }} / {{ questions.length }}</span>
+      </div>
+      <div class="stat-item" [class.warning]="showWarning">
+        <span class="stat-label">{{ quiz.timeLimitMinutes ? 'Time Left' : 'Time Elapsed' }}</span>
+        <span class="stat-value timer">{{ timerDisplay }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Answered</span>
+        <span class="stat-value">{{ getAnsweredCount() }} / {{ questions.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+    </div>
+    <span class="progress-text">{{ getProgressPercentage().toFixed(0) }}% Complete</span>
+  </div>
+
+  <!-- Warning Banner -->
+  <div class="warning-banner" *ngIf="showWarning">
+    <i class="icon-warning"></i>
+    Less than 1 minute remaining!
+  </div>
+
+  <!-- Auto-save Indicator -->
+  <div class="auto-save" *ngIf="lastSaved">
+    <i class="icon-check"></i>
+    Last saved: {{ lastSaved | date:'short' }}
+  </div>
+
+  <!-- Main Content -->
+  <div class="quiz-content">
+    <!-- Question Navigator -->
+    <div class="question-navigator">
+      <h3>Questions</h3>
+      <div class="question-grid">
+        <button
+          *ngFor="let question of questions; let i = index"
+          class="question-nav-btn"
+          [class.active]="i === currentQuestionIndex"
+          [class.answered]="isQuestionAnswered(i)"
+          (click)="goToQuestion(i)"
+        >
+          {{ i + 1 }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Display -->
+    <div class="question-panel" *ngIf="currentQuestion">
+      <!-- Text-to-Speech Control Bar -->
+      <div class="d-flex align-items-center gap-3 mb-3 p-2 bg-light rounded">
+        <!-- Speaker toggle -->
+        <div class="form-check form-switch mb-0">
+          <input 
+            class="form-check-input" 
+            type="checkbox"
+            id="speechToggle"
+            [(ngModel)]="speechEnabled"
+            (change)="speechEnabled ? speakQuestion(currentQuestion.questionText) : synth.cancel()"
+          >
+          <label class="form-check-label" for="speechToggle">
+            🔊 Read questions aloud
+          </label>
+        </div>
+        
+        <!-- Speaking indicator -->
+        <span *ngIf="isSpeaking" class="text-primary">
+          <span class="spinner-grow spinner-grow-sm me-1"></span>
+          <small>Reading...</small>
+        </span>
+      </div>
+      
+      <div class="question-header">
+        <span class="question-number">Question {{ currentQuestionIndex + 1 }}</span>
+        <span class="question-type">{{ currentQuestion.type }}</span>
+      </div>
+
+      <div class="question-text">
+        {{ currentQuestion.questionText }}
+      </div>
+
+      <!-- Multiple Choice -->
+      <div class="answer-options" *ngIf="currentQuestion.type === 'MULTIPLE_CHOICE' && currentQuestion.options">
+        <label class="option-label" *ngFor="let option of currentQuestion.options">
+          <input
+            type="radio"
+            [name]="'question_' + currentQuestion.id"
+            [value]="option"
+            [(ngModel)]="answers[currentQuestion.id!]"
+            (change)="saveProgress()"
+          />
+          <span class="option-text">{{ option }}</span>
+        </label>
+      </div>
+
+      <!-- True/False -->
+      <div class="answer-options" *ngIf="currentQuestion.type === 'TRUE_FALSE'">
+        <label class="option-label">
+          <input
+            type="radio"
+            [name]="'question_' + currentQuestion.id"
+            value="True"
+            [(ngModel)]="answers[currentQuestion.id!]"
+            (change)="saveProgress()"
+          />
+          <span class="option-text">True</span>
+        </label>
+        <label class="option-label">
+          <input
+            type="radio"
+            [name]="'question_' + currentQuestion.id"
+            value="False"
+            [(ngModel)]="answers[currentQuestion.id!]"
+            (change)="saveProgress()"
+          />
+          <span class="option-text">False</span>
+        </label>
+      </div>
+
+      <!-- Short Answer -->
+      <div class="answer-input" *ngIf="currentQuestion.type === 'SHORT_ANSWER'">
+        <textarea
+          [(ngModel)]="answers[currentQuestion.id!]"
+          (ngModelChange)="saveProgress()"
+          placeholder="Type your answer here..."
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="question-navigation">
+        <button
+          class="btn btn-secondary"
+          (click)="previousQuestion()"
+          [disabled]="currentQuestionIndex === 0"
+        >
+          ← Previous
+        </button>
+
+        <button
+          class="btn btn-primary"
+          (click)="nextQuestion()"
+          *ngIf="currentQuestionIndex < questions.length - 1"
+        >
+          Next →
+        </button>
+
+        <button
+          class="btn btn-success"
+          (click)="submitQuiz()"
+          *ngIf="currentQuestionIndex === questions.length - 1"
+        >
+          Submit Quiz
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>{{ quiz ? 'Submitting your quiz...' : 'Loading quiz...' }}</p>
+</div>
+
+<!-- No Quiz Found -->
+<div class="error-container" *ngIf="!loading && !quiz">
+  <h2>Quiz not found</h2>
+  <button class="btn btn-primary" routerLink="/quizzes">Back to Quizzes</button>
+</div>

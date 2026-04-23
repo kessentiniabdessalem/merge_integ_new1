@@ -1,0 +1,271 @@
+:host {
+  display: block;
+}
+
+// ============================================
+// Footer - Modern EdTech SaaS Style
+// ============================================
+.site-footer {
+  background: linear-gradient(180deg, var(--color-primary) 0%, #252545 100%);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-main {
+  padding: var(--spacing-4xl) 0 var(--spacing-2xl);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--spacing-2xl);
+  margin-bottom: var(--spacing-3xl);
+}
+
+// Brand Column
+.footer-brand-col {
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-decoration: none !important;
+    margin-bottom: var(--spacing-lg);
+
+    .brand-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #e5a83d 100%);
+      border-radius: 12px;
+      color: var(--color-primary);
+      font-size: 1.25rem;
+    }
+
+    .brand-text {
+      font-family: var(--font-family);
+      font-weight: 700;
+      color: var(--color-white);
+      font-size: 1.35rem;
+    }
+
+    .brand-accent {
+      color: var(--color-accent);
+    }
+  }
+
+  .footer-desc {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-lg);
+    max-width: 300px;
+  }
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  font-size: 1.1rem;
+
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    transform: translateY(-3px);
+  }
+}
+
+// Links Columns
+.footer-links-col {
+  .footer-heading {
+    color: var(--color-accent);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: var(--spacing-sm);
+
+      a {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-size: var(--font-size-sm);
+        transition: all var(--transition-fast);
+        display: inline-block;
+
+        &:hover {
+          color: var(--color-white);
+          transform: translateX(4px);
+        }
+      }
+    }
+  }
+}
+
+// Newsletter
+.footer-newsletter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newsletter-content {
+  h4 {
+    font-family: var(--font-family);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--font-size-sm);
+    margin: 0;
+  }
+}
+
+.newsletter-form {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.newsletter-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: 0.75rem 1.25rem;
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  width: 280px;
+  transition: all var(--transition-fast);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.newsletter-btn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  &:hover {
+    background: var(--color-accent-light);
+    transform: translateY(-2px);
+  }
+}
+
+// Bottom Bar
+.footer-bottom {
+  background: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-lg) 0;
+}
+
+.bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.bottom-links {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  i {
+    color: var(--color-cta);
+  }
+}
+
+// Responsive
+@media (max-width: 991px) {
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+  }
+
+  .footer-brand-col {
+    grid-column: span 3;
+  }
+
+  .footer-newsletter {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    text-align: center;
+  }
+
+  .newsletter-form {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .newsletter-input {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-brand-col {
+    grid-column: span 2;
+  }
+
+  .bottom-content {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+}

@@ -1,0 +1,44 @@
+<div #modalEl class="modal fade" id="getStartedModal" tabindex="-1" aria-labelledby="getStartedModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-5">
+      <div class="modal-body p-6">
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <h1 class="card-title mb-5 h5" id="getStartedModalLabel">Book Your Free English Session</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <form class="mt-3" (ngSubmit)="$event.preventDefault()">
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full name</label>
+            <input id="fullName" type="text" class="form-control" placeholder="Jane Doe" required>
+            <div class="invalid-feedback">Please enter your name.</div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input id="email" type="email" class="form-control" placeholder="name@example.com" required>
+            <div class="invalid-feedback">Please enter a valid email.</div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" type="password" class="form-control" placeholder="Create a password" required minlength="6">
+            <div class="invalid-feedback">Please provide a password (min 6 characters).</div>
+          </div>
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm password</label>
+            <input id="confirmPassword" type="password" class="form-control" placeholder="Repeat password" required>
+            <div class="invalid-feedback">Passwords must match.</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input id="terms" class="form-check-input" type="checkbox" required>
+            <label class="form-check-label small" for="terms">I agree to the <a href="#" class="text-decoration-none">terms and privacy</a></label>
+            <div class="invalid-feedback">You must agree before continuing.</div>
+          </div>
+          <div>
+            <button class="btn btn-primary" type="submit">Book Free Session</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

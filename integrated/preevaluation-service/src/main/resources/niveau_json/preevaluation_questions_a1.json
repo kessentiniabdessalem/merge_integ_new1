@@ -1,0 +1,310 @@
+{
+  "A1": {
+    "grammar": [
+      {
+        "text": "She ___ my sister.",
+        "type": "QCU",
+        "options": [
+          { "text": "am", "isCorrect": false },
+          { "text": "is", "isCorrect": true },
+          { "text": "are", "isCorrect": false },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ 20 years old.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "am", "isCorrect": true },
+          { "text": "are", "isCorrect": false },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "They ___ at home.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "am", "isCorrect": false },
+          { "text": "are", "isCorrect": true },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He ___ football every day.",
+        "type": "QCU",
+        "options": [
+          { "text": "play", "isCorrect": false },
+          { "text": "plays", "isCorrect": true },
+          { "text": "playing", "isCorrect": false },
+          { "text": "played", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "We ___ students.",
+        "type": "QCU",
+        "options": [
+          { "text": "is", "isCorrect": false },
+          { "text": "am", "isCorrect": false },
+          { "text": "are", "isCorrect": true },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "She ___ a teacher.",
+        "type": "QCU",
+        "options": [
+          { "text": "am", "isCorrect": false },
+          { "text": "is", "isCorrect": true },
+          { "text": "are", "isCorrect": false },
+          { "text": "be", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ English.",
+        "type": "QCU",
+        "options": [
+          { "text": "study", "isCorrect": true },
+          { "text": "studies", "isCorrect": false },
+          { "text": "studying", "isCorrect": false },
+          { "text": "studied", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "He ___ TV now.",
+        "type": "QCU",
+        "options": [
+          { "text": "watch", "isCorrect": false },
+          { "text": "watches", "isCorrect": false },
+          { "text": "watching", "isCorrect": true },
+          { "text": "watched", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "They ___ to school every day.",
+        "type": "QCU",
+        "options": [
+          { "text": "go", "isCorrect": true },
+          { "text": "goes", "isCorrect": false },
+          { "text": "going", "isCorrect": false },
+          { "text": "went", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "I ___ coffee every morning.",
+        "type": "QCU",
+        "options": [
+          { "text": "drink", "isCorrect": true },
+          { "text": "drinks", "isCorrect": false },
+          { "text": "drinking", "isCorrect": false },
+          { "text": "drank", "isCorrect": false }
+        ]
+      }
+    ],
+    "vocabulary": [
+      {
+        "text": "What is the opposite of \"big\"?",
+        "type": "QCU",
+        "options": [
+          { "text": "large", "isCorrect": false },
+          { "text": "small", "isCorrect": true },
+          { "text": "tall", "isCorrect": false },
+          { "text": "wide", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"happy\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "sad", "isCorrect": false },
+          { "text": "angry", "isCorrect": false },
+          { "text": "joyful", "isCorrect": true },
+          { "text": "tired", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a fruit?",
+        "type": "QCU",
+        "options": [
+          { "text": "car", "isCorrect": false },
+          { "text": "apple", "isCorrect": true },
+          { "text": "chair", "isCorrect": false },
+          { "text": "table", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which word is a color?",
+        "type": "QCU",
+        "options": [
+          { "text": "run", "isCorrect": false },
+          { "text": "blue", "isCorrect": true },
+          { "text": "eat", "isCorrect": false },
+          { "text": "fast", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which one is a job?",
+        "type": "QCU",
+        "options": [
+          { "text": "teacher", "isCorrect": true },
+          { "text": "book", "isCorrect": false },
+          { "text": "house", "isCorrect": false },
+          { "text": "water", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"fast\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "slow", "isCorrect": false },
+          { "text": "quick", "isCorrect": true },
+          { "text": "heavy", "isCorrect": false },
+          { "text": "small", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a day of the week?",
+        "type": "QCU",
+        "options": [
+          { "text": "Monday", "isCorrect": true },
+          { "text": "January", "isCorrect": false },
+          { "text": "Summer", "isCorrect": false },
+          { "text": "Night", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which one is a drink?",
+        "type": "QCU",
+        "options": [
+          { "text": "bread", "isCorrect": false },
+          { "text": "milk", "isCorrect": true },
+          { "text": "rice", "isCorrect": false },
+          { "text": "apple", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Which is a place?",
+        "type": "QCU",
+        "options": [
+          { "text": "school", "isCorrect": true },
+          { "text": "eat", "isCorrect": false },
+          { "text": "blue", "isCorrect": false },
+          { "text": "fast", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "What does \"cold\" mean?",
+        "type": "QCU",
+        "options": [
+          { "text": "hot", "isCorrect": false },
+          { "text": "warm", "isCorrect": false },
+          { "text": "not warm", "isCorrect": true },
+          { "text": "big", "isCorrect": false }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "text": "Tom is a student. He is 18 years old. He lives in London. Who is Tom?",
+        "type": "QCU",
+        "options": [
+          { "text": "a teacher", "isCorrect": false },
+          { "text": "a student", "isCorrect": true },
+          { "text": "a doctor", "isCorrect": false },
+          { "text": "a driver", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Tom is a student. He is 18 years old. He lives in London. How old is Tom?",
+        "type": "QCU",
+        "options": [
+          { "text": "16", "isCorrect": false },
+          { "text": "17", "isCorrect": false },
+          { "text": "18", "isCorrect": true },
+          { "text": "19", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Tom is a student. He is 18 years old. He lives in London. Where does Tom live?",
+        "type": "QCU",
+        "options": [
+          { "text": "Paris", "isCorrect": false },
+          { "text": "London", "isCorrect": true },
+          { "text": "Rome", "isCorrect": false },
+          { "text": "Madrid", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Anna has a dog. The dog is small and brown. What does Anna have?",
+        "type": "QCU",
+        "options": [
+          { "text": "a cat", "isCorrect": false },
+          { "text": "a dog", "isCorrect": true },
+          { "text": "a bird", "isCorrect": false },
+          { "text": "a fish", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Anna has a dog. The dog is small and brown. What color is the dog?",
+        "type": "QCU",
+        "options": [
+          { "text": "black", "isCorrect": false },
+          { "text": "white", "isCorrect": false },
+          { "text": "brown", "isCorrect": true },
+          { "text": "gray", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "Anna has a dog. The dog is small and brown. Is the dog big or small?",
+        "type": "QCU",
+        "options": [
+          { "text": "big", "isCorrect": false },
+          { "text": "small", "isCorrect": true },
+          { "text": "tall", "isCorrect": false },
+          { "text": "long", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "John eats breakfast at 7 AM. He drinks coffee and eats bread. When does John eat breakfast?",
+        "type": "QCU",
+        "options": [
+          { "text": "6 AM", "isCorrect": false },
+          { "text": "7 AM", "isCorrect": true },
+          { "text": "8 AM", "isCorrect": false },
+          { "text": "9 AM", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "John eats breakfast at 7 AM. He drinks coffee and eats bread. What does he drink?",
+        "type": "QCU",
+        "options": [
+          { "text": "tea", "isCorrect": false },
+          { "text": "milk", "isCorrect": false },
+          { "text": "coffee", "isCorrect": true },
+          { "text": "juice", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "John eats breakfast at 7 AM. He drinks coffee and eats bread. What does he eat?",
+        "type": "QCU",
+        "options": [
+          { "text": "rice", "isCorrect": false },
+          { "text": "bread", "isCorrect": true },
+          { "text": "meat", "isCorrect": false },
+          { "text": "fruit", "isCorrect": false }
+        ]
+      },
+      {
+        "text": "John eats breakfast at 7 AM. He drinks coffee and eats bread. Is this text about lunch or breakfast?",
+        "type": "QCU",
+        "options": [
+          { "text": "lunch", "isCorrect": false },
+          { "text": "breakfast", "isCorrect": true },
+          { "text": "dinner", "isCorrect": false },
+          { "text": "snack", "isCorrect": false }
+        ]
+      }
+    ]
+  }
+}

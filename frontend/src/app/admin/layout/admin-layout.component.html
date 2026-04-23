@@ -1,0 +1,82 @@
+<div class="admin-wrapper" [class.sidebar-collapsed]="sidebarCollapsed">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="ti ti-school"></i>
+      </div>
+      <span class="brand-text">Learnify<span class="brand-accent">English</span></span>
+      <span class="brand-badge">Admin</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-title">Main Menu</span>
+      <a *ngFor="let item of navItems"
+         [routerLink]="item.path"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: !!item.linkExact }"
+         class="nav-item">
+        <i [class]="item.icon"></i>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" class="nav-item back-link">
+        <i class="ti ti-arrow-left"></i>
+        <span class="nav-label">Back to Site</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle" (click)="toggleSidebar()">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="search-box">
+          <i class="ti ti-search"></i>
+          <input type="text" placeholder="Search anything..." />
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-divider"></div>
+
+        <div class="user-menu" *ngIf="session.user$ | async as user; else noUser">
+          <div class="user-avatar">
+            @if (avatarSrc(user); as src) {
+              <img [src]="src" alt="" class="avatar-img" />
+            } @else {
+              <i class="ti ti-user"></i>
+            }
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+            <span class="user-role">{{ user.role || 'Admin' }}</span>
+          </div>
+        </div>
+
+        <ng-template #noUser>
+          <div class="user-menu">
+            <div class="user-avatar"><i class="ti ti-user"></i></div>
+            <div class="user-info">
+              <span class="user-name">Admin</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <button type="button" class="header-icon-btn logout-btn" title="Logout" (click)="logout()">
+          <i class="ti ti-logout"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

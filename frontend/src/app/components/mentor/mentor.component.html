@@ -1,0 +1,29 @@
+<section class="mentor-section py-lg-13 py-8" id="mentor">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-5 mx-auto">
+        <div class="mb-10">
+          <span class="section-label">Tutors</span>
+          <h2 class="fw-bold mt-4 mb-4">Learn From Certified <span class="text-primary">Instructors</span></h2>
+          <p class="mb-0">
+            Our experienced English tutors are passionate educators dedicated to helping you achieve fluency and
+            confidence in English communication.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      @for (mentor of mentors; track mentor.name) {
+      <div class="col-lg-4 col-md-6">
+        <div class="mentor-card h-100">
+          <div class="mentor-avatar-wrapper">
+            <img [src]="mentor.avatar" [alt]="mentor.name" class="mentor-avatar">
+          </div>
+          <h5 class="fw-bold mt-3 mb-1">{{ mentor.name }}</h5>
+          <p class="text-body-secondary mb-0 small">{{ mentor.role }}</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

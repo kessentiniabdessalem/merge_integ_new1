@@ -1,0 +1,75 @@
+# Port par défaut : 8080 (ne pas confondre avec job-service :8088).
+# 503 sur /api/auth/* : aucune instance « user-service » dans Eureka → démarrer
+# eureka-server (8761), puis user-service (8087), puis cette gateway.
+# Sans Eureka : lancer la gateway avec --spring.profiles.active=local (voir application-local.yml).
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: event-service
+          uri: lb://event-service
+          predicates:
+            - Path=/api/events/**,/api/reservations/**
+
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/payments/**,/api/notifications/**
+
+        - id: certificate-service
+          uri: lb://certificate-service
+          predicates:
+            - Path=/api/certificates/**
+
+        - id: quiz-feedback-service
+          uri: lb://quiz-feedback-service
+          predicates:
+            - Path=/api/quizzes/**,/api/questions/**,/api/attempts/**,/api/feedbacks/**
+
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/api/ai/**,/api/chat/**,/api/quiz-generator/**,/api/feedback-analysis/**
+
+        - id: course-service
+          uri: lb://course-service
+          predicates:
+            - Path=/api/courses/**
+
+        - id: preevaluation-service
+          uri: lb://preevaluation-service
+          predicates:
+            - Path=/api/preevaluation/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/auth/**,/api/users/**,/api/me/**,/api/admin/**,/api/app-pin/**,/api/webauthn/**,/oauth2/**,/login/oauth2/**
+
+        - id: job-service
+          uri: lb://job-service
+          predicates:
+            - Path=/api/jobs/**,/api/applications/**,/api/meetings/**,/api/ratings/**,/api/job-notifications/**,/api/saved-jobs/**,/api/cv-profiles/**
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

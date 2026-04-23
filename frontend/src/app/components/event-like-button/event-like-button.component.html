@@ -1,0 +1,10 @@
+<button 
+  class="like-button" 
+  [class.liked]="isLiked"
+  [class.loading]="loading"
+  (click)="toggleLike()"
+  [disabled]="loading"
+>
+  <i [class]="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+  <span class="likes-count">{{ likesCount }}</span>
+</button>

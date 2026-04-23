@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+
+<section class="py-5 bg-light min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="mb-4">
+          <span class="text-muted small">Section 1 — Profile (not scored)</span>
+          <h1 class="h3 fw-bold mt-1">Your background</h1>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <div class="mb-4">
+              <label class="form-label fw-semibold d-block">Have you studied English before?</label>
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn-primary]="studiedBefore === true"
+                  [class.btn-outline-primary]="studiedBefore !== true"
+                  (click)="studiedBefore = true"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn-primary]="studiedBefore === false"
+                  [class.btn-outline-primary]="studiedBefore !== false"
+                  (click)="studiedBefore = false"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">How often do you use English?</label>
+              <select class="form-select" [(ngModel)]="frequency" name="frequency">
+                <option value="" disabled selected>Choose…</option>
+                <option value="DAILY">Daily</option>
+                <option value="WEEKLY">Weekly</option>
+                <option value="RARELY">Rarely</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">What is your goal?</label>
+              <select class="form-select" [(ngModel)]="goal" name="goal">
+                <option value="" disabled selected>Choose…</option>
+                <option value="STUDY">Study</option>
+                <option value="WORK">Work</option>
+                <option value="TRAVEL">Travel</option>
+                <option value="EXAMS">Exams</option>
+                <option value="SPEAKING_IMPROVEMENT">Speaking improvement</option>
+              </select>
+            </div>
+
+            @if (error) {
+              <div class="alert alert-danger">{{ error }}</div>
+            }
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" routerLink="/preevaluation/start">
+                Back
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="!canSubmit || loading"
+                (click)="submit()"
+              >
+                @if (loading) {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                }
+                Continue to test
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,47 @@
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+
+# Spring Boot
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads (runtime-generated files)
+uploads/
+
+# Docker volumes / local overrides
+docker-volumes/
+
+# Env / secrets
+.env
+*.env
+
+# Legacy / JVM
+*.ctxt
+.mtj.tmp/
+hs_err_pid*
+replay_pid*

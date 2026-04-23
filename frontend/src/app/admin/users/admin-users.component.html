@@ -1,0 +1,69 @@
+<div class="management-page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Users Management</h1>
+            <p class="page-subtitle">Manage and monitor all registered users</p>
+        </div>
+        <button class="btn-admin primary">
+            <i class="ti ti-user-plus"></i> Add User
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-filter">
+            <i class="ti ti-search"></i>
+            <input type="text" placeholder="Search users..." [(ngModel)]="searchTerm" />
+        </div>
+        <select class="select-filter" [(ngModel)]="filterRole">
+            <option value="">All Roles</option>
+            <option value="Student">Student</option>
+            <option value="Instructor">Instructor</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of filteredUsers">
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">{{ user.avatar }}</div>
+                                <span class="user-name-cell">{{ user.name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-muted-admin">{{ user.email }}</td>
+                        <td><span class="role-badge" [attr.data-role]="user.role.toLowerCase()">{{ user.role }}</span>
+                        </td>
+                        <td><span class="status-badge" [attr.data-status]="user.status.toLowerCase()">{{ user.status
+                                }}</span></td>
+                        <td class="text-muted-admin">{{ user.joined }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn" title="Edit"><i class="ti ti-edit"></i></button>
+                                <button class="icon-btn" title="View"><i class="ti ti-eye"></i></button>
+                                <button class="icon-btn danger" title="Delete"><i class="ti ti-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer">
+            <span class="table-info">Showing {{ filteredUsers.length }} of {{ users.length }} users</span>
+        </div>
+    </div>
+</div>

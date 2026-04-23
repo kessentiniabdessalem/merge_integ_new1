@@ -1,0 +1,122 @@
+<app-navbar></app-navbar>
+
+<section class="my-apps-page">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title"><i class="ti ti-file-text"></i> My Applications</h1>
+        <p class="page-subtitle">Track the status of your job applications</p>
+      </div>
+      <div class="header-actions">
+        <a href="/job-offers" class="btn-link">
+          <i class="ti ti-briefcase"></i> Browse Jobs
+        </a>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="state-box">
+      <i class="ti ti-loader-2 spin"></i>
+      <p>Loading applications...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error && !loading" class="state-box error">
+      <i class="ti ti-alert-circle"></i>
+      <p>{{ error }}</p>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && !error && applications.length === 0" class="state-box">
+      <i class="ti ti-inbox"></i>
+      <p>You haven't applied to any jobs yet.</p>
+      <a href="/job-offers" class="btn-cta"><i class="ti ti-search"></i> Find Jobs</a>
+    </div>
+
+    <!-- Applications List -->
+    <div *ngIf="!loading && !error && applications.length > 0" class="apps-list">
+      <div class="app-card" *ngFor="let app of applications">
+        <div class="app-card-header">
+          <div class="app-info">
+            <h3 class="app-job-id">Application #{{ app.id }}</h3>
+            <div class="app-meta">
+              <span class="meta-item"><i class="ti ti-user"></i> {{ app.teacherName }}</span>
+              <span class="meta-item"><i class="ti ti-calendar"></i> Applied {{ formatDate(app.appliedAt) }}</span>
+              <span *ngIf="app.matchScore != null" class="meta-item match">
+                <i class="ti ti-target"></i> {{ app.matchScore }}% match
+              </span>
+            </div>
+          </div>
+          <div class="app-status-area">
+            <span class="status-badge" [attr.data-status]="app.status">{{ statusLabel(app.status) }}</span>
+          </div>
+        </div>
+
+        <!-- Cover Letter Preview -->
+          <div class="cover-letter" *ngIf="app.motivation">
+            <p>{{ app.motivation | slice:0:200 }}{{ app.motivation.length > 200 ? '...' : '' }}</p>
+        </div>
+
+        <!-- Action Row -->
+        <div class="app-card-footer">
+          <div class="footer-left">
+            <button class="btn-meetings" (click)="toggleMeetings(app.id)">
+              <i [class]="expandedApp === app.id ? 'ti ti-chevron-up' : 'ti ti-calendar-event'"></i>
+              {{ expandedApp === app.id ? 'Hide Meetings' : 'View Meetings' }}
+            </button>
+          </div>
+          <div class="footer-right">
+            <button class="btn-danger" (click)="confirmDelete(app)" *ngIf="app.status === 'PENDING'">
+              <i class="ti ti-trash"></i> Withdraw
+            </button>
+          </div>
+        </div>
+
+        <!-- Meetings Panel -->
+        <div class="meetings-panel" *ngIf="expandedApp === app.id">
+          <div *ngIf="loadingMeetings[app.id]" class="meetings-loading">
+            <i class="ti ti-loader-2 spin"></i> Loading meetings...
+          </div>
+          <div *ngIf="!loadingMeetings[app.id] && meetingsMap[app.id]?.length === 0" class="meetings-empty">
+            <i class="ti ti-calendar-off"></i> No meetings scheduled yet.
+          </div>
+          <div class="meetings-list" *ngIf="!loadingMeetings[app.id] && (meetingsMap[app.id]?.length || 0) > 0">
+            <div class="meeting-row" *ngFor="let m of meetingsMap[app.id]">
+              <div class="meeting-time">
+                <i class="ti ti-clock"></i>
+                <strong>{{ formatDateTime(m.scheduledAt) }}</strong>
+                <span class="duration">{{ m.durationMinutes }} min</span>
+              </div>
+              <div class="meeting-details">
+                <span *ngIf="m.assignedToName"><i class="ti ti-user-check"></i> with {{ m.assignedToName }}</span>
+                <a *ngIf="m.meetingLink" [href]="m.meetingLink" target="_blank" class="meeting-link">
+                  <i class="ti ti-video"></i> Join Meeting
+                </a>
+              </div>
+              <div class="meeting-notes" *ngIf="m.notes">
+                <i class="ti ti-notes"></i> {{ m.notes }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" *ngIf="deleteTarget" (click)="cancelDelete()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <h3><i class="ti ti-alert-triangle"></i> Withdraw Application</h3>
+    <p>Are you sure you want to withdraw application #{{ deleteTarget.id }}? This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-confirm-danger" (click)="doDelete()" [disabled]="deleting">
+        <i class="ti ti-trash"></i> {{ deleting ? 'Withdrawing...' : 'Withdraw' }}
+      </button>
+    </div>
+  </div>
+</div>

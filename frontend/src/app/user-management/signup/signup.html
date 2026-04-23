@@ -1,0 +1,204 @@
+<div class="auth-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+
+        <!-- ══════════════════════════════════
+             STEP 1 — Role picker
+             (shown when no valid role selected)
+             ══════════════════════════════════ -->
+        <ng-container *ngIf="!role">
+
+          <div class="auth-card text-center">
+            <div class="auth-logo mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                <circle cx="12" cy="10" r="2"/>
+                <path d="M12 14v4"/>
+              </svg>
+            </div>
+            <h2 class="auth-title">Create an account</h2>
+            <p class="auth-subtitle">How do you plan to use LearnifyEnglish?</p>
+
+            <div class="role-picker mt-4">
+
+              <button type="button" class="role-card" (click)="selectRole('student')">
+                <span class="role-icon"><i class="ti ti-school"></i></span>
+                <strong>Student</strong>
+                <span class="role-desc">Learn, take quizzes,<br>track your progress</span>
+              </button>
+
+              <button type="button" class="role-card" (click)="selectRole('candidate')">
+                <span class="role-icon"><i class="ti ti-briefcase"></i></span>
+                <strong>Candidate</strong>
+                <span class="role-desc">Apply for jobs, build your CV,<br>discover opportunities</span>
+              </button>
+
+            </div>
+
+            <p class="auth-footer-link mt-4">
+              Already have an account?
+              <a href="/auth/login?role=student">Sign in</a>
+            </p>
+          </div>
+
+        </ng-container>
+
+        <!-- ══════════════════════════════════
+             STEP 2 — Registration form
+             (shown once role is selected)
+             ══════════════════════════════════ -->
+        <ng-container *ngIf="role">
+
+          <div class="auth-card">
+            <button type="button" class="btn-back" (click)="clearRole()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+
+            <div class="auth-logo mb-2 text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                <circle cx="12" cy="10" r="2"/>
+                <path d="M12 14v4"/>
+              </svg>
+            </div>
+
+            <h2 class="auth-title text-center">
+              Sign up as
+              <span class="role-badge role-badge--{{ role }}">{{ role | titlecase }}</span>
+            </h2>
+
+            <!-- Google OAuth (student / candidate uniquement, comme ang) -->
+            <button *ngIf="role === 'student' || role === 'candidate'"
+                    type="button" class="btn-google w-100 mb-3" (click)="continueWithGoogle()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </button>
+
+            <div class="divider"><span>or</span></div>
+
+            <!-- Error -->
+            <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+            <form (ngSubmit)="onSubmit(f)" #f="ngForm" novalidate>
+
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="form-label">First Name</label>
+                  <input type="text"
+                         class="form-control"
+                         [(ngModel)]="firstName"
+                         name="firstName"
+                         #firstNameRef="ngModel"
+                         placeholder="First name"
+                         required>
+                  <small class="text-danger"
+                         *ngIf="(firstNameRef.touched || firstNameRef.dirty) && firstNameRef.errors?.['required']">
+                    Required
+                  </small>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Last Name</label>
+                  <input type="text"
+                         class="form-control"
+                         [(ngModel)]="lastName"
+                         name="lastName"
+                         #lastNameRef="ngModel"
+                         placeholder="Last name"
+                         required>
+                  <small class="text-danger"
+                         *ngIf="(lastNameRef.touched || lastNameRef.dirty) && lastNameRef.errors?.['required']">
+                    Required
+                  </small>
+                </div>
+              </div>
+
+              <div class="mt-2">
+                <label class="form-label">Email</label>
+                <input type="email"
+                       class="form-control"
+                       [(ngModel)]="email"
+                       name="email"
+                       #emailRef="ngModel"
+                       placeholder="you@gmail.com"
+                       appGmailEmail
+                       required>
+                <small class="text-danger d-block"
+                       *ngIf="(emailRef.touched || emailRef.dirty) && emailRef.errors?.['required']">
+                  Email is required
+                </small>
+                <small class="text-danger d-block"
+                       *ngIf="(emailRef.touched || emailRef.dirty) && emailRef.errors?.['gmail']">
+                  Must be a &#64;gmail.com address
+                </small>
+              </div>
+
+              <div class="mt-2">
+                <label class="form-label">Password</label>
+                <input type="password"
+                       class="form-control"
+                       [(ngModel)]="password"
+                       name="password"
+                       #passwordRef="ngModel"
+                       placeholder="At least 6 characters"
+                       required
+                       minlength="6">
+                <small class="text-danger d-block"
+                       *ngIf="(passwordRef.touched || passwordRef.dirty) && passwordRef.errors?.['required']">
+                  Password is required
+                </small>
+                <small class="text-danger d-block"
+                       *ngIf="(passwordRef.touched || passwordRef.dirty) && passwordRef.errors?.['minlength']">
+                  Minimum 6 characters
+                </small>
+              </div>
+
+              <div class="mt-2">
+                <label class="form-label">Confirm Password</label>
+                <input type="password"
+                       class="form-control"
+                       [(ngModel)]="confirmPassword"
+                       name="confirmPassword"
+                       #confirmRef="ngModel"
+                       [appConfirmPassword]="password"
+                       placeholder="Repeat password"
+                       required>
+                <small class="text-danger d-block"
+                       *ngIf="(confirmRef.touched || confirmRef.dirty) && confirmRef.errors?.['required']">
+                  Required
+                </small>
+                <small class="text-danger d-block"
+                       *ngIf="(confirmRef.touched || confirmRef.dirty) && confirmRef.errors?.['confirmMismatch']">
+                  Passwords do not match
+                </small>
+              </div>
+
+              <button type="submit"
+                      class="btn-submit w-100 mt-4"
+                      [disabled]="loading || f.invalid">
+                {{ loading ? 'Creating account...' : 'Create account' }}
+              </button>
+
+            </form>
+
+            <p class="auth-footer-link text-center mt-3">
+              Already have an account?
+              <a [routerLink]="['/auth/login']" [queryParams]="{ role: role }">Sign in</a>
+            </p>
+          </div>
+
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+</div>

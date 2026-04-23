@@ -1,0 +1,468 @@
+// ============================================
+// Jungle In English — Global Custom Styles
+// ============================================
+
+// Fixed header: reserve space
+body {
+  padding-top: 76px;
+  background-color: #F7EDE2;
+
+  @media (min-width: 992px) {
+    padding-top: 80px;
+  }
+}
+
+.text-xs {
+  font-size: $font-xs !important;
+}
+
+// ─── Nav Links ─────────────────────────────
+.nav-link {
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem !important;
+  transition: color 0.2s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: $primary !important;
+    background-color: rgba($primary, 0.06);
+  }
+
+  &.active {
+    color: $primary !important;
+    background-color: rgba($primary, 0.08);
+  }
+}
+
+// ─── Circle background decoration ──────────
+.circle-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background-color: rgba(#F6BD60, 0.1);
+  border-radius: 9999px;
+  filter: blur(80px);
+}
+
+// ─── Buttons ───────────────────────────────
+.btn {
+  font-weight: 600;
+  padding: 0.6rem 1.35rem;
+  border-radius: 0.75rem;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary, 0.25);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2D5757 0%, #1f4040 100%);
+  border-color: #2D5757;
+  box-shadow: 0 2px 8px rgba(#2D5757, 0.2);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 16px rgba(#2D5757, 0.35);
+    background: linear-gradient(135deg, #1f4040 0%, #2D5757 100%);
+    border-color: #1f4040;
+  }
+}
+
+.btn-cta {
+  background: linear-gradient(135deg, #C84630 0%, #b13d2a 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(#C84630, 0.25);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 16px rgba(#C84630, 0.4);
+    color: #fff;
+    background: linear-gradient(135deg, #b13d2a 0%, #C84630 100%);
+  }
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, #F6BD60 0%, #e5a83d 100%);
+  border: none;
+  color: #3D3D60;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(#F6BD60, 0.3);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 16px rgba(#F6BD60, 0.45);
+    color: #3D3D60;
+  }
+}
+
+.btn-outline-primary {
+  color: #2D5757;
+  border-color: #2D5757;
+
+  &:hover:not(:disabled) {
+    background: #2D5757;
+    border-color: #2D5757;
+    box-shadow: 0 4px 12px rgba(#2D5757, 0.2);
+  }
+}
+
+.btn-outline-dark:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-light {
+  &:hover:not(:disabled) {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+}
+
+// ─── Form Controls ────────────────────────
+.form-control,
+.form-select {
+  border-radius: 0.75rem;
+  border-color: $gray-200;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: #2D5757;
+    box-shadow: 0 0 0 3px rgba(#2D5757, 0.15);
+  }
+}
+
+.form-control {
+  padding: 0.6rem 1rem;
+}
+
+@import "./avatar";
+@import "./button";
+@import "./icon-shape";
+@import "./utilities";
+@import "./card";
+
+// ─── Cards ─────────────────────────────────
+.card {
+  border-radius: 1rem;
+  border-color: rgba(#2D5757, 0.08);
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px -8px rgba(#2D5757, 0.12), 0 6px 16px -4px rgba(#3D3D60, 0.06) !important;
+  border-color: rgba(#F6BD60, 0.3);
+}
+
+// ─── Sections ──────────────────────────────
+section {
+  scroll-margin-top: 88px;
+  position: relative;
+  padding-top: clamp(2rem, 8vw, 4rem);
+  padding-bottom: clamp(2rem, 8vw, 4rem);
+}
+
+// ─── Smooth Scroll ─────────────────────────
+html {
+  scroll-behavior: smooth;
+}
+
+// ─── Typography ────────────────────────────
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  color: #3D3D60;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: clamp(1.875rem, 5vw, 3.5rem);
+}
+
+h2 {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+h3 {
+  font-weight: 600;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+h4 {
+  font-weight: 600;
+}
+
+h5 {
+  font-weight: 600;
+}
+
+h6 {
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.7;
+  color: rgba(#3D3D60, 0.65);
+  font-family: 'Inter', sans-serif;
+
+  &.lead {
+    font-size: 1.05rem;
+    color: rgba(#3D3D60, 0.6);
+    font-weight: 500;
+  }
+}
+
+.text-muted {
+  color: #727272 !important;
+}
+
+// ─── Backgrounds ───────────────────────────
+.bg-light {
+  background-color: rgba(#F7EDE2, 0.5) !important;
+}
+
+.bg-cream {
+  background-color: #F7EDE2 !important;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #2D5757 0%, #1f4040 100%) !important;
+
+  &.bg-opacity-10 {
+    background: rgba(#2D5757, 0.1) !important;
+  }
+
+  &.bg-opacity-25 {
+    background: rgba(#2D5757, 0.25) !important;
+  }
+}
+
+// ─── Container ─────────────────────────────
+.container {
+  max-width: 1200px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+// ─── Badges ────────────────────────────────
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 0.4rem 0.75rem;
+
+  &.bg-primary {
+    background: linear-gradient(135deg, #2D5757 0%, #1f4040 100%) !important;
+  }
+}
+
+// ─── Dividers ──────────────────────────────
+hr {
+  border-color: rgba(#2D5757, 0.1);
+  margin: 3rem 0;
+}
+
+// ─── Links ─────────────────────────────────
+a {
+  color: #2D5757;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1f4040;
+  }
+
+  &.text-decoration-none:hover {
+    opacity: 0.8;
+  }
+}
+
+// ─── Text utilities ────────────────────────
+.text-primary {
+  color: #2D5757 !important;
+
+  &:hover {
+    color: #1f4040 !important;
+  }
+}
+
+.text-accent {
+  color: #F6BD60 !important;
+}
+
+.text-cta {
+  color: #C84630 !important;
+}
+
+// ─── Focus Accessibility ───────────────────
+:focus-visible {
+  outline: 2px solid #F6BD60;
+  outline-offset: 2px;
+}
+
+// ─── Scrollbar ─────────────────────────────
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(#F7EDE2, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(#2D5757, 0.2);
+  border-radius: 5px;
+
+  &:hover {
+    background: rgba(#2D5757, 0.35);
+  }
+}
+
+// ─── Animations ────────────────────────────
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// ─── Responsive typography ─────────────────
+@media (max-width: 768px) {
+  h1 {
+    letter-spacing: -0.3px;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+}
+
+// ─── Utility spacers ──────────────────────
+.mb-10 {
+  margin-bottom: 3rem;
+}
+
+.mb-12 {
+  margin-bottom: 4rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.mt-10 {
+  margin-top: 3rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+// ─── Opacity utilities ────────────────────
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+// ─── Golden accent decoration line ─────────
+.accent-underline {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #F6BD60, #C84630);
+    border-radius: 2px;
+  }
+}
+
+// ─── Section label style ──────────────────
+.section-label {
+  display: inline-block;
+  color: #2D5757;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15rem;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  padding-left: 20px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 3px;
+    background: #F6BD60;
+    border-radius: 2px;
+  }
+}

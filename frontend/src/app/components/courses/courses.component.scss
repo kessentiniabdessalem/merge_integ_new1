@@ -1,0 +1,68 @@
+:host {
+  display: block;
+}
+
+// Course cards styling
+#courses {
+  background: rgba(#F7EDE2, 0.3);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(#2D5757, 0.06);
+
+  // Golden top accent bar
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #F6BD60, #C84630);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+// Badge styling
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+// Course price
+.fs-5.text-dark {
+  color: #3D3D60 !important;
+}
+
+// Enroll link
+.link-primary {
+  color: #2D5757 !important;
+  font-weight: 600;
+  transition: all 0.2s;
+
+  &:hover {
+    color: #C84630 !important;
+  }
+}
+
+// Quick nav pills
+.btn-outline-primary {
+  border-color: rgba(#2D5757, 0.2);
+  color: #2D5757;
+  font-family: 'Inter', sans-serif;
+
+  &:hover {
+    background: #2D5757;
+    border-color: #2D5757;
+    color: #fff;
+  }
+}

@@ -1,0 +1,20 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+
+@import "@tabler/icons-webfont/dist/tabler-icons.min.css";
+
+// Import Bootstrap functions first
+@import "bootstrap/scss/functions";
+
+// Override Bootstrap variables here
+@import "./variables";
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// Theme styles (custom properties, utilities)
+@import "./theme";
+
+// Custom styles
+@import "./custom";

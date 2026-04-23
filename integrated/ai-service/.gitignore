@@ -1,0 +1,2 @@
+# Clés API et secrets — ne pas versionner (chaque dev / machine a le sien)
+src/main/resources/application-secrets.yml

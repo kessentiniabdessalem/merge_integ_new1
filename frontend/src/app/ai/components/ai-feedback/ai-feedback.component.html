@@ -1,0 +1,39 @@
+<div class="ai-feedback-container">
+  <h2>AI-Powered Feedback</h2>
+
+  <div *ngIf="loading" class="loading">Analyzing your performance...</div>
+
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="feedback" class="feedback-content">
+    <div class="feedback-section">
+      <h3>Overall Feedback</h3>
+      <p>{{ feedback.overallFeedback }}</p>
+    </div>
+
+    <div class="feedback-section" *ngIf="feedback.strengths.length > 0">
+      <h3>✅ Strengths</h3>
+      <ul>
+        <li *ngFor="let strength of feedback.strengths">{{ strength }}</li>
+      </ul>
+    </div>
+
+    <div class="feedback-section" *ngIf="feedback.weaknesses.length > 0">
+      <h3>⚠️ Areas for Improvement</h3>
+      <ul>
+        <li *ngFor="let weakness of feedback.weaknesses">{{ weakness }}</li>
+      </ul>
+    </div>
+
+    <div class="feedback-section" *ngIf="feedback.recommendations.length > 0">
+      <h3>💡 Recommendations</h3>
+      <ul>
+        <li *ngFor="let rec of feedback.recommendations">{{ rec }}</li>
+      </ul>
+    </div>
+
+    <div class="motivational-message">
+      <p>{{ feedback.motivationalMessage }}</p>
+    </div>
+  </div>
+</div>

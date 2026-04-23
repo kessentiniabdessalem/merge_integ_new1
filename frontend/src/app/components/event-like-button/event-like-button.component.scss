@@ -1,0 +1,65 @@
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+
+  i {
+    font-size: 1.2rem;
+    color: #999;
+    transition: all 0.3s ease;
+  }
+
+  .likes-count {
+    font-weight: 500;
+    color: #666;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: #ff6b6b;
+    transform: scale(1.05);
+
+    i {
+      color: #ff6b6b;
+    }
+  }
+
+  &.liked {
+    border-color: #ff6b6b;
+    background: #fff5f5;
+
+    i {
+      color: #ff6b6b;
+      animation: heartBeat 0.3s ease;
+    }
+
+    .likes-count {
+      color: #ff6b6b;
+    }
+  }
+
+  &.loading {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}

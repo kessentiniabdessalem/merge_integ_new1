@@ -1,0 +1,364 @@
+<app-navbar></app-navbar>
+
+<!-- Fenêtre d’alerte sécurité (plein écran, design premium) -->
+@if (securityAlertModalOpen && securityAlertBanner) {
+  <div
+    class="oral-security-modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="oral-security-alert-title"
+  >
+    <div class="oral-security-modal-panel" (click)="$event.stopPropagation()">
+      <div class="oral-security-modal-icon" aria-hidden="true">
+        <i class="ti ti-shield-lock-filled"></i>
+      </div>
+      
+      <h2 id="oral-security-alert-title" class="oral-security-modal-heading">
+        {{ selectedLang === 'fr' ? 'Alerte sécurité' : 'Security alert' }}
+      </h2>
+      
+      <p class="oral-security-modal-text">
+        {{ securityAlertBanner }}
+      </p>
+
+      @if (pendingTerminateMsg) {
+        <div class="oral-security-modal-warning-final mb-4">
+          <i class="ti ti-alert-triangle-filled me-1"></i>
+          {{ pendingTerminateMsg }}
+        </div>
+      }
+
+      <button
+        type="button"
+        class="btn oral-security-modal-btn w-100"
+        (click)="dismissSecurityAlertModal()"
+      >
+        {{ selectedLang === 'fr' ? 'J’ai compris' : 'Continue' }}
+      </button>
+    </div>
+  </div>
+}
+
+<!-- Choix langue / niveau -->
+@if (phase === 'setup') {
+  <section class="py-5 bg-light min-vh-100">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+              <span class="badge bg-primary-subtle text-primary mb-3">Simulation entretien oral</span>
+              <h1 class="h3 fw-bold mb-3">Test de niveau — Français &amp; Anglais</h1>
+              <p class="text-muted mb-4">
+                Parcours type entretien professionnel (niveaux <strong>B2</strong> ou <strong>C1</strong>) : caméra,
+                micro, questions lues par la synthèse vocale, analyse du visage (plusieurs personnes, mouvements
+                suspects) et <strong>bilan de niveau estimé</strong> à la fin. Sur <strong>téléphone</strong>, préférez
+                Chrome ; le plein écran peut être refusé — un bouton permet de continuer sans.
+              </p>
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label small text-uppercase text-muted">Langue</label>
+                  <select class="form-select" [(ngModel)]="selectedLang">
+                    @for (l of langs; track l.id) {
+                      <option [ngValue]="l.id">{{ l.label }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small text-uppercase text-muted">Niveau cible (CEFR)</label>
+                  <select class="form-select" [(ngModel)]="selectedLevel">
+                    @for (lv of levels; track lv) {
+                      <option [ngValue]="lv">{{ lv }} — entretien structuré</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-primary btn-lg" (click)="startDevicePhase()">
+                  Continuer vers caméra &amp; micro
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="leaveToPreevaluation()">
+                  Retour pré-évaluation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+
+<!-- Caméra / micro + examen -->
+@if (phase === 'devices' || phase === 'gate' || phase === 'calibration' || phase === 'interview') {
+  <div #secureHost class="oral-exam-shell min-vh-100 bg-dark text-white">
+    <div class="container-fluid py-3 py-lg-4">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-4">
+          <div class="oral-video-wrap rounded-3 overflow-hidden border border-secondary position-relative">
+            <video
+              #videoEl
+              class="w-100 oral-video"
+              autoplay
+              playsinline
+              muted
+            ></video>
+            <canvas #hiddenCanvas class="oral-hidden-canvas"></canvas>
+            <div class="oral-video-badges d-flex flex-column gap-1 align-items-start">
+              <span class="badge" [class.bg-success]="faceStatus === 'ok'" [class.bg-warning]="faceStatus === 'unknown'" [class.bg-danger]="faceStatus === 'absent'">
+                @if (faceStatus === 'ok') {
+                  Visage OK
+                } @else if (faceStatus === 'absent') {
+                  Visage non détecté
+                } @else {
+                  Analyse…
+                }
+              </span>
+              @if (attentionHint) {
+                <span class="badge bg-danger">{{ attentionHint }}</span>
+              }
+            </div>
+          </div>
+          <div class="mt-3 small text-white-50">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <span>Micro</span>
+              <div class="oral-meter flex-grow-1 rounded-pill">
+                <div class="oral-meter-fill rounded-pill" [style.width.%]="micLevel * 100"></div>
+              </div>
+            </div>
+            @if (faceDetectorSupported) {
+              <div>Détection faciale navigateur : activée</div>
+            } @else {
+              <div>Détection faciale : mode secours (luminosité). Chrome recommandé.</div>
+            }
+          </div>
+          <div
+            class="mt-2 small"
+            [class.text-danger]="strikes > 0"
+            [class.fw-semibold]="strikes > 0"
+            [class.text-white-50]="strikes === 0"
+          >
+            Alertes sécurité : <strong>{{ strikes }}</strong> / {{ maxStrikes }}
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          @if (phase === 'devices') {
+            <h2 class="h4 mb-3">Autorisation caméra &amp; micro</h2>
+            @if (loadingDevices) {
+              <div class="d-flex align-items-center gap-2">
+                <span class="spinner-border spinner-border-sm"></span>
+                Connexion aux périphériques…
+              </div>
+            }
+            @if (deviceError) {
+              <div class="alert alert-danger">{{ deviceError }}</div>
+            }
+            @if (stream && !loadingDevices) {
+              @if (mobileFriendlyNote) {
+                <p class="small text-info mb-2">{{ mobileFriendlyNote }}</p>
+              }
+              <p class="mb-3">Périphériques OK. Vous pouvez passer à l’étape suivante.</p>
+              <button type="button" class="btn btn-primary" (click)="confirmDevicesAndGate()">Continuer</button>
+            }
+          }
+
+          @if (phase === 'gate') {
+            <h2 class="h4 mb-3">Mode examen sécurisé</h2>
+            <p class="text-white-50 mb-3">
+              L’entretien se déroule en <strong>plein écran</strong>. Changer d’onglet, quitter le plein écran ou
+              masquer votre visage peut déclencher des alertes et arrêter la session.
+            </p>
+            @if (gateError) {
+              <div class="alert alert-warning text-dark">{{ gateError }}</div>
+            }
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button type="button" class="btn btn-warning text-dark fw-semibold" (click)="onGateContinue()">
+                Entrer en plein écran et commencer
+              </button>
+              <button type="button" class="btn btn-outline-light" (click)="continueWithoutFullscreen()">
+                Continuer sans plein écran (téléphone / Safari)
+              </button>
+            </div>
+            <p class="small text-white-50 mt-3 mb-0">
+              Sur iPhone, le plein écran est souvent bloqué : utilisez le 2ᵉ bouton. La détection faciale fonctionne
+              mieux avec Chrome Android ou Chrome bureau.
+            </p>
+          }
+
+          @if (phase === 'calibration') {
+            <h2 class="h4 mb-3">Étalonnage voix</h2>
+            <p class="text-white-50 mb-2">Lisez cette phrase à voix haute (elle sert de référence d’activité vocale) :</p>
+            <blockquote class="oral-quote border-start border-warning border-4 ps-3 mb-4">{{ calibrationPhrase }}</blockquote>
+            <button type="button" class="btn btn-primary" (click)="finishCalibration()">J’ai lu — lancer l’entretien</button>
+          }
+
+          @if (phase === 'interview' && currentPrompt) {
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-white-50 small">Question {{ progressLabel }}</span>
+              <span class="badge bg-secondary">{{ selectedLevel }} · {{ selectedLang === 'fr' ? 'FR' : 'EN' }}</span>
+            </div>
+            @if (examinerSpeaking) {
+              <div class="alert alert-info mb-3 py-2">L’examinatrice pose la question…</div>
+            }
+            <p class="small text-white-50 mb-2">{{ currentPrompt.candidateHint }}</p>
+            <p class="oral-timer mb-3">
+              Temps conseillé : <strong>{{ answerSecondsLeft }}</strong> s
+            </p>
+
+            <label class="form-label small text-uppercase text-white-50">Votre réponse (reconnaissance vocale + saisie)</label>
+            <textarea
+              class="form-control bg-dark text-white border-secondary mb-2"
+              rows="4"
+              [(ngModel)]="transcriptManual"
+              placeholder="Saisissez ou complétez votre réponse si la reconnaissance vocale est imparfaite."
+            ></textarea>
+            @if (transcript) {
+              <div class="small text-white-50 mb-3 border-start border-info ps-2">Reconnu : {{ transcript }}</div>
+            }
+            @if (listening) {
+              <div class="text-info small mb-3">Écoute active — parlez clairement.</div>
+            }
+
+            <button type="button" class="btn btn-success" [disabled]="examinerSpeaking" (click)="nextQuestion()">
+              @if (qIndex + 1 >= prompts.length) {
+                Terminer l’entretien
+              } @else {
+                Question suivante
+              }
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (phase === 'summary') {
+  <section class="py-5 bg-light min-vh-100">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-7">
+          <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+              <h2 class="h4 mb-3">Fin de session</h2>
+              <p class="text-muted">{{ summaryNote }}</p>
+
+              @if (aiLoading) {
+                <div class="d-flex align-items-center gap-2 mb-3 text-muted">
+                  <span class="spinner-border spinner-border-sm" role="status"></span>
+                  Analyse du niveau par IA en cours…
+                </div>
+              }
+              @if (aiError && !aiLoading) {
+                <div class="alert alert-warning border-0 mb-3">
+                  L’analyse IA du niveau n’est pas disponible (service indisponible ou erreur réseau). L’estimation
+                  locale ci-dessous reste affichée.
+                </div>
+              }
+              @if (aiAssessment) {
+                <div class="alert alert-primary border-0 mb-4 oral-result-card">
+                  <div class="d-flex flex-wrap align-items-baseline gap-2 mb-2">
+                    <span class="display-6 fw-bold text-primary mb-0">{{ aiAssessment.cefrLevel }}</span>
+                    <span class="text-muted">(CEFR — analyse IA)</span>
+                  </div>
+                  <p class="small text-muted mb-2">
+                    Confiance du modèle : {{ (aiAssessment.confidence * 100) | number: '1.0-0' }} %
+                  </p>
+                  <p class="mb-2 fw-semibold">
+                    {{ selectedLang === 'fr' ? aiAssessment.summaryFr : aiAssessment.summaryEn }}
+                  </p>
+                  @if (aiAssessment.strengthsFr?.length) {
+                    <p class="small fw-semibold mb-1">Points forts</p>
+                    <ul class="small mb-2">
+                      @for (s of aiAssessment.strengthsFr; track s) {
+                        <li>{{ s }}</li>
+                      }
+                    </ul>
+                  }
+                  @if (aiAssessment.weaknessesFr?.length) {
+                    <p class="small fw-semibold mb-1">Axes d’amélioration</p>
+                    <ul class="small mb-0">
+                      @for (w of aiAssessment.weaknessesFr; track w) {
+                        <li>{{ w }}</li>
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+
+              @if (resultEstimate) {
+                <div class="alert alert-success border-0 mb-4 oral-result-card">
+                  <h3 class="h6 text-muted mb-3">Estimation locale (règles automatiques)</h3>
+                  <div class="d-flex flex-wrap align-items-baseline gap-2 mb-2">
+                    <span class="display-6 fw-bold text-success mb-0">{{ resultEstimate.estimatedLevel }}</span>
+                    <span class="text-muted">(CEFR indicatif)</span>
+                  </div>
+                  <p class="mb-2 fw-semibold">
+                    {{ selectedLang === 'fr' ? resultEstimate.summaryFr : resultEstimate.summaryEn }}
+                  </p>
+                  <p class="small text-muted mb-2">
+                    {{ selectedLang === 'fr' ? resultEstimate.disclaimerFr : resultEstimate.disclaimerEn }}
+                  </p>
+                  <p class="small text-dark mb-3 border-start border-3 border-warning ps-2">
+                    {{ selectedLang === 'fr' ? resultEstimate.breakdown.levelCapReasonFr : resultEstimate.breakdown.levelCapReasonEn }}
+                  </p>
+                  <ul class="small mb-0 text-body-secondary">
+                    <li>
+                      Score automatique : <strong>{{ resultEstimate.scorePercent }}%</strong>
+                    </li>
+                    <li>
+                      Réponses type « je ne sais pas » / trop vides détectées :
+                      <strong>{{ resultEstimate.breakdown.refusalLikeAnswers }}</strong>
+                    </li>
+                    <li>
+                      Réponses trop courtes (&lt; 22 mots) : <strong>{{ resultEstimate.breakdown.tooShortAnswers }}</strong>
+                    </li>
+                    <li>
+                      Mots au total : {{ resultEstimate.breakdown.totalWords }} — diversité lexicale :
+                      {{ resultEstimate.breakdown.uniqueWordRatio | number: '1.0-2' }}
+                    </li>
+                    <li>
+                      Moyenne mots / réponse : {{ resultEstimate.breakdown.avgWordsPerAnswer }}
+                    </li>
+                    <li>
+                      Mots longs (≥ 8 lettres) : {{ resultEstimate.breakdown.longWordCount }}
+                    </li>
+                    @if (resultEstimate.breakdown.contentPenalty > 0) {
+                      <li>Pénalité contenu (refus / longueur) : −{{ resultEstimate.breakdown.contentPenalty }} pts</li>
+                    }
+                    @if (resultEstimate.breakdown.strikePenalty > 0) {
+                      <li>Pénalité alertes sécurité : −{{ resultEstimate.breakdown.strikePenalty }} pts</li>
+                    }
+                  </ul>
+                </div>
+              }
+
+              @if (proctorLog.length) {
+                <details class="mb-3">
+                  <summary class="small text-muted">Journal des alertes ({{ proctorLog.length }})</summary>
+                  <ul class="small mt-2">
+                    @for (e of proctorLog; track e.at) {
+                      <li>{{ e.reason }} — {{ e.detail }}</li>
+                    }
+                  </ul>
+                </details>
+              }
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-primary" (click)="leaveToPreevaluation()">Pré-évaluation</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="goHome()">Accueil</button>
+                @if (resultEstimate || aiAssessment) {
+                  <button type="button" class="btn btn-outline-danger ms-auto" (click)="exportToPdf()">
+                    <i class="bi bi-file-earmark-pdf me-1"></i>Exporter en PDF
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+
+<app-footer></app-footer>

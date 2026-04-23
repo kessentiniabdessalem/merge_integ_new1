@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+<app-hero></app-hero>
+<app-features></app-features>
+
+<!-- Section Statistiques -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-4">
+        <h2 class="fw-bold">📊 Platform Statistics</h2>
+        <p class="text-muted">See what's happening on our platform</p>
+      </div>
+    </div>
+    <app-event-statistics></app-event-statistics>
+  </div>
+</section>
+
+<app-courses></app-courses>
+<app-mentor></app-mentor>
+<app-group></app-group>
+<app-testimonials></app-testimonials>
+<app-pricing (openModal)="modal.open()"></app-pricing>
+<app-footer></app-footer>
+<app-get-started-modal #modal></app-get-started-modal>

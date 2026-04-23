@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+
+<section class="py-5 bg-light min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="card shadow border-0 rounded-4">
+          <div class="card-body p-5 text-center">
+            <div class="mb-4">
+              <span class="badge bg-warning text-dark fs-6 px-3 py-2">Pre-evaluation required</span>
+            </div>
+            <h1 class="h2 fw-bold mb-3">Welcome</h1>
+            <p class="lead text-muted mb-4">
+              You must complete a pre-evaluation to determine your English level.
+            </p>
+            <p class="text-muted small mb-4">
+              This includes a short profile questionnaire (not scored) and an adaptive test starting at A1.
+            </p>
+            @if (error) {
+              <div class="alert alert-danger text-start">{{ error }}</div>
+            }
+            <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center align-items-center">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg px-5"
+                [disabled]="loading"
+                (click)="start()"
+              >
+                @if (loading) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                }
+                Start
+              </button>
+              <a
+                routerLink="/oral-interview"
+                class="btn btn-outline-primary btn-lg"
+              >
+                Entretien oral FR / EN (caméra + IA)
+              </a>
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+              L’entretien oral est une simulation locale (navigateur) avec contrôles type centre d’examen, distinct du QCM
+              anglais.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

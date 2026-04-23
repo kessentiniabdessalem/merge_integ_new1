@@ -1,0 +1,160 @@
+<app-navbar></app-navbar>
+
+<section class="job-board">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="board-header">
+      <div>
+        <h1 class="board-title">
+          <i class="ti ti-briefcase"></i> Job Board
+        </h1>
+        <p class="board-subtitle">Tutor opportunities matched to your profile</p>
+      </div>
+      <div class="board-actions">
+        <a routerLink="/" class="btn-link">
+          <i class="ti ti-arrow-left"></i> Home
+        </a>
+        <a href="/auth/login?role=candidate" class="btn-cta" *ngIf="!isCandidate">
+          Sign in to Apply
+        </a>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-input">
+        <i class="ti ti-search"></i>
+        <input type="text" placeholder="Search jobs..." [(ngModel)]="searchTerm" (input)="applyFilters()">
+      </div>
+      <input type="text" placeholder="Location..." [(ngModel)]="locationFilter" (input)="applyFilters()" class="filter-input">
+      <input type="text" placeholder="Subject..." [(ngModel)]="subjectFilter" (input)="applyFilters()" class="filter-input">
+    </div>
+
+    <!-- Loading / Error -->
+    <div *ngIf="loading" class="state-box">
+      <i class="ti ti-loader-2 spin"></i>
+      <p>Loading jobs...</p>
+    </div>
+    <div *ngIf="error && !loading" class="state-box error">
+      <i class="ti ti-alert-circle"></i>
+      <p>{{ error }}</p>
+    </div>
+
+    <!-- Jobs Grid -->
+    <div class="jobs-grid" *ngIf="!loading && !error">
+      <div class="job-card" *ngFor="let job of filtered">
+        <div class="job-card-top">
+          <div class="job-meta">
+            <span class="job-status" [attr.data-status]="job.status">{{ job.status }}</span>
+            <span *ngIf="job.matchScore != null" class="match-score">
+              <i class="ti ti-target"></i> {{ job.matchScore }}% match
+            </span>
+          </div>
+          <button class="save-btn" (click)="toggleSave(job)" [title]="isSaved(job.id) ? 'Unsave' : 'Save'">
+            <i [class]="isSaved(job.id) ? 'ti ti-bookmark-filled' : 'ti ti-bookmark'"></i>
+          </button>
+        </div>
+
+        <h3 class="job-title">{{ job.title }}</h3>
+        <div class="job-tags">
+          <span class="tag"><i class="ti ti-map-pin"></i> {{ job.location }}</span>
+          <span class="tag"><i class="ti ti-school"></i> {{ job.subject }}</span>
+          <span class="tag"><i class="ti ti-currency-dollar"></i> {{ job.salaryMin | number }} – {{ job.salaryMax | number }} TND</span>
+        </div>
+        <p class="job-desc">{{ job.description | slice:0:120 }}{{ (job.description?.length || 0) > 120 ? '...' : '' }}</p>
+
+        <div class="job-card-footer">
+          <span class="posted-date">
+            <i class="ti ti-clock"></i> Expires {{ job.expiresAt | date:'mediumDate' }}
+          </span>
+          <div class="card-actions">
+            <button class="btn-secondary" (click)="openDetail(job)">
+              <i class="ti ti-eye"></i> View
+            </button>
+            <button class="btn-primary" (click)="openApply(job)" *ngIf="isCandidate">
+              <i class="ti ti-send"></i> Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-board" *ngIf="filtered.length === 0">
+        <i class="ti ti-briefcase-off"></i>
+        <p>No jobs match your search.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detail Modal -->
+@if (showDetailModal && detailJob) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ detailJob.title }}</h2>
+        <button class="modal-close" (click)="closeDetail()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-tags">
+          <span class="tag"><i class="ti ti-map-pin"></i> {{ detailJob.location }}</span>
+          <span class="tag"><i class="ti ti-school"></i> {{ detailJob.subject }}</span>
+          <span class="tag"><i class="ti ti-currency-dollar"></i> {{ detailJob.salaryMin | number }} – {{ detailJob.salaryMax | number }} TND</span>
+        </div>
+        <p class="detail-desc">{{ detailJob.description }}</p>
+        <div class="detail-meta">
+          <span><strong>Status:</strong> {{ detailJob.status }}</span>
+          <span><strong>Expires:</strong> {{ detailJob.expiresAt | date:'medium' }}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeDetail()">Close</button>
+        <button class="btn-primary" (click)="closeDetail(); openApply(detailJob)" *ngIf="isCandidate">
+          <i class="ti ti-send"></i> Apply Now
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Apply Modal -->
+@if (showApplyModal && applyJob) {
+  <div class="modal-overlay" (click)="closeApply()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="ti ti-send"></i> Apply: {{ applyJob.title }}</h2>
+        <button class="modal-close" (click)="closeApply()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Cover Letter</label>
+          <textarea [(ngModel)]="coverLetter" rows="5" placeholder="Tell us why you're a great fit..." class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Upload CV (PDF)</label>
+          <div class="file-upload">
+            <input type="file" accept=".pdf" (change)="onFileChange($event)" id="cvFile">
+            <label for="cvFile" class="file-label">
+              <i class="ti ti-file-upload"></i>
+              {{ cvFile ? cvFile.name : 'Choose PDF file...' }}
+            </label>
+          </div>
+        </div>
+        @if (applySuccess) {
+          <div class="alert success"><i class="ti ti-check-circle"></i> {{ applySuccess }}</div>
+        }
+        @if (applyError) {
+          <div class="alert error"><i class="ti ti-alert-circle"></i> {{ applyError }}</div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeApply()">Cancel</button>
+        <button class="btn-primary" (click)="submitApply()" [disabled]="applying || !cvFile">
+          <i class="ti ti-check"></i> {{ applying ? 'Submitting...' : 'Submit Application' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<app-footer></app-footer>

@@ -1,0 +1,246 @@
+<app-navbar></app-navbar>
+
+<section class="py-5 bg-light min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="card shadow border-0 rounded-4 mb-4">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="h3 fw-bold mb-4">Pre-evaluation complete</h1>
+
+            @if (showTimeUpNotice) {
+              <div class="alert alert-info mb-4" role="status">
+                Time is up. Your test has been submitted.
+              </div>
+            }
+
+            @if (loadingReview) {
+              <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="text-muted mt-3 mb-0">Loading your personalised review…</p>
+              </div>
+            } @else {
+              @if (reviewError) {
+                <div class="alert alert-warning">{{ reviewError }}</div>
+              }
+
+              <p class="lead mb-2">Final level:</p>
+              <p class="display-6 fw-bold text-primary mb-3">{{ displayFinalLevel() }}</p>
+
+              @if (review?.failedLevel) {
+                <p class="text-muted mb-4">
+                  Failed level (last block under the pass threshold):
+                  <strong class="text-dark">{{ review?.failedLevel }}</strong>
+                </p>
+              } @else if (review && !review.failedLevel) {
+                <p class="text-muted mb-4">
+                  You did not stop on a failed block — you reached your final placement successfully.
+                </p>
+              } @else {
+                <p class="text-muted mb-4">
+                  This level has been saved to your profile. You can now use the full client area.
+                </p>
+              }
+
+              @if (review) {
+                <div class="preeval-weakness card border-0 bg-white shadow-sm rounded-4 mb-4">
+                  <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Skill focus</h2>
+                    <ul class="list-unstyled mb-0 small">
+                      @if (review.mainWeakness) {
+                        <li class="mb-2">
+                          <span class="text-muted">Main weakness:</span>
+                          <strong class="ms-1">{{ review.mainWeakness }}</strong>
+                        </li>
+                      }
+                      @if (review.secondaryWeakness) {
+                        <li class="mb-2">
+                          <span class="text-muted">Secondary weakness:</span>
+                          <strong class="ms-1">{{ review.secondaryWeakness }}</strong>
+                        </li>
+                      }
+                      <li>
+                        <span class="text-muted">Reading:</span>
+                        <span class="ms-1">{{ review.readingAssessment }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <h2 class="h5 fw-bold mb-3">Incorrect answers</h2>
+                @if (review.incorrectAnswers.length === 0) {
+                  <p class="text-muted mb-4">You have no recorded incorrect answers — excellent work.</p>
+                } @else {
+                  <div class="d-flex flex-column gap-3 mb-4">
+                    @for (item of review.incorrectAnswers; track item.questionId) {
+                      <div class="card border-0 shadow-sm rounded-4 preeval-mistake-card">
+                        <div class="card-body p-4">
+                          <div
+                            class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2"
+                          >
+                            <span class="badge bg-secondary">{{ item.categoryLabel }}</span>
+                            <span class="badge bg-dark">Level {{ item.level }}</span>
+                          </div>
+                          <p class="fw-semibold mb-3">{{ item.questionText }}</p>
+                          <div class="small">
+                            <p class="mb-1">
+                              <span class="text-muted">Your answer:</span>
+                              <span class="ms-1 text-danger">{{ item.selectedAnswerText }}</span>
+                            </p>
+                            <p class="mb-3">
+                              <span class="text-muted">Correct answer:</span>
+                              <span class="ms-1 text-success">{{ item.correctAnswerText }}</span>
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            [disabled]="aiStateFor(item.questionId)?.loading === true"
+                            (click)="askAi(item)"
+                          >
+                            @if (aiStateFor(item.questionId)?.loading) {
+                              <span
+                                class="spinner-border spinner-border-sm me-1"
+                                role="status"
+                              ></span>
+                            }
+                            Ask AI
+                          </button>
+                          @if (aiStateFor(item.questionId)?.error) {
+                            <div class="alert alert-warning small mt-3 mb-0">
+                              {{ aiStateFor(item.questionId)?.error }}
+                            </div>
+                          }
+                          @if (aiStateFor(item.questionId)?.explanation) {
+                            <div class="preeval-ai-explanation mt-3 small">
+                              {{ aiStateFor(item.questionId)?.explanation }}
+                            </div>
+                            <div class="mt-3">
+                              <button
+                                type="button"
+                                class="btn btn-link btn-sm text-decoration-none ps-0"
+                                (click)="toggleChat(item.questionId)"
+                              >
+                                @if (aiStateFor(item.questionId)?.chatOpen === false) {
+                                  Show follow-up chat
+                                } @else {
+                                  Hide follow-up chat
+                                }
+                              </button>
+                            </div>
+                            @if (aiStateFor(item.questionId)?.chatOpen !== false) {
+                              <div class="preeval-followup-chat mt-2">
+                                @for (
+                                  turn of aiStateFor(item.questionId)?.chatTurns ?? [];
+                                  track $index
+                                ) {
+                                  <div
+                                    class="preeval-chat-row mb-2"
+                                    [class.preeval-chat-row-user]="turn.role === 'user'"
+                                  >
+                                    <div
+                                      class="preeval-chat-bubble small"
+                                      [class.preeval-chat-bubble-user]="turn.role === 'user'"
+                                    >
+                                      <span class="text-uppercase text-muted fw-semibold me-1">{{
+                                        turn.role === 'user' ? 'You' : 'AI'
+                                      }}</span>
+                                      <span class="preeval-chat-text">{{ turn.content }}</span>
+                                    </div>
+                                  </div>
+                                }
+                                @if (aiStateFor(item.questionId)?.followUpError) {
+                                  <div class="alert alert-warning small py-2 mb-2">
+                                    {{ aiStateFor(item.questionId)?.followUpError }}
+                                  </div>
+                                }
+                                <div class="input-group input-group-sm">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Ask about this mistake (e.g. Give me another example)"
+                                    [ngModel]="chatDraft[item.questionId]"
+                                    (ngModelChange)="chatDraft[item.questionId] = $event"
+                                    (keydown.enter)="sendFollowUp(item); $event.preventDefault()"
+                                    [disabled]="aiStateFor(item.questionId)?.followUpLoading === true"
+                                  />
+                                  <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    (click)="sendFollowUp(item)"
+                                    [disabled]="
+                                      aiStateFor(item.questionId)?.followUpLoading === true ||
+                                      !(chatDraft[item.questionId] || '').trim()
+                                    "
+                                  >
+                                    @if (aiStateFor(item.questionId)?.followUpLoading) {
+                                      <span
+                                        class="spinner-border spinner-border-sm"
+                                        role="status"
+                                      ></span>
+                                    } @else {
+                                      Send
+                                    }
+                                  </button>
+                                </div>
+                              </div>
+                            }
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <div class="card border-0 bg-light rounded-4 mb-4 preeval-summary-card">
+                  <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Summary</h2>
+                    <ul class="mb-0 ps-3">
+                      @for (line of review.globalSummaryLines; track $index) {
+                        <li class="mb-2">{{ line }}</li>
+                      }
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 mb-4 preeval-recs-card">
+                  <div class="card-body p-4 p-md-5">
+                    <h2 class="h5 fw-bold mb-2">Recommended learning path</h2>
+                    <p class="text-muted small mb-4">
+                      Placeholder suggestions based on your level and mistakes. Your teammate’s Courses module will
+                      link here later — use <strong>Courses</strong> below when enrolment is ready.
+                    </p>
+                    <div class="d-flex flex-column gap-3">
+                      @for (rec of courseRecs; track rec.id) {
+                        <div class="preeval-rec-tile border rounded-4 p-3 p-md-4 bg-white">
+                          <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                            <span class="badge bg-primary">Recommended</span>
+                            <span class="badge bg-secondary">{{ rec.category }}</span>
+                            <span class="badge bg-dark">Level {{ rec.suggestedLevel }}</span>
+                          </div>
+                          <h3 class="h6 fw-bold mb-2">{{ rec.title }}</h3>
+                          <p class="small mb-2 mb-md-3">{{ rec.description }}</p>
+                          <p class="small text-muted mb-0">
+                            <span class="fw-semibold text-secondary">Why this fits you:</span>
+                            {{ rec.reason }}
+                          </p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+
+            <div class="d-flex flex-wrap gap-2">
+              <a routerLink="/" class="btn btn-primary">Accueil</a>
+              <a routerLink="/courses" class="btn btn-outline-primary">Cours</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

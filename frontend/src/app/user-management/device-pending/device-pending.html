@@ -1,0 +1,9 @@
+<div class="signin-page">
+  <div class="signin-container text-center">
+    <h2 class="signin-title">Confirmation required</h2>
+    <p *ngIf="!errorMessage">We detected a login from a new device.</p>
+    <p *ngIf="!errorMessage">Please check your email and click <b>Confirm this device</b>.</p>
+    <p *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</p>
+    <button *ngIf="errorMessage" type="button" class="btn btn-login mt-2" (click)="goToLogin()">Back to login</button>
+  </div>
+</div>

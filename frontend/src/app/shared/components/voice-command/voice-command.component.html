@@ -1,0 +1,27 @@
+<div class="voice-command-container">
+  <!-- Bouton microphone principal -->
+  <button 
+    class="voice-btn" 
+    [class.listening]="isListening"
+    [class.disabled]="!isSupported"
+    (click)="toggleListening()"
+    [disabled]="!isSupported"
+    title="Commande vocale (Appuyez sur M)">
+    <i class="bi bi-mic-fill" *ngIf="!isListening"></i>
+    <i class="bi bi-mic-mute-fill pulse" *ngIf="isListening"></i>
+    <span class="keyboard-hint" *ngIf="!isListening && isSupported">M</span>
+  </button>
+
+  <!-- Bouton aide -->
+  <button 
+    class="help-btn" 
+    (click)="showCommands()"
+    title="Voir les commandes disponibles">
+    <i class="bi bi-question-circle"></i>
+  </button>
+
+  <!-- Message de statut -->
+  <div class="status-message" *ngIf="statusMessage" [class.error]="statusMessage.includes('⚠️')">
+    {{ statusMessage }}
+  </div>
+</div>

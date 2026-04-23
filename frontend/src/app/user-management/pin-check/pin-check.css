@@ -1,0 +1,9 @@
+.card {
+  border-radius: 14px;
+}
+
+.form-control {
+  height: 46px;
+  font-size: 16px;
+  letter-spacing: 3px;
+}

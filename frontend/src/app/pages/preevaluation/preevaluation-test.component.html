@@ -1,0 +1,280 @@
+<!-- No site navbar/footer here: secure pre-evaluation surface only (anti-cheating / fullscreen). -->
+<section class="py-4 pt-5 bg-light min-vh-100 position-relative">
+  @if (firstStrikeModalText) {
+    <div
+      class="preeval-fraud-modal-backdrop d-flex align-items-center justify-content-center p-3"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="card shadow-lg border-0 rounded-4" style="max-width: 520px">
+        <div class="card-body p-4 p-md-5 text-center">
+          <h2 class="h5 fw-bold mb-3">Policy violation</h2>
+          <p class="text-muted mb-4">{{ firstStrikeModalText }}</p>
+          <button type="button" class="btn btn-primary px-4" (click)="acknowledgeFirstStrike()">
+            I understand — continue
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div
+    #secureHost
+    class="preeval-secure-host"
+    (contextmenu)="blockContextMenu($event)"
+    (copy)="blockClipboardEvent($event)"
+    (cut)="blockClipboardEvent($event)"
+    (paste)="blockClipboardEvent($event)"
+  >
+    @if (showSecureGate && !loading) {
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4">
+              <div class="card-body p-4 p-md-5 text-center">
+                <h1 class="h4 fw-bold mb-3">Secure full-screen required</h1>
+                <p class="text-muted mb-3">
+                  The pre-evaluation runs in full-screen. Switching tabs, minimizing the window,
+                  moving focus away from this page, or leaving full-screen may be recorded as a
+                  violation of test rules.
+                </p>
+                @if (secureGateError) {
+                  <div class="alert alert-warning text-start small">{{ secureGateError }}</div>
+                }
+                <button type="button" class="btn btn-primary btn-lg px-5 mt-2" (click)="onSecureContinue()">
+                  Continue to full-screen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else if (loading) {
+      <div class="container">
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="text-muted mt-2 mb-0">Loading questions…</p>
+        </div>
+      </div>
+    } @else if (view === 'levelSummary' && levelSummary) {
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <div class="card shadow-sm border-0 rounded-4">
+              <div class="card-body p-4 p-md-5 text-center">
+                @if (showTimeUpBannerOnSummary) {
+                  <div class="alert alert-warning text-center small mb-4" role="status">
+                    Time is up. Your test has been submitted.
+                  </div>
+                }
+                <p class="text-muted small mb-2">Section 2 — Adaptive test</p>
+                <h1 class="h4 fw-bold mb-3">Level completed: {{ levelSummary.attemptedLevel }}</h1>
+                <p class="fs-5 mb-2">
+                  <strong>{{ levelSummary.score }}</strong> / {{ levelSummary.maxScore }} correct answers
+                </p>
+                @if (levelSummary.passed) {
+                  <p class="badge bg-success fs-6 mb-4">Level passed</p>
+                } @else {
+                  <p class="badge bg-danger fs-6 mb-2">Level failed</p>
+                  @if (levelSummary.finalLevel) {
+                    <p class="text-muted mb-4">
+                      Your assessed English level (last validated level):
+                      <strong class="text-dark">{{ levelSummary.finalLevel }}</strong>
+                    </p>
+                  }
+                }
+
+                @if (levelSummary.passed && levelSummary.nextLevel) {
+                  <p class="text-muted small mb-3">Next: level {{ levelSummary.nextLevel }}</p>
+                  <button type="button" class="btn btn-primary btn-lg px-4" (click)="continueToNextLevel()">
+                    Continue to {{ levelSummary.nextLevel }}
+                  </button>
+                } @else if (levelSummary.passed && levelSummary.finalLevel) {
+                  <p class="text-muted small mb-3">You have validated all levels up to C2.</p>
+                  <button type="button" class="btn btn-primary btn-lg px-4" (click)="goToFinalResultPage()">
+                    See final result
+                  </button>
+                } @else if (!levelSummary.passed && levelSummary.finalLevel) {
+                  <button type="button" class="btn btn-primary btn-lg px-4" (click)="goToFinalResultPage()">
+                    See final result
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else if (error && !currentQuestion) {
+      <div class="container">
+        <div class="alert alert-danger">{{ error }}</div>
+        <button type="button" class="btn btn-outline-primary" (click)="bootstrap()">Retry</button>
+      </div>
+    } @else if (currentQuestion) {
+      <div class="container">
+        <div class="row justify-content-center mb-3">
+          <div class="col-lg-10">
+            @if (remainingSeconds !== null) {
+              <div
+                class="preeval-timer-bar d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 px-3 py-2 rounded-3"
+                [class.preeval-timer-warning]="timerLowWarning"
+              >
+                <span class="small fw-semibold text-uppercase text-muted mb-0">Time remaining</span>
+                <span class="preeval-timer-digits fw-bold fs-5 mb-0" aria-live="polite">{{
+                  formatLevelTimer()
+                }}</span>
+                @if (timerLowWarning) {
+                  <span class="small fw-semibold text-danger ms-auto">Less than 1 minute</span>
+                }
+              </div>
+            }
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+              <span class="small text-muted">Section 2 — Adaptive test</span>
+              <span class="badge bg-dark fs-6">Current level: {{ currentLevel }}</span>
+            </div>
+            <div class="mb-1 small text-muted">Overall progress</div>
+            <div class="progress mb-4" style="height: 8px">
+              <div
+                class="progress-bar bg-primary"
+                role="progressbar"
+                [style.width.%]="levelProgressFraction * 100"
+              ></div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              @for (lv of allLevels; track lv) {
+                <span
+                  class="badge rounded-pill"
+                  [class.bg-primary]="lv === currentLevel"
+                  [class.text-white]="lv === currentLevel"
+                  [class.bg-light]="lv !== currentLevel"
+                  [class.text-dark]="lv !== currentLevel"
+                  >{{ lv }}</span
+                >
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4">
+              <div class="card-body p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-secondary-subtle text-dark">{{
+                    categoryLabel(currentQuestion.category)
+                  }}</span>
+                  <span class="text-muted small"
+                    >Question {{ index + 1 }} / {{ questions.length }}</span
+                  >
+                </div>
+                <div class="progress mb-4" style="height: 6px">
+                  <div
+                    class="progress-bar"
+                    [style.width.%]="((index + 1) / questions.length) * 100"
+                  ></div>
+                </div>
+
+                @if (isReadingQuestion(currentQuestion)) {
+                  <div class="reading-audio-panel border rounded-3 p-4 mb-4 bg-white">
+                    <p class="small text-uppercase text-muted fw-semibold mb-2">Audio passage</p>
+                    <p class="text-muted small mb-3">
+                      Listen to the passage (the text is not shown). You can play it at most
+                      {{ maxReadingListens }} times for this question.
+                    </p>
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary d-inline-flex align-items-center gap-2 reading-play-btn"
+                        [disabled]="!canPlayReadingAudio(currentQuestion)"
+                        (click)="playReadingAudio(currentQuestion!)"
+                        [attr.aria-label]="readingSpeechActive ? 'Playing audio' : 'Play passage audio'"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="22"
+                          height="22"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
+                          />
+                          <path
+                            d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
+                          />
+                          <path
+                            d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.84-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 6.5H1.5A.5.5 0 0 0 1 7v2a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 11V4z"
+                          />
+                        </svg>
+                        <span>{{ readingSpeechActive ? 'Playing…' : 'Play' }}</span>
+                      </button>
+                      <span class="text-muted small fw-medium">
+                        Remaining listens: {{ getReadingListensRemaining(currentQuestion!) }}
+                      </span>
+                    </div>
+                    @if (readingAudioError) {
+                      <div class="alert alert-warning small mt-3 mb-0 py-2">{{ readingAudioError }}</div>
+                    }
+                  </div>
+                } @else {
+                  <h2 class="h5 fw-semibold mb-4">{{ currentQuestion.text }}</h2>
+                }
+
+                <div class="d-flex flex-column gap-2">
+                  @for (opt of currentQuestion.options; track opt.id) {
+                    <div
+                      class="form-check p-3 rounded-3 border option-tile"
+                      [class.border-primary]="selectedOptionId === opt.id"
+                      [class.bg-primary-subtle]="selectedOptionId === opt.id"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        [name]="'q' + currentQuestion.id"
+                        [id]="'o' + opt.id"
+                        [checked]="selectedOptionId === opt.id"
+                        (change)="selectOption(opt.id)"
+                      />
+                      <label class="form-check-label w-100" [for]="'o' + opt.id">{{ opt.text }}</label>
+                    </div>
+                  }
+                </div>
+
+                @if (error) {
+                  <div class="alert alert-danger mt-3 mb-0">{{ error }}</div>
+                }
+
+                <div class="d-flex justify-content-between mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    [disabled]="index === 0 || submitting"
+                    (click)="prev()"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="selectedOptionId == null || submitting"
+                    (click)="next()"
+                  >
+                    @if (submitting) {
+                      <span class="spinner-border spinner-border-sm me-1"></span>
+                    }
+                    @if (index < questions.length - 1) {
+                      Next
+                    } @else {
+                      Submit level
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</section>

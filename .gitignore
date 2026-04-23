@@ -1,0 +1,35 @@
+# Dependencies & build
+node_modules/
+**/node_modules/
+dist/
+.angular/
+
+# Java / Maven
+**/target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs & local
+*.log
+.env
+.env.*
+!integrated/.env.example
+*.local
+
+# Secrets (ai-service)
+integrated/ai-service/src/main/resources/application-secrets.yml
+
+# Docker / OAuth local
+integrated/.env
+
+# H2 local databases
+**/.h2/
+.claude/

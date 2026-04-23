@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+
+<section class="py-6 bg-light messenger-section">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/" class="btn btn-sm btn-outline-secondary">Back to Home</a>
+          <a routerLink="/courses" class="btn btn-sm btn-outline-primary">Go to Courses</a>
+          <a routerLink="/clubs" class="btn btn-sm btn-outline-primary">Join Club</a>
+          <a routerLink="/job-offers" class="btn btn-sm btn-outline-primary">Apply for Job</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="display-5 fw-bold">Messenger</h1>
+        <p class="lead text-muted">Chat with classmates and tutors</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm rounded-4 overflow-hidden">
+      <div class="row g-0">
+        <!-- Contact list -->
+        <div class="col-md-4 border-end">
+          <div class="p-3 border-bottom bg-white">
+            <input type="text" class="form-control rounded-pill" placeholder="Search contacts...">
+          </div>
+          <div class="contact-list">
+            @for (contact of contacts; track contact.id) {
+              <div class="contact-item d-flex align-items-center p-3 cursor-pointer"
+                   [class.bg-light]="selectedContact?.id === contact.id"
+                   (click)="selectContact(contact)">
+                <img [src]="contact.avatar" alt="" class="rounded-circle me-3" width="48" height="48">
+                <div class="flex-grow-1 overflow-hidden">
+                  <h6 class="mb-0 fw-semibold">{{ contact.name }}</h6>
+                  <p class="mb-0 small text-muted text-truncate">{{ contact.lastMessage }}</p>
+                </div>
+                <div class="text-end">
+                  <span class="small text-muted d-block">{{ contact.time }}</span>
+                  @if (contact.unread) {
+                    <span class="badge bg-primary rounded-pill">{{ contact.unread }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Chat area -->
+        <div class="col-md-8 d-flex flex-column">
+          @if (selectedContact) {
+            <div class="p-3 border-bottom bg-white d-flex align-items-center">
+              <img [src]="selectedContact.avatar" alt="" class="rounded-circle me-2" width="40" height="40">
+              <h6 class="mb-0 fw-semibold">{{ selectedContact.name }}</h6>
+            </div>
+            <div class="chat-messages p-4 flex-grow-1 overflow-auto">
+              @for (msg of messages; track msg.id) {
+                <div class="d-flex mb-3" [class.justify-content-end]="msg.sender === 'me'">
+                  <div class="message-bubble"
+                       [class.message-me]="msg.sender === 'me'"
+                       [class.message-other]="msg.sender === 'other'">
+                    <p class="mb-0">{{ msg.text }}</p>
+                    <span class="small text-muted">{{ msg.time }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="p-3 border-top bg-white">
+              <div class="d-flex gap-2">
+                <input type="text" class="form-control rounded-pill flex-grow-1" placeholder="Type a message..."
+                       [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+                <button class="btn btn-primary rounded-pill px-4" (click)="sendMessage()">Chat</button>
+              </div>
+            </div>
+          } @else {
+            <div class="flex-grow-1 d-flex align-items-center justify-content-center text-muted">
+              <p class="mb-0">Select a contact to start chatting</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

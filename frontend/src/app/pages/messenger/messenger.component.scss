@@ -1,0 +1,40 @@
+.messenger-section {
+  min-height: calc(100vh - 200px);
+}
+
+.contact-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.contact-item {
+  transition: background 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+.chat-messages {
+  min-height: 350px;
+  background-color: #f8f9fa;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+
+  &.message-me {
+    background-color: #0ea5e9;
+    color: white;
+    border-bottom-right-radius: 0.25rem;
+  }
+
+  &.message-other {
+    background-color: white;
+    border: 1px solid #e5e5e5;
+    border-bottom-left-radius: 0.25rem;
+  }
+}

@@ -1,0 +1,146 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Certificates Management</h2>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary" (click)="loadCertificates()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Refresh
+      </button>
+      <button class="btn btn-primary" routerLink="/admin/certificates/create">
+        <i class="bi bi-plus-circle me-1"></i>
+        Create Certificate
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">Loading certificates...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+  }
+
+  <!-- Certificates Table -->
+  @if (!isLoading && !error) {
+    <div class="card shadow-sm">
+      <div class="card-body">
+        @if (certificates.length === 0) {
+          <div class="text-center py-5">
+            <i class="bi bi-award text-muted" style="font-size: 3rem;"></i>
+            <h5 class="mt-3 text-muted">No certificates found</h5>
+            <p class="text-muted">Certificates will appear here when users complete courses.</p>
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Course</th>
+                  <th>Certificate Number</th>
+                  <th>Grade</th>
+                  <th>Status</th>
+                  <th>Issue Date</th>
+                  <th>Verification Code</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (certificate of certificates; track certificate.id) {
+                  <tr>
+                    <td>{{ certificate.id }}</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar avatar-xs bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          {{ certificate.user_name?.charAt(0) || 'U' }}
+                        </div>
+                        <div>
+                          <div class="fw-medium">{{ certificate.user_name || 'User ' + certificate.user_id }}</div>
+                          <small class="text-muted">{{ certificate.user_email || 'user' + certificate.user_id + '@example.com' }}</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        <div class="fw-medium">{{ certificate.course_title || 'Course ' + certificate.course_id }}</div>
+                        <small class="text-muted">ID: {{ certificate.course_id }}</small>
+                      </div>
+                    </td>
+                    <td>
+                      <code class="text-primary fw-bold">{{ certificate.certificate_number }}</code>
+                    </td>
+                    <td>
+                      @if (certificate.grade) {
+                        <span class="fw-bold {{ getGradeColor(certificate.grade) }}">{{ certificate.grade }}%</span>
+                      } @else {
+                        <span class="text-muted">N/A</span>
+                      }
+                    </td>
+                    <td>
+                      <span class="badge {{ getStatusBadgeClass(certificate.status) }}">
+                        {{ certificate.status?.replace('_', ' ') || 'Unknown' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div>
+                        <div>{{ certificate.issue_date ? (certificate.issue_date | date:'shortDate') : 'N/A' }}</div>
+                        <small class="text-muted">{{ certificate.created_at ? (certificate.created_at | date:'shortTime') : '' }}</small>
+                      </div>
+                    </td>
+                    <td>
+                      <code class="text-muted small">{{ certificate.verification_code }}</code>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-center gap-1">
+                        <button 
+                          class="btn btn-sm btn-outline-primary" 
+                          (click)="editCertificate(certificate)"
+                          title="Edit Certificate">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        @if (certificate.status === 'pending') {
+                          <button 
+                            class="btn btn-sm btn-outline-success" 
+                            (click)="generateCertificate(certificate)"
+                            title="Generate Certificate">
+                            <i class="bi bi-check-circle"></i>
+                          </button>
+                        }
+                        @if (certificate.status === 'issued' && certificate.pdf_path) {
+                          <button 
+                            class="btn btn-sm btn-outline-info" 
+                            (click)="downloadCertificate(certificate)"
+                            title="Download PDF">
+                            <i class="bi bi-download"></i>
+                          </button>
+                        }
+                        <button 
+                          class="btn btn-sm btn-outline-danger" 
+                          (click)="deleteCertificate(certificate)"
+                          title="Delete Certificate">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
