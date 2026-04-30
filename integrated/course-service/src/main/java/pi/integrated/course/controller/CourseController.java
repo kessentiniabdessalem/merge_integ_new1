@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.integrated.course.dto.CourseRequest;
 import pi.integrated.course.dto.CourseResponse;
+import pi.integrated.course.dto.RecommendationRequest;
+import pi.integrated.course.dto.RecommendedCourseResponse;
+import pi.integrated.course.service.CourseRecommendationService;
 import pi.integrated.course.service.ICourseService;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 public class CourseController {
 
     private final ICourseService courseService;
+    private final CourseRecommendationService recommendationService;
 
     // Public endpoints
     @GetMapping
@@ -41,6 +45,12 @@ public class CourseController {
     @GetMapping("/search")
     public ResponseEntity<List<CourseResponse>> searchCourses(@RequestParam String keyword) {
         return ResponseEntity.ok(courseService.searchCourses(keyword));
+    }
+
+    @PostMapping("/recommendations")
+    public ResponseEntity<List<RecommendedCourseResponse>> getRecommendations(
+            @RequestBody RecommendationRequest request) {
+        return ResponseEntity.ok(recommendationService.recommend(request));
     }
 
     // Admin endpoints
