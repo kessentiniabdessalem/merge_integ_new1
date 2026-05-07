@@ -1,7 +1,6 @@
 // ─── CI Pipeline : frontend Angular ──────────────────────────────────────────
 // Prérequis Jenkins :
-//   - NodeJS plugin installé, tool "NodeJS18" configuré dans Global Tool Configuration
-//   - sonar-scanner installé sur la VM Jenkins (ou via npm)
+//   - NodeJS plugin installé, tool "Node20" configuré dans Global Tool Configuration
 //   - credential "docker-hub-credentials" (Username+Password)
 
 pipeline {
@@ -39,7 +38,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    sh 'npm ci --legacy-peer-deps'
+                    bat 'npm ci --legacy-peer-deps'
                 }
             }
         }
@@ -47,7 +46,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    sh 'npm run build -- --configuration=production'
+                    bat 'npm run build -- --configuration=production'
                 }
             }
         }
@@ -55,14 +54,7 @@ pipeline {
         stage('Tests') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    // Tests headless avec Chrome
-                    sh '''
-                        npm run test -- \
-                            --watch=false \
-                            --browsers=ChromeHeadless \
-                            --code-coverage \
-                            || true
-                    '''
+                    bat 'npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage || exit 0'
                 }
             }
             post {
@@ -83,14 +75,13 @@ pipeline {
             steps {
                 dir("${SERVICE_DIR}") {
                     withSonarQubeEnv('SonarQube') {
-                        // Nécessite sonar-scanner CLI installé sur le PATH
-                        sh """
-                            sonar-scanner \
-                                -Dsonar.projectKey=${SONAR_PROJECT} \
-                                -Dsonar.projectName="Learnify - Frontend" \
-                                -Dsonar.sources=src \
-                                -Dsonar.exclusions="**/node_modules/**,**/*.spec.ts,**/dist/**" \
-                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                        bat """
+                            sonar-scanner ^
+                                -Dsonar.projectKey=${SONAR_PROJECT} ^
+                                -Dsonar.projectName="Learnify - Frontend" ^
+                                -Dsonar.sources=src ^
+                                -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/dist/** ^
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info ^
                                 -Dsonar.typescript.tsconfigPath=tsconfig.json
                         """
                     }
@@ -109,7 +100,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    sh "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
+                    bat "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
@@ -121,8 +112,8 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh """
-                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                    bat """
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                         docker push ${IMAGE_NAME}:${BUILD_NUMBER}
                         docker push ${IMAGE_NAME}:latest
                         docker logout
@@ -141,7 +132,7 @@ pipeline {
             echo "Pipeline ${SERVICE_NAME} échoué."
         }
         always {
-            sh "docker rmi ${IMAGE_NAME}:${BUILD_NUMBER} || true"
+            bat "docker rmi ${IMAGE_NAME}:${BUILD_NUMBER} || exit 0"
             cleanWs()
         }
     }

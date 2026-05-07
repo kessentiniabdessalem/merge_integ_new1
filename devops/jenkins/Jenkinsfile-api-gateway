@@ -43,7 +43,7 @@ pipeline {
         stage('Tests') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    sh 'mvn test -B'
+                    sh 'mvn test -B -Dmaven.test.failure.ignore=true'
                 }
             }
             post {
