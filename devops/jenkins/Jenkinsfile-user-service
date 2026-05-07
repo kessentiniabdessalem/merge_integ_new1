@@ -94,7 +94,7 @@ pipeline {
                         export KUBECONFIG=\$KUBECONFIG
                         kubectl apply -f ${K8S_DIR}/services/user-service.yaml -n ${NAMESPACE}
                         kubectl rollout restart deployment/user-service -n ${NAMESPACE}
-                        kubectl rollout status deployment/user-service -n ${NAMESPACE} --timeout=120s
+                        kubectl rollout status deployment/user-service -n ${NAMESPACE} --timeout=300s
                     """
                 }
             }

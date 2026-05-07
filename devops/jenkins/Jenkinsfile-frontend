@@ -101,7 +101,7 @@ pipeline {
                         set KUBECONFIG=%KUBECONFIG%
                         kubectl apply -f ${K8S_DIR}/frontend/frontend.yaml -n ${NAMESPACE}
                         kubectl rollout restart deployment/frontend -n ${NAMESPACE}
-                        kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=90s
+                        kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=300s
                     """
                 }
             }

@@ -94,7 +94,7 @@ pipeline {
                         export KUBECONFIG=\$KUBECONFIG
                         kubectl apply -f ${K8S_DIR}/api-gateway/api-gateway.yaml -n ${NAMESPACE}
                         kubectl rollout restart deployment/api-gateway -n ${NAMESPACE}
-                        kubectl rollout status deployment/api-gateway -n ${NAMESPACE} --timeout=120s
+                        kubectl rollout status deployment/api-gateway -n ${NAMESPACE} --timeout=300s
                     """
                 }
             }
