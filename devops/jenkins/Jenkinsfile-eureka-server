@@ -1,6 +1,6 @@
 // ─── CI Pipeline : eureka-server ─────────────────────────────────────────────
 // Docker Hub : abdessalem1222
-// Configurer dans Jenkins : credential "dockerhub-credentials" (Username+Password)
+// Configurer dans Jenkins : credential "docker-hub-credentials" (Username+Password)
 //                           credential "sonarqube-token" (Secret text)
 //                           tool Maven "Maven3" installé dans Global Tool Configuration
 
@@ -94,7 +94,7 @@ pipeline {
         stage('Docker Push') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
+                    credentialsId: 'docker-hub-credentials',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
