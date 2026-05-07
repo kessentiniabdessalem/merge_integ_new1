@@ -1,8 +1,4 @@
-// ─── CI Pipeline : frontend Angular ──────────────────────────────────────────
-// Prérequis Jenkins :
-//   - NodeJS plugin installé, tool "Node20" configuré dans Global Tool Configuration
-//   - credential "docker-hub-credentials" (Username+Password)
-
+// ─── CI/CD Pipeline : frontend Angular ───────────────────────────────────────
 pipeline {
     agent any
 
@@ -11,6 +7,8 @@ pipeline {
         SERVICE_DIR   = 'frontend'
         IMAGE_NAME    = "abdessalem1222/learnify-frontend"
         SONAR_PROJECT = 'learnify-frontend'
+        NAMESPACE     = 'learnify'
+        K8S_DIR       = 'devops/k8s'
     }
 
     tools {
@@ -22,9 +20,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
 
-    triggers {
-        githubPush()
-    }
+    triggers { githubPush() }
 
     stages {
 
@@ -54,7 +50,7 @@ pipeline {
         stage('Tests') {
             steps {
                 dir("${SERVICE_DIR}") {
-                    bat 'npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage || exit 0'
+                    bat 'npm test || exit 0'
                 }
             }
         }
@@ -64,26 +60,17 @@ pipeline {
                 dir("${SERVICE_DIR}") {
                     withSonarQubeEnv('SonarQube') {
                         bat """
-                            sonar-scanner ^
+                            npx sonar-scanner ^
                                 -Dsonar.projectKey=${SONAR_PROJECT} ^
                                 -Dsonar.projectName="Learnify - Frontend" ^
                                 -Dsonar.sources=src ^
                                 -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/dist/** ^
-                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info ^
                                 -Dsonar.typescript.tsconfigPath=tsconfig.json
                         """
                     }
                 }
             }
         }
-
-        // stage('Quality Gate') {
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
 
         stage('Docker Build') {
             steps {
@@ -95,11 +82,8 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-credentials',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials',
+                    usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     bat """
                         echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                         docker push ${IMAGE_NAME}:${BUILD_NUMBER}
@@ -110,15 +94,24 @@ pipeline {
             }
         }
 
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    bat """
+                        set KUBECONFIG=%KUBECONFIG%
+                        kubectl apply -f ${K8S_DIR}/frontend/frontend.yaml -n ${NAMESPACE}
+                        kubectl rollout restart deployment/frontend -n ${NAMESPACE}
+                        kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=90s
+                    """
+                }
+            }
+        }
+
     }
 
     post {
-        success {
-            echo "Pipeline ${SERVICE_NAME} réussi. Image: ${IMAGE_NAME}:${BUILD_NUMBER}"
-        }
-        failure {
-            echo "Pipeline ${SERVICE_NAME} échoué."
-        }
+        success { echo "CI/CD ${SERVICE_NAME} réussi. Image: ${IMAGE_NAME}:${BUILD_NUMBER}" }
+        failure { echo "CI/CD ${SERVICE_NAME} échoué." }
         always {
             bat "docker rmi ${IMAGE_NAME}:${BUILD_NUMBER} || exit 0"
             cleanWs()
