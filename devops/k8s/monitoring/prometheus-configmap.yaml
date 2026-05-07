@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: learnify
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+
+      # Prometheus lui-même
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      # Eureka Server
+      - job_name: 'eureka-server'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['eureka-server:8761']
+
+      # API Gateway
+      - job_name: 'api-gateway'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['api-gateway:8080']
+
+      # User Service
+      - job_name: 'user-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['user-service:8087']
+
+      # AI Service
+      - job_name: 'ai-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['ai-service:8085']
+
+      # Preevaluation Service
+      - job_name: 'preevaluation-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['preevaluation-service:8089']
+
+      # Event Service
+      - job_name: 'event-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['event-service:8081']
+
+      # Payment Service
+      - job_name: 'payment-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['payment-service:8082']
+
+      # Certificate Service
+      - job_name: 'certificate-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['certificate-service:8083']
+
+      # Quiz Feedback Service
+      - job_name: 'quiz-feedback-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['quiz-feedback-service:8084']
+
+      # Course Service
+      - job_name: 'course-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['course-service:8086']
+
+      # Job Service
+      - job_name: 'job-service'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['job-service:8088']
+
+      # Auto-discovery via annotations Kubernetes (pods avec prometheus.io/scrape=true)
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names: ['learnify']
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: "true"
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: pod
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: namespace

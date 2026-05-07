@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: learnify-config
+  namespace: learnify
+data:
+  # Eureka
+  EUREKA_SERVER_URL: "http://eureka-server:8761/eureka/"
+
+  # Spring JPA
+  SPRING_JPA_DDL_AUTO: "update"
+  SPRING_JPA_SHOW_SQL: "false"
+
+  # MySQL datasource URLs (host = nom du Service Kubernetes)
+  DB_USER_URL: "jdbc:mysql://mysql-user-db:3306/user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_AI_URL: "jdbc:mysql://mysql-ai-db:3306/ai_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_EVENT_URL: "jdbc:mysql://mysql-event-db:3306/event_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_PAYMENT_URL: "jdbc:mysql://mysql-payment-db:3306/payment_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_CERTIFICATE_URL: "jdbc:mysql://mysql-certificate-db:3306/certificate_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_QUIZ_URL: "jdbc:mysql://mysql-quiz-db:3306/quiz_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_COURSE_URL: "jdbc:mysql://mysql-course-db:3306/course_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_JOB_URL: "jdbc:mysql://mysql-job-db:3306/job_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  DB_PREEVALUATION_URL: "jdbc:mysql://mysql-preevaluation-db:3306/preevaluation_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+
+  # Gemini API
+  GEMINI_API_URL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+
+  # WebAuthn (user-service)
+  WEBAUTHN_RP_ID: "learnify.local"
+  WEBAUTHN_RP_NAME: "learnify"
+  WEBAUTHN_ORIGIN: "http://learnify.local"
+
+  # OAuth2 redirect
+  GOOGLE_REDIRECT_URI: "http://learnify.local/api/auth/oauth2/callback"
+
+  # Preevaluation AI
+  PREEVALUATION_AI_PROVIDER: "groq"
+
+  # Spring Mail
+  SPRING_MAIL_HOST: "smtp.gmail.com"
+  SPRING_MAIL_PORT: "587"
+
+  # Actuator
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus,metrics"
+  MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: "always"

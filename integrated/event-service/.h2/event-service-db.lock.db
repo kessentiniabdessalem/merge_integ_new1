@@ -1,6 +1,6 @@
 #FileLock
-#Thu Apr 23 21:59:03 CET 2026
-server=192.168.152.1\:61774
-hostName=Kessentini_A
+#Fri Apr 24 22:40:27 CET 2026
+server=192.168.0.1\:56149
+hostName=Kessentini_A.mshome.net
 method=file
-id=19dbc236dedfdbc847826bc335b6559299e4c11574c
+id=19dc16fda245183105431dac319ffd6cc420b1fca21

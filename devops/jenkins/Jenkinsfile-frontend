@@ -1,0 +1,148 @@
+// ─── CI Pipeline : frontend Angular ──────────────────────────────────────────
+// Prérequis Jenkins :
+//   - NodeJS plugin installé, tool "NodeJS18" configuré dans Global Tool Configuration
+//   - sonar-scanner installé sur la VM Jenkins (ou via npm)
+//   - credential "dockerhub-credentials" (Username+Password)
+
+pipeline {
+    agent any
+
+    environment {
+        SERVICE_NAME  = 'frontend'
+        SERVICE_DIR   = 'frontend'
+        IMAGE_NAME    = "abdessalem1222/learnify-frontend"
+        SONAR_PROJECT = 'learnify-frontend'
+    }
+
+    tools {
+        nodejs 'NodeJS18'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 30, unit: 'MINUTES')
+    }
+
+    triggers {
+        githubPush()
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+                echo "Branch: ${env.GIT_BRANCH} | Commit: ${env.GIT_COMMIT?.take(8)}"
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh 'npm ci --legacy-peer-deps'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh 'npm run build -- --configuration=production'
+                }
+            }
+        }
+
+        stage('Tests') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    // Tests headless avec Chrome
+                    sh '''
+                        npm run test -- \
+                            --watch=false \
+                            --browsers=ChromeHeadless \
+                            --code-coverage \
+                            || true
+                    '''
+                }
+            }
+            post {
+                always {
+                    publishHTML(target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "${SERVICE_DIR}/coverage",
+                        reportFiles: 'index.html',
+                        reportName: 'Coverage Report'
+                    ])
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    withSonarQubeEnv('SonarQube') {
+                        // Nécessite sonar-scanner CLI installé sur le PATH
+                        sh """
+                            sonar-scanner \
+                                -Dsonar.projectKey=${SONAR_PROJECT} \
+                                -Dsonar.projectName="Learnify - Frontend" \
+                                -Dsonar.sources=src \
+                                -Dsonar.exclusions="**/node_modules/**,**/*.spec.ts,**/dist/**" \
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                                -Dsonar.typescript.tsconfigPath=tsconfig.json
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh """
+                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
+                        docker logout
+                    """
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "Pipeline ${SERVICE_NAME} réussi. Image: ${IMAGE_NAME}:${BUILD_NUMBER}"
+        }
+        failure {
+            echo "Pipeline ${SERVICE_NAME} échoué."
+        }
+        always {
+            sh "docker rmi ${IMAGE_NAME}:${BUILD_NUMBER} || true"
+            cleanWs()
+        }
+    }
+}

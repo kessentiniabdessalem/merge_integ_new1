@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: learnify
+  labels:
+    app.kubernetes.io/part-of: learnify
+    environment: production

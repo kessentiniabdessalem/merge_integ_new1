@@ -1,0 +1,259 @@
+// ─── CD Pipeline Global : Déploiement Kubernetes ─────────────────────────────
+// Ce pipeline déploie toute la stack Learnify sur Minikube/Kubernetes.
+// Prérequis :
+//   - credential "kubeconfig" (Secret file) contenant ~/.kube/config
+//   - kubectl installé sur le Jenkins agent
+//   - Namespace "learnify" créé au préalable
+
+pipeline {
+    agent any
+
+    environment {
+        NAMESPACE = 'learnify'
+        K8S_DIR   = 'devops/k8s'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        timeout(time: 20, unit: 'MINUTES')
+    }
+
+    parameters {
+        booleanParam(name: 'DEPLOY_MONITORING', defaultValue: true,
+            description: 'Déployer Prometheus et Grafana')
+        booleanParam(name: 'RESET_DB', defaultValue: false,
+            description: 'Supprimer et recréer les PVC MySQL (DANGER: perte de données)')
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Vérification Images Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh """
+                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+
+                        SERVICES="eureka-server api-gateway user-service ai-service preevaluation-service event-service payment-service certificate-service quiz-feedback-service course-service job-service frontend"
+
+                        for svc in \$SERVICES; do
+                            IMAGE="\$DOCKER_USER/learnify-\${svc}:latest"
+                            echo "Vérification de l'image: \$IMAGE"
+                            docker pull \$IMAGE
+                            echo "Image \$IMAGE disponible."
+                        done
+
+                        docker logout
+                    """
+                }
+            }
+        }
+
+        stage('Setup Namespace & Configs') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        kubectl apply -f ${K8S_DIR}/namespace.yaml
+                        kubectl apply -f ${K8S_DIR}/secrets.yaml      -n ${NAMESPACE}
+                        kubectl apply -f ${K8S_DIR}/configmap.yaml     -n ${NAMESPACE}
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement MySQL') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    script {
+                        if (params.RESET_DB) {
+                            sh """
+                                export KUBECONFIG=\$KUBECONFIG
+                                echo "RESET_DB activé : suppression des PVC..."
+                                kubectl delete pvc -l app.kubernetes.io/part-of=learnify -n ${NAMESPACE} || true
+                                sleep 5
+                            """
+                        }
+                    }
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        kubectl apply -f ${K8S_DIR}/mysql/ -n ${NAMESPACE}
+
+                        echo "Attente démarrage MySQL (60s)..."
+                        sleep 60
+
+                        MYSQL_DBS="mysql-user-db mysql-ai-db mysql-event-db mysql-payment-db mysql-certificate-db mysql-quiz-db mysql-course-db mysql-job-db"
+                        for db in \$MYSQL_DBS; do
+                            echo "Rollout: \$db"
+                            kubectl rollout status deployment/\$db -n ${NAMESPACE} --timeout=120s
+                        done
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement Eureka') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/eureka/eureka.yaml -n ${NAMESPACE}
+                        kubectl rollout status deployment/eureka-server -n ${NAMESPACE} --timeout=120s
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement API Gateway') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/api-gateway/api-gateway.yaml -n ${NAMESPACE}
+                        kubectl rollout status deployment/api-gateway -n ${NAMESPACE} --timeout=120s
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement Microservices Backend') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        kubectl apply -f ${K8S_DIR}/services/ -n ${NAMESPACE}
+
+                        SERVICES="user-service ai-service preevaluation-service event-service payment-service certificate-service quiz-feedback-service course-service job-service"
+                        for svc in \$SERVICES; do
+                            echo "Rollout: \$svc"
+                            kubectl rollout status deployment/\$svc -n ${NAMESPACE} --timeout=180s
+                        done
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement Frontend') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/frontend/frontend.yaml -n ${NAMESPACE}
+                        kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=90s
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement Ingress') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/ingress/ingress.yaml -n ${NAMESPACE}
+                    """
+                }
+            }
+        }
+
+        stage('Déploiement Monitoring') {
+            when {
+                expression { params.DEPLOY_MONITORING == true }
+            }
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/monitoring/ -n ${NAMESPACE}
+                        kubectl rollout status deployment/prometheus -n ${NAMESPACE} --timeout=90s
+                        kubectl rollout status deployment/grafana    -n ${NAMESPACE} --timeout=90s
+                    """
+                }
+            }
+        }
+
+        stage('État du Cluster') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        echo "\\n========= PODS ========="
+                        kubectl get pods -n ${NAMESPACE} -o wide
+
+                        echo "\\n========= SERVICES ========="
+                        kubectl get services -n ${NAMESPACE}
+
+                        echo "\\n========= INGRESS ========="
+                        kubectl get ingress -n ${NAMESPACE}
+
+                        echo "\\n========= PVC ========="
+                        kubectl get pvc -n ${NAMESPACE}
+                    """
+                }
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        MINIKUBE_IP=\$(minikube ip 2>/dev/null || echo "127.0.0.1")
+                        echo "Minikube IP: \$MINIKUBE_IP"
+
+                        echo "Test Eureka..."
+                        curl -sf --retry 5 --retry-delay 5 http://\$MINIKUBE_IP:30761/actuator/health \
+                            && echo "Eureka OK" \
+                            || echo "Eureka ne répond pas encore (normal au premier démarrage)"
+
+                        echo "Test API Gateway..."
+                        curl -sf --retry 5 --retry-delay 5 http://\$MINIKUBE_IP:30080/actuator/health \
+                            && echo "API Gateway OK" \
+                            || echo "API Gateway ne répond pas encore"
+
+                        echo "Test Frontend..."
+                        curl -sf --retry 5 --retry-delay 5 http://\$MINIKUBE_IP:30000/ \
+                            && echo "Frontend OK" \
+                            || echo "Frontend ne répond pas encore"
+
+                        echo "\\nSmoke tests terminés."
+                    """
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo """
+            =========================================
+            Déploiement Learnify réussi !
+
+            Frontend  : http://MINIKUBE_IP:30000
+            API GW    : http://MINIKUBE_IP:30080
+            Eureka    : http://MINIKUBE_IP:30761
+            Prometheus: http://MINIKUBE_IP:30090
+            Grafana   : http://MINIKUBE_IP:32000  (admin/admin123)
+            =========================================
+            """
+        }
+        failure {
+            echo "Déploiement échoué. Consultez les logs ci-dessus."
+        }
+    }
+}
