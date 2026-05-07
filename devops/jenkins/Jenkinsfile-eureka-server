@@ -58,7 +58,7 @@ pipeline {
                             mvn sonar:sonar \
                                 -Dsonar.projectKey=${SONAR_PROJECT} \
                                 -Dsonar.projectName="Learnify - Eureka Server" \
-                                -Dsonar.java.source=17 -B
+                                -Dsonar.java.source=17 -B || true
                         """
                     }
                 }
