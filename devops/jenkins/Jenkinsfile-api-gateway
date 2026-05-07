@@ -1,12 +1,14 @@
-// ─── CI Pipeline : api-gateway ───────────────────────────────────────────────
+// ─── CI/CD Pipeline : api-gateway ────────────────────────────────────────────
 pipeline {
     agent any
 
     environment {
-        SERVICE_NAME    = 'api-gateway'
-        SERVICE_DIR     = 'integrated/api-gateway'
-        IMAGE_NAME      = "abdessalem1222/learnify-api-gateway"
-        SONAR_PROJECT   = 'learnify-api-gateway'
+        SERVICE_NAME  = 'api-gateway'
+        SERVICE_DIR   = 'integrated/api-gateway'
+        IMAGE_NAME    = "abdessalem1222/learnify-api-gateway"
+        SONAR_PROJECT = 'learnify-api-gateway'
+        NAMESPACE     = 'learnify'
+        K8S_DIR       = 'devops/k8s'
     }
 
     tools {
@@ -19,9 +21,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
 
-    triggers {
-        githubPush()
-    }
+    triggers { githubPush() }
 
     stages {
 
@@ -34,17 +34,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir("${SERVICE_DIR}") {
-                    sh 'mvn clean package -DskipTests -B'
-                }
+                dir("${SERVICE_DIR}") { sh 'mvn clean package -DskipTests -B' }
             }
         }
 
         stage('Tests') {
             steps {
-                dir("${SERVICE_DIR}") {
-                    sh 'mvn test -B -Dmaven.test.failure.ignore=true'
-                }
+                dir("${SERVICE_DIR}") { sh 'mvn test -B -Dmaven.test.failure.ignore=true' }
             }
             post {
                 always {
@@ -62,21 +58,12 @@ pipeline {
                             mvn sonar:sonar \
                                 -Dsonar.projectKey=${SONAR_PROJECT} \
                                 -Dsonar.projectName="Learnify - API Gateway" \
-                                -Dsonar.java.source=17 \
-                                -B
+                                -Dsonar.java.source=17 -B
                         """
                     }
                 }
             }
         }
-
-        // stage('Quality Gate') {
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
 
         stage('Docker Build') {
             steps {
@@ -88,11 +75,8 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-credentials',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials',
+                    usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
                         echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
                         docker push ${IMAGE_NAME}:${BUILD_NUMBER}
@@ -103,11 +87,24 @@ pipeline {
             }
         }
 
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+                        kubectl apply -f ${K8S_DIR}/api-gateway/api-gateway.yaml -n ${NAMESPACE}
+                        kubectl rollout restart deployment/api-gateway -n ${NAMESPACE}
+                        kubectl rollout status deployment/api-gateway -n ${NAMESPACE} --timeout=120s
+                    """
+                }
+            }
+        }
+
     }
 
     post {
-        success { echo "Pipeline ${SERVICE_NAME} réussi." }
-        failure { echo "Pipeline ${SERVICE_NAME} échoué." }
+        success { echo "CI/CD ${SERVICE_NAME} réussi. Image: ${IMAGE_NAME}:${BUILD_NUMBER}" }
+        failure { echo "CI/CD ${SERVICE_NAME} échoué." }
         always {
             sh "docker rmi ${IMAGE_NAME}:${BUILD_NUMBER} || true"
             cleanWs()
