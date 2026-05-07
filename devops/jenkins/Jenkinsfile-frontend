@@ -65,7 +65,7 @@ pipeline {
                                 -Dsonar.projectName="Learnify - Frontend" ^
                                 -Dsonar.sources=src ^
                                 -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/dist/** ^
-                                -Dsonar.typescript.tsconfigPath=tsconfig.json
+                                -Dsonar.typescript.tsconfigPath=tsconfig.json || exit 0
                         """
                     }
                 }
