@@ -15,7 +15,7 @@ pipeline {
     }
 
     tools {
-        nodejs 'NodeJS18'
+        nodejs 'Node20'
     }
 
     options {
